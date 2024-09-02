@@ -1,0 +1,16 @@
+Bugs:
+
+1. Przeklamania na czasie wyscigow/okrazen
+2. Blad podczas generowania grafiki
+
+
+
+
+
+
+
+
+
+
+
+Features TODO:
