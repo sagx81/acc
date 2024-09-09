@@ -1,0 +1,2 @@
+c:\Users\d.hanowicz\Desktop\AMC\acc-race-results\acc\output\GT3 S2\cota-cota.csv
+c:\Users\d.hanowicz\Desktop\AMC\acc-race-results\acc\output\GT3 S2\klasyfikacja_generalna.csv
