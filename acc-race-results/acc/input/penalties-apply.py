@@ -1,8 +1,9 @@
 import os
 import glob
 import csv
-import time
+# import time
 from datetime import datetime
+import shutil
 from collections import defaultdict
 # from PIL import Image, ImageDraw, ImageFont
 
@@ -183,7 +184,7 @@ for input_dir in dirs:
             continue
 
         try:
-            if "penalties" in csv_file:
+            if "penalties" in csv_file.lower():
                 continue
             # prepare driver objects
             with open(csv_file, mode='r', encoding='utf-8') as file:
@@ -329,10 +330,27 @@ for input_dir in dirs:
                 print("\n---After stewards-----\n")
                 for res in sortedResults:
                     print(f"{res}")
+
+                # save to file
+                try:
+                    # make copy 
+                    shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
+
+                    fileRows = [] #[{'Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'}]
+                    for res in sortedResults:
+                        fileRows.append([res.position, res.driver, res.timing, res.bestLap, res.laps, res.points])
+                    # results.insert(0, ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'])
+
+                    fileRows.insert(0, ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'])
+                    
+                    # output_csv_file = csv_file.replace(".csv", "_penalties.csv")
+                    output_csv_file = csv_file
+                    with open(output_csv_file, mode='w', newline='', encoding='utf-8') as csvFile:
+                        writer = csv.writer(csvFile)
+                        writer.writerows(fileRows)    
                 
-            # except Exception as e:
-            #     print(f"An error occurred processing file {penaltiesCsv}: {e}")
-
-
+                except Exception as e:
+                    print(f"An error occurred saving {csv_file}: {e}")
+                
         except Exception as e:
             print(f"An error occurred processing file {csv_file}: {e}")
