@@ -184,12 +184,15 @@ for input_dir in dirs:
             continue
 
         try:
-            if "penalties" in csv_file.lower():
+            if ("penalties" in csv_file.lower() or "copy" in csv_file.lower()) :
                 continue
             # prepare driver objects
             with open(csv_file, mode='r', encoding='utf-8') as file:
 
+                results = []
                 reader = csv.DictReader(file)
+                winnerTime = ""
+                winnerTimeMiliseconds = 0
                 # print(f"{reader}")
 
                 print(f"Processing file: {csv_file.split('/')[-1]}")
@@ -224,21 +227,44 @@ for input_dir in dirs:
                     timingMiliseconds = 0
 
                     # print(f"timing: {timing}")
-                    if (timing.find(' ') > 0):
-                        if (timing.split(' ')[1][0].isdigit()):
-                            timeStr = timing.split(' ')[1]
-                            timingMiliseconds = convert_time_to_miliseconds(timeStr)
-                        elif (timing.split(' ')[1][0] == 'o'):
-                            extraLaps = timing.split(' ')[0].replace('+', '')                        
-                            timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
-                    # elif (timing.find('DNF') > 0):
-                    elif (position > 1):
-                        # 24h if DNF to have hight miliseconds count for positions calculation
-                        timingMiliseconds = (24 * 3600000)
-                        points = 0
-                        
+                    # GT3
+                    if ("gt3" in input_dir.lower()):
+                        if (timing.find(' ') > 0):
+                            if (timing.split(' ')[1][0].isdigit()):
+                                timeStr = timing.split(' ')[1]
+                                timingMiliseconds = convert_time_to_miliseconds(timeStr)
+                            elif (timing.split(' ')[1][0] == 'o'):
+                                extraLaps = timing.split(' ')[0].replace('+', '')                        
+                                timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
+                        # elif (timing.find('DNF') > 0):
+                        elif (position > 1):
+                            # 24h if DNF to have hight miliseconds count for positions calculation
+                            timingMiliseconds = (24 * 3600000)
+                            points = 0
+
+                        totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                    
+                    # WL
+                    elif ("week league" in input_dir.lower()):
+                        if (position == 1):
+                            totalTimeMiliseconds = winnerTimeMiliseconds
+                        if (timing.find('(') > 0):
+                            firstPart = timing.split('(')[0]
+                            secondPart = timing.split('(')[1]
+                            if ("+" in secondPart):
+                                totalTimeMiliseconds = convert_time_to_miliseconds(firstPart)
+                            elif (secondPart[0].isdigit()):
+                                extraLaps = secondPart.split(' ')[0]
+                                timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
+                                totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                        # elif (timing.find('DNF') > 0):                        
+                        elif (position > 1):
+                            # 24h if DNF to have hight miliseconds count for positions calculation
+                            timingMiliseconds = (24 * 3600000)
+                            points = 0   
+                            totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
         
-                    totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                    
 
                     # print(f"time: {timingMiliseconds}")
                     # print(f"total time: {totalTimeMiliseconds}") 
@@ -278,8 +304,8 @@ for input_dir in dirs:
                 # drivers mapping
                 
 
-                for res in results:
-                    print(f"{res}")
+                # for res in results:
+                #     print(f"{res}")
 
                 # time penalties
                 for penalty in penalties:
@@ -312,6 +338,9 @@ for input_dir in dirs:
                 winnerTimeMsAfterPenalties = 0
                 
                 for res in sortedResults:
+                    print(f"\n{res}")
+
+                for res in sortedResults:
                     if (sortedResults.index(res) == 0):
                         winnerTimeMsAfterPenalties = convert_time_to_miliseconds(res.totalTimeString)
                         res.timing = convert_time(winnerTimeMsAfterPenalties)
@@ -334,7 +363,7 @@ for input_dir in dirs:
                 # save to file
                 try:
                     # make copy 
-                    shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
+                    # shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
 
                     fileRows = [] #[{'Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'}]
                     for res in sortedResults:
@@ -343,8 +372,8 @@ for input_dir in dirs:
 
                     fileRows.insert(0, ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'])
                     
-                    # output_csv_file = csv_file.replace(".csv", "_penalties.csv")
-                    output_csv_file = csv_file
+                    output_csv_file = csv_file.replace(".csv", "_penalties_applied.csv")
+                    # output_csv_file = csv_file
                     with open(output_csv_file, mode='w', newline='', encoding='utf-8') as csvFile:
                         writer = csv.writer(csvFile)
                         writer.writerows(fileRows)    
