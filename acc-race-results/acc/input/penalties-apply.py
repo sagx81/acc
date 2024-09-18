@@ -29,18 +29,19 @@ class Penalty:
 
 
 class ResultRow:
-    def __init__(self, position, driver, timing, totalTime, totalTimeString, bestLap, laps, points):
+    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, points, isDsq=False):
         self.position = position
         self.driver = driver
         self.timing = timing
-        self.totalTime = totalTime
+        self.totalTimeMs = totalTimeMs
         self.totalTimeString = totalTimeString
         self.bestLap = bestLap
         self.laps = laps
         self.points = points
+        self.isDsq = isDsq
 
     def __repr__(self):
-        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTime}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}"
+        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}"
 
 
 class DriverMap:
@@ -180,7 +181,7 @@ for input_dir in dirs:
 
         # print(f"apply penalties: {applyPenalties}")
         if (not applyPenalties):
-            print(f" ** Penalties do not apply for: {csv_file.split('/')[-1]}")
+            print(f" \n** Penalties DO NOT apply for: {csv_file.split('/')[-1]}\n")
             continue
 
         try:
@@ -195,7 +196,7 @@ for input_dir in dirs:
                 winnerTimeMiliseconds = 0
                 # print(f"{reader}")
 
-                print(f"Processing file: {csv_file.split('/')[-1]}")
+                print(f"\n\n\n*** Processing file: {csv_file.split('/')[-1]}\n")
 
                 for row in reader:
                     # print(f"{row}")
@@ -303,9 +304,9 @@ for input_dir in dirs:
 
                 # drivers mapping
                 
-
-                # for res in results:
-                #     print(f"{res}")
+                print("\n---Before stewards from results -----\n")
+                for res in results:
+                    print(f"{res}")
 
                 # time penalties
                 for penalty in penalties:
@@ -314,6 +315,8 @@ for input_dir in dirs:
 
                     if (not is_penalty_valid_for_race(penalty, input_dir, csv_file)):
                         continue                    
+
+                    print(f"\n Applying penalty {penalty}")
 
                     for driver in results:       
                         driverRaceName = ""
@@ -324,29 +327,32 @@ for input_dir in dirs:
                         # DSQ
                         if (penalty.isDsq):
                             driver.points = 0
-                            driver.totalTime = 24 * 3600000 + driver.totalTime
-                            driver.totalTimeString = convert_time(driver.totalTime)
+                            driver.totalTimeMs = 24 * 36000000 + driver.totalTimeMs
+                            driver.totalTimeString = convert_time(driver.totalTimeMs)
+                            driver.isDsq = True
                         else:
-                            driver.totalTime += (penalty.penaltySeconds * 1000)
-                            driver.totalTimeString = convert_time(driver.totalTime)
+                            driver.totalTimeMs += (penalty.penaltySeconds * 1000)
+                            driver.totalTimeString = convert_time(driver.totalTimeMs)
                         break
                 
                 
                 # set position after penalties                         
                 points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1]
-                sortedResults = sorted(results, key=lambda x: x.totalTime)
+                sortedResults = sorted(results, key=lambda x: x.totalTimeMs)
                 winnerTimeMsAfterPenalties = 0
                 
-                for res in sortedResults:
-                    print(f"\n{res}")
+                # print("\n---Before stewards from drivers (sorted) -----\n")
+                # for res in sortedResults:
+                #     print(f"{res}")
 
                 for res in sortedResults:
                     if (sortedResults.index(res) == 0):
                         winnerTimeMsAfterPenalties = convert_time_to_miliseconds(res.totalTimeString)
                         res.timing = convert_time(winnerTimeMsAfterPenalties)
                     else:
-                        res.timing = convert_time(res.totalTime-winnerTimeMsAfterPenalties)
+                        res.timing = convert_time(res.totalTimeMs-winnerTimeMsAfterPenalties)
                     
+                    # print(f"position: {res.position} vs {sortedResults.index(res) + 1}")
                     res.position = sortedResults.index(res) + 1
                     if (res.points != 0 and res.position <= len(points)):
                         res.points = points[res.position - 1]                        
@@ -366,9 +372,28 @@ for input_dir in dirs:
                     # shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
 
                     fileRows = [] #[{'Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'}]
-                    for res in sortedResults:
-                        fileRows.append([res.position, res.driver, res.timing, res.bestLap, res.laps, res.points])
-                    # results.insert(0, ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'])
+                    for res in sortedResults:                            
+
+                        if ("DNF" not in res.bestLap):
+                            lapsMoreThanWinner = (res.totalTimeMs - winnerTimeMsAfterPenalties) / convert_time_to_miliseconds(res.bestLap)
+                        
+                        # print(f"laps more than winner: {lapsMoreThanWinner}")
+
+                        # print(f"best lap: {res.bestLap}")
+
+                        if (res.position == 1):
+                           timeStr = res.timing
+                        elif (res.isDsq):
+                            timeStr = "DSQ"
+                        elif ("DNF" in res.bestLap):
+                            timeStr = "DNF"
+                        elif (int(lapsMoreThanWinner) == 1):
+                            timeStr = f"+{int(lapsMoreThanWinner)} okrążenie"
+                        elif (int(lapsMoreThanWinner) > 1):
+                            timeStr = f"+{int(lapsMoreThanWinner)} okrążenia"
+                        else:
+                            timeStr = f"+ {res.timing}"
+                        fileRows.append([res.position, res.driver, timeStr, res.bestLap, res.laps, res.points])
 
                     fileRows.insert(0, ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'])
                     
