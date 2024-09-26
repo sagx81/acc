@@ -156,8 +156,12 @@ def get_race_results():
                             total_time_str = convert_time(total_time_ms)
                         else:
                             if lap_count < first_driver_laps:
+                                lapLabel = "lap"
                                 laps_difference = first_driver_laps - lap_count
-                                total_time_str = f"+{laps_difference} lap" if laps_difference == 1 else f"+{laps_difference} laps"
+                                time_difference = total_time_ms - first_driver_time
+                                if laps_difference > 1:
+                                    lapLabel = "laps"
+                                total_time_str = f"+{convert_time(time_difference)} (+{laps_difference} {lapLabel})"
                             else:
                                 time_difference = total_time_ms - first_driver_time
                                 total_time_str = f"+ {convert_time(time_difference)}"
