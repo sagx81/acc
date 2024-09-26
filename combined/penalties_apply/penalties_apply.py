@@ -1,17 +1,8 @@
 import os
 import glob
 import csv
-# import time
 from datetime import datetime
-import shutil
 from collections import defaultdict
-# from PIL import Image, ImageDraw, ImageFont
-
-
-# +seconds
-# dsq from current race (to the bottom of the list and 0 points)
-# fault points - by stewards (not here)
-# +positions?
 
 class Penalty:
     def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds, penaltyPosition, isDsq):
@@ -91,8 +82,6 @@ def convert_time_to_miliseconds(time):
 
     return timeMiliseconds
 
-
-
 # def find_project_root(start_path, target_dir_name="acc-race-results"):
 #     current_path = start_path
 #     while True:
@@ -103,53 +92,23 @@ def convert_time_to_miliseconds(time):
 #             raise FileNotFoundError(f"Katalog {target_dir_name} nie został znaleziony w ścieżce: {start_path}")
 #         current_path = parent_path
 
+
+# main processing function
 def apply_penalties():
 
     # Ustalanie katalogu głównego projektu
     inputResultsFolder = "output_phase1"
     applyPenaltiesFolder = "penalties_apply"
-    # current_dir = os.getcwd()
-    # project_root = os.path.dirname(current_dir) 
     project_root = os.getcwd() 
 
     # Definiowanie dynamicznych ścieżek do katalogów wejściowych, wyjściowych oraz do plików czcionki i tła
     penalties_csv = os.path.join(project_root,applyPenaltiesFolder, "penalties.csv")
     input_dirs = os.path.join(project_root, inputResultsFolder)
-    # input_dirs = os.path.join(project_root, "acc", "output")
-
-    # output_dir = os.path.join(project_root, "acc", "output", "Week League")
-    # background_image = os.path.join(project_root, "files", "background", "general classification.jpg")
-    # font_path = os.path.join(project_root, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
-    # output_csv_file = os.path.join(project_root, "acc", "output", "Week League", "klasyfikacja_generalna.csv")
-    # logo_image = os.path.join(project_root, "files", "Logo", "WL-GT3.png")
-    # processed_files_log = os.path.join(project_root, "acc", "output", "Week League", "processed_files.txt")
-
-    # Funkcja generująca unikalną nazwę pliku
-    # def generate_unique_filename(output_dir, base_name, extension="png"):
-    #     counter = 1
-    #     output_file = os.path.join(output_dir, f"{base_name}.{extension}")
-    #     while os.path.exists(output_file):
-    #         output_file = os.path.join(output_dir, f"{base_name}({counter}).{extension}")
-    #         counter += 1
-    #     return output_file
-
-    # Inicjalizacja struktury danych do przechowywania wyników
-    general_classification = defaultdict(int)
 
     results = []
     penalties = []
     winnerTime = ""
     winnerTimeMiliseconds = 0
-
-
-    # Wczytanie listy przetworzonych plików
-    # processed_files = set()
-    # if os.path.exists(processed_files_log):
-    #     with open(processed_files_log, 'r', encoding='utf-8') as file:
-    #         processed_files = set(line.strip() for line in file)
-
-    # Przetwarzanie każdego pliku CSV w katalogu wejściowym
-    # for seriesDir in glob.glob(os.path.join(input_dirs, "")):
 
     dirs = glob.glob(os.path.join(input_dirs, "*"))
     # print(f"{dirs}")
@@ -157,11 +116,7 @@ def apply_penalties():
 
     # prepare penalties
     print("\n------------\n")
-    # penaltiesCsv = os.path.join(penalties_dir, "penalties.csv")
     penalties = []
-
-
-
 
     try:
         with open(penalties_csv, mode='r', encoding='utf-8') as pFile:
@@ -174,14 +129,11 @@ def apply_penalties():
 
 
     # prepare drivers map (TODO move to separate file)
-    driversMap = [DriverMap("Sitek2453", "sitek1410")]
-    driversMap.append(DriverMap("ARN | Kielkozaur #88", "Kielkozaur"))
+    # driversMap = [DriverMap("Sitek2453", "sitek1410")]
+    # driversMap.append(DriverMap("ARN | Kielkozaur #88", "Kielkozaur"))
 
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
-            # if csv_file in processed_files:
-            #     print(f"Plik już przetworzony: {csv_file}")
-            #     continue
 
             applyPenalties = False
             # print(f"penalties: {penalties}")
@@ -287,33 +239,8 @@ def apply_penalties():
                         # result = ResultRow(position, driver, timing, totalTime, bestLap, laps, points)
                         results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, points))
 
-                    
-                    
-                    # #penalties
-                    # print("\n------------\n")
-                    # penaltiesCsv = os.path.join(input_dir, "penalties.csv")
-                    # try:
-                    #     penalties = []
-                        
-                    #     with open(penaltiesCsv, mode='r', encoding='utf-8') as pFile:
-                    #         pReader = csv.DictReader(pFile)
-                    #         for r in pReader:
-                    #             penalties.append(Penalty(r['RaceType'], int(r['Season']), r['Track'], int(r['RaceNumber']), r['Driver'], int(r['SecondsPenalty']), int(r['PositionPenalty']), float(r['IsDSQ'])))
-                        
-                    print("Penalties")
-                    # for pen in penalties:
-                    #     print(f"{pen}")
-                    
-                    # print(f"{results}")
-
-                    # penalties
-                    # penalties.append(Penalty("WL", "suzuka", 1, "KejsPower", 30, 0, True))
-                    # penalties.append(Penalty("WL", "suzuka", 1, "Sagxx", 30, 0, False))
-                    # penalties.append(Penalty("WL", "suzuka", 1, "Kielkozaur", 0, 1, False))
-
-                    # results.sort(key=lambda x: x.totalTime);
-
-                    # drivers mapping
+                          
+                    print("\n*** Penalties ***")
                     
                     print("\n---Before stewards from results -----\n")
                     for res in results:
@@ -382,7 +309,7 @@ def apply_penalties():
                         # make copy 
                         # shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
 
-                        fileRows = [] #[{'Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty'}]
+                        fileRows = [] 
                         for res in sortedResults:                            
 
                             if ("DNF" not in res.bestLap):
