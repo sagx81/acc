@@ -3,6 +3,8 @@ import glob
 import csv
 from datetime import datetime
 from collections import defaultdict
+from constants import points
+import constants
 
 class Penalty:
     def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds, penaltyPosition, isDsq):
@@ -20,7 +22,7 @@ class Penalty:
 
 
 class ResultRow:
-    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, points, isDsq=False):
+    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, driverPoints, isDsq=False):
         self.position = position
         self.driver = driver
         self.timing = timing
@@ -28,11 +30,11 @@ class ResultRow:
         self.totalTimeString = totalTimeString
         self.bestLap = bestLap
         self.laps = laps
-        self.points = points
+        self.driverPoints = driverPoints
         self.isDsq = isDsq
 
     def __repr__(self):
-        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}"
+        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.driverPoints}"
 
 
 class DriverMap:
@@ -133,7 +135,20 @@ def apply_penalties():
     # driversMap.append(DriverMap("ARN | Kielkozaur #88", "Kielkozaur"))
 
     for input_dir in dirs:
+        # sort files to find same date races easier
+        
+        #filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.csv")), key=os.path.getmtime, reverse=True)
+        # raceIndex = 1
+        # previousRaceDay = ""
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+        # for csv_file in filesSorted:            
+
+            # if (csv_file.split('_')[0] == previousRaceDay):
+            #     raceIndex += 1
+            # else:
+            #     raceIndex = 1
+
+            # previousRaceDay = csv_file.split('_')[0]
 
             applyPenalties = False
             # print(f"penalties: {penalties}")
@@ -156,6 +171,7 @@ def apply_penalties():
                     results = []
                     reader = csv.DictReader(file)
                     winnerTime = ""
+                    winnerLaps = 0
                     winnerTimeMiliseconds = 0
                     # print(f"{reader}")
 
@@ -169,6 +185,7 @@ def apply_penalties():
                         if row['Position'] == '1':
                             # winnerTime = row['Laczny czas']
                             winnerTime = row['Total time']
+                            winnerLaps = int(row['Laps'])
 
                         # print("--------")
 
@@ -180,53 +197,74 @@ def apply_penalties():
                         position = int(row['Position'])
                         driver = row['Driver']                
                         timing = str(row['Total time'])  #str(row['Laczny czas'])
-                        
+                        totalTimeMiliseconds = int(row['Total time ms'])
+
                         # bestLap = row['Naj. okrazenie']
                         bestLap = row['Best lap']
-                        laps = row['Laps']
+                        laps = int(row['Laps'])
                         # laps = row['Okrazenia']
-                        points = int(row['Points'])
+                        driverPoints = int(row['Points'])
 
                         totalTime = 0
                         timingMiliseconds = 0
+                        
+                        
+
+                        # # convert total time to drivers
+                        # if (position == 1):
+                        #     totalTimeMiliseconds = winnerTimeMiliseconds
+                        # elif (timing[0] == '+'):
+                        #     if (timing.find('(') < 0):
+                        #         # timeStr = timing.split(' ')[1]
+                        #         timingMiliseconds = convert_time_to_miliseconds(timing.split('+')[1])
+                        #     else:
+                        #         extraLaps = timing.split(' ')[1].replace('(+', '')                        
+                        #         # timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
+                        # # elif (timing.find('DNF') > 0):
+                        # # elif (position > 1):
+                        #     # 24h if DNF to have hight miliseconds count for positions calculation
+                        #     # timingMiliseconds = (24 * 3600000)
+                        #     # driverPoints = 0
+
+                        # totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
 
                         # print(f"timing: {timing}")
                         # GT3
-                        if ("gt3" in input_dir.lower()):
-                            if (timing.find(' ') > 0):
-                                if (timing.split(' ')[1][0].isdigit()):
-                                    timeStr = timing.split(' ')[1]
-                                    timingMiliseconds = convert_time_to_miliseconds(timeStr)
-                                elif (timing.split(' ')[1][0] == 'o'):
-                                    extraLaps = timing.split(' ')[0].replace('+', '')                        
-                                    timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
-                            # elif (timing.find('DNF') > 0):
-                            elif (position > 1):
-                                # 24h if DNF to have hight miliseconds count for positions calculation
-                                timingMiliseconds = (24 * 3600000)
-                                points = 0
+                        # if ("gt3" in input_dir.lower()):
+                        #     if (timing.find(' ') > 0):
+                        #         if (timing.split(' ')[1][0].isdigit()):
+                        #             timeStr = timing.split(' ')[1]
+                        #             timingMiliseconds = convert_time_to_miliseconds(timeStr)
+                        #         elif (timing.split(' ')[1][0] == 'o'):
+                        #             extraLaps = timing.split(' ')[0].replace('+', '')                        
+                        #             timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
+                        #     # elif (timing.find('DNF') > 0):
+                        #     elif (position > 1):
+                        #         # 24h if DNF to have hight miliseconds count for positions calculation
+                        #         timingMiliseconds = (24 * 3600000)
+                        #         driverPoints = 0
 
-                            totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                        #     totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
                         
-                        # WL
-                        elif ("week league" in input_dir.lower()):
-                            if (position == 1):
-                                totalTimeMiliseconds = winnerTimeMiliseconds
-                            if (timing.find('(') > 0):
-                                firstPart = timing.split('(')[0]
-                                secondPart = timing.split('(')[1]
-                                if ("+" in secondPart):
-                                    totalTimeMiliseconds = convert_time_to_miliseconds(firstPart)
-                                elif (secondPart[0].isdigit()):
-                                    extraLaps = secondPart.split(' ')[0]
-                                    timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
-                                    totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
-                            # elif (timing.find('DNF') > 0):                        
-                            elif (position > 1):
-                                # 24h if DNF to have hight miliseconds count for positions calculation
-                                timingMiliseconds = (24 * 3600000)
-                                points = 0   
-                                totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                        # # WL
+                        # elif ("week league" in input_dir.lower()):
+                        #     if (position == 1):
+                        #         totalTimeMiliseconds = winnerTimeMiliseconds
+                        #     if (timing.find('(') > 0):
+                        #         firstPart = timing.split('(')[0]
+                        #         secondPart = timing.split('(')[1]
+                        #         if ("+" in secondPart):
+                        #             totalTimeMiliseconds = convert_time_to_miliseconds(firstPart)
+                        #         elif (secondPart[0].isdigit()):
+                        #             extraLaps = secondPart.split(' ')[0]
+                        #             timingMiliseconds = int(extraLaps) * convert_time_to_miliseconds(bestLap)
+                        #             totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
+                        #     # elif (timing.find('DNF') > 0):                        
+                        #     elif (position > 1):
+                        #         # 24h if DNF to have hight miliseconds count for positions calculation
+                        #         timingMiliseconds = (24 * 3600000)
+                        #         driverPoints = 0   
+                        #         totalTimeMiliseconds = winnerTimeMiliseconds + timingMiliseconds
             
                         
 
@@ -237,7 +275,7 @@ def apply_penalties():
                     
                         totalTimeString = convert_time(totalTimeMiliseconds)
                         # result = ResultRow(position, driver, timing, totalTime, bestLap, laps, points)
-                        results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, points))
+                        results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, driverPoints))
 
                           
                     print("\n*** Penalties ***")
@@ -264,60 +302,130 @@ def apply_penalties():
                                 
                             # DSQ
                             if (penalty.isDsq):
-                                driver.points = 0
-                                driver.totalTimeMs = 24 * 36000000 + driver.totalTimeMs
-                                driver.totalTimeString = convert_time(driver.totalTimeMs)
+                                driver.driverPoints = 0
+                                driver.totalTimeString = constants.dsq_text
+                                # driver.totalTimeMs = 24 * 36000000 + driver.totalTimeMs
+                                # driver.totalTimeString = convert_time(driver.totalTimeMs)
                                 driver.isDsq = True
                             else:
                                 driver.totalTimeMs += (penalty.penaltySeconds * 1000)
                                 driver.totalTimeString = convert_time(driver.totalTimeMs)
                             break
                     
+                    # reorderPositions = []
+                    #for res in sortedResults:
+                    # for res in results:
+                    #     if ("lap" in res.timing):
+                    #         reorderPositions.append(res)
+                    #         sortedResults.remove(res)
+
+
+                    #map results
+                    # driversSameLap = set(map(lambda x: x.laps, results))
+                    # print(f"driversSameLap: {driversSameLap}")
+
                     
+
                     # set position after penalties                         
-                    points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1]
                     sortedResults = sorted(results, key=lambda x: x.totalTimeMs)
+                    # sortedResults = results.sort(key=lambda x: (x.totalTimeMs, x.laps), reverse=True)
                     winnerTimeMsAfterPenalties = 0
                     
-                    # print("\n---Before stewards from drivers (sorted) -----\n")
+                    print("\n---Before stewards from drivers (sorted) -----\n")
+                    for res in sortedResults:
+                        print(f"{res}")
+
+                    print(f" *** reorder ***")
+                    #clear/reorder positions
+                    plusLapPositions = []
+                    dnfs = []
+                    dsqs = []
+                    # #for res in sortedResults:
                     # for res in sortedResults:
-                    #     print(f"{res}")
+                    for i, res in reversed(list(enumerate(sortedResults))):
+                    # for i in range(len(sortedResults)):
+                        # lapsMoreThanWinner = 0 
+                        # for res in sortedResults:                            
+                        #     if ("dnf" not in res.timing.lower()):
+                        #         lapsMoreThanWinner = int(winnerLaps) - int(res.laps)
+                        # if ("lap" in res.timing.lower()):
+                        # if ("(+" in res.timing.lower()):
+                        # print(f"\nres: {res} vs winner: {winnerLaps}")
+                        if ("dnf" in res.timing.lower()):
+                            dnfs.append(res)
+                            # sortedResults.remove(res)
+                            # sortedResults.pop(i)
+                        elif int(res.laps) < int(winnerLaps):
+                            # print(f"\nplus lap: {res.driver}")
+                            plusLapPositions.append(res)
+                        elif res.isDsq:
+                            print(f"\ndsq : {res.driver}")
+                            dsqs.append(res)
+                        else:
+                            continue
+                            # sortedResults.remove(res)
+                        sortedResults.pop(i)
+                        
+                        
+                    print(f"\n *** plus lap positions ***")    
+                    for res in plusLapPositions:
+                        print(f"{res}")
+                    
+                    sortedReorderPositions = []    
+                    if plusLapPositions:
+                        sortedReorderPositions = sorted(plusLapPositions, key=lambda x: (-x.laps, x.totalTimeMs))
+                    
+                    sortedResults.extend(sortedReorderPositions)
+                    sortedResults.extend(dsqs)
+                    sortedResults.extend(dnfs)
+                    
+                    
+                    print(f" *** reorder end ***")
+                    for res in sortedResults:
+                        print(f"{res}")
 
                     for res in sortedResults:
-                        if (sortedResults.index(res) == 0):
-                            winnerTimeMsAfterPenalties = convert_time_to_miliseconds(res.totalTimeString)
-                            res.timing = convert_time(winnerTimeMsAfterPenalties)
-                        else:
-                            res.timing = convert_time(res.totalTimeMs-winnerTimeMsAfterPenalties)
+                        # if (sortedResults.index(res) == 0):
+                        #     winnerTimeMsAfterPenalties = convert_time_to_miliseconds(res.totalTimeString)
+                        #     res.timing = convert_time(winnerTimeMsAfterPenalties)
+                        # else:
+                        #     res.timing = convert_time(res.totalTimeMs-winnerTimeMsAfterPenalties)
                         
                         # print(f"position: {res.position} vs {sortedResults.index(res) + 1}")
                         res.position = sortedResults.index(res) + 1
-                        if (res.points != 0 and res.position <= len(points)):
-                            res.points = points[res.position - 1]                        
+                        if (res.driverPoints != 0 and res.position <= len(points)):
+                            res.driverPoints = points[res.position - 1]                        
+                        elif (res.driverPoints != 0 and res.position > len(points)):
+                            res.driverPoints = 1
                         else:
-                            res.points = 0
+                            res.driverPoints = 0
 
                     # set points after penalties ??
 
 
-                    print("\n---After stewards-----\n")
-                    for res in sortedResults:
-                        print(f"{res}")
+                    # print("\n---After stewards-----\n")
+                    # for res in sortedResults:
+                    #     print(f"{res}")
 
                     # save to file
                     try:
                         # make copy 
                         # shutil.copyfile(csv_file, csv_file.replace(".csv", f"_beforePenalties_{str(datetime.now())}.csv"))
 
-                        fileRows = [] 
+                        fileRows = []
+                        lapsMoreThanWinner = 0 
                         for res in sortedResults:                            
 
-                            if ("DNF" not in res.bestLap):
-                                lapsMoreThanWinner = (res.totalTimeMs - winnerTimeMsAfterPenalties) / convert_time_to_miliseconds(res.bestLap)
+                            if ("dnf" not in res.timing.lower()):
+                                # lapsMoreThanWinner = (res.totalTimeMs - winnerTimeMsAfterPenalties) / convert_time_to_miliseconds(res.bestLap)
+                                lapsMoreThanWinner = int(winnerLaps) - int(res.laps)
                             
                             # print(f"laps more than winner: {lapsMoreThanWinner}")
 
                             # print(f"best lap: {res.bestLap}")
+                            lapsLabel = "lap"
+                            if lapsMoreThanWinner > 1:
+                                lapsLabel = "laps"
 
                             if (res.position == 1):
                                 timeStr = res.timing
@@ -325,13 +433,14 @@ def apply_penalties():
                                 timeStr = "DSQ"
                             elif ("DNF" in res.bestLap):
                                 timeStr = "DNF"
-                            elif (int(lapsMoreThanWinner) == 1):
-                                timeStr = f"+{int(lapsMoreThanWinner)} okrążenie"
-                            elif (int(lapsMoreThanWinner) > 1):
-                                timeStr = f"+{int(lapsMoreThanWinner)} okrążenia"
+                            elif (lapsMoreThanWinner >= 1):
+                                # timeStr = f"{res.timing} (+{lapsMoreThanWinner} {lapsLabel})"
+                                timeStr = res.timing
                             else:
-                                timeStr = f"+ {res.timing}"
-                            fileRows.append([res.position, res.driver, timeStr, res.bestLap, res.laps, res.points])
+                                timeStr = f"{res.timing}"
+                            fileRows.append([res.position, res.driver, timeStr, res.bestLap, res.laps, res.driverPoints])
+
+                        print("lalal")
 
                         fileRows.insert(0, ['Position', 'Driver', 'Total time', 'Best lap', 'Laps', 'Points'])
                         
