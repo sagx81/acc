@@ -1,9 +1,10 @@
 
 import os
 
-points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2, 1, 1, 1, 1, 1]
+points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2]
 
 dnf_text = "DNF"
+dsq_text = "DSQ"
 
 
 def get_points_table():
