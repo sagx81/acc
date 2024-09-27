@@ -58,17 +58,27 @@ def find_project_root(start_path, target_dir_name="acc-race-results"):
 
 current_dir = os.getcwd()
 input_dir = os.path.join(current_dir, "fromFTP")
+output_phase1 = "output_phase1"
 results_phase1 = "process_results_phase1"
 processedFiles = []
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 
 def get_race_results():
     processedFileHasValue = False
-
-    for json_file in glob.glob(os.path.join(input_dir, "*.json")):
+    filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
+    previousRaceDay = ""    
+    # for json_file in glob.glob(os.path.join(input_dir, "*.json")):
+    for json_file in filesSorted:
         try:
             print(f"Processing file: {json_file}")
 
+            if (json_file.split('_')[0] == previousRaceDay):
+                raceIndex += 1
+            else:
+                raceIndex = 1
+
+            previousRaceDay = json_file.split('_')[0]
+            
             # skipp if processed
             if (os.path.exists(processedFilesCSV) ):
                 processedFileHasValue = True
@@ -95,7 +105,7 @@ def get_race_results():
                 data = json.load(file)
 
                 serverName = data.get('serverName')
-                sessionIndex = data.get('sessionIndex')
+                # sessionIndex = data.get('sessionIndex')
                 # if ("gt3" in serverName.lower()):
                 if ("open" in serverName.lower()):
                     print(f"\n SKIPPING file: {json_file}\n")
@@ -108,9 +118,10 @@ def get_race_results():
                 
                 raceNumber = ""
                 if ("week league" in seriesDir.lower()):
-                    raceNumber = f" R{int(sessionIndex)}"
+                    raceNumber = f" R{int(raceIndex)}"
+                    # raceNumber = f" R{int(sessionIndex)}"
 
-                output_dir = os.path.join(current_dir, "output_phase1", seriesDir)
+                output_dir = os.path.join(current_dir, output_phase1, seriesDir)
 
                 # print(f"\n Output dir: {output_dir}")
 
@@ -120,8 +131,9 @@ def get_race_results():
 
                 base_name = os.path.basename(json_file)
                 date_part = base_name.split('_')[0]
+                time_part = base_name.split('_')[1]
 
-                base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}"
+                base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}"
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
                 output_csv_file = generate_unique_filename(output_dir, base_output_name, extension="csv")
@@ -164,7 +176,7 @@ def get_race_results():
                                 total_time_str = f"+{convert_time(time_difference)} (+{laps_difference} {lapLabel})"
                             else:
                                 time_difference = total_time_ms - first_driver_time
-                                total_time_str = f"+ {convert_time(time_difference)}"
+                                total_time_str = f"+{convert_time(time_difference)}"
 
                         best_lap_str = convert_time(best_lap_ms)
                         points_awarded = points[i] if i < len(points) else 1
@@ -173,13 +185,14 @@ def get_race_results():
                         i + 1,
                         driver_names_str,
                         total_time_str,
+                        total_time_ms,
                         best_lap_str,
                         lap_count,
                         points_awarded
                     ])
                     best_lap_times.append(best_lap_ms)
 
-                results.insert(0, ['Position', 'Driver', 'Total time', 'Best lap', 'Laps', 'Points'])
+                results.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
 
                 if best_lap_times:
                     fastest_lap_time = min(best_lap_times)
