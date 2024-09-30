@@ -159,7 +159,7 @@ def apply_penalties():
 
             # print(f"apply penalties: {applyPenalties}")
             if (not applyPenalties):
-                print(f" \n** Penalties DO NOT apply for: {csv_file.split('/')[-1]}\n")
+                print(f" ** Penalties DO NOT apply for: {csv_file.split('/')[-1]}\n")
                 continue
 
             try:
@@ -175,7 +175,7 @@ def apply_penalties():
                     winnerTimeMiliseconds = 0
                     # print(f"{reader}")
 
-                    print(f"\n\n\n*** Processing file: {csv_file.split('/')[-1]}\n")
+                    print(f"\n*** Processing file: {csv_file.split('/')[-1]}")
 
                     for row in reader:
                         # print(f"{row}")
@@ -278,11 +278,11 @@ def apply_penalties():
                         results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, driverPoints))
 
                           
-                    print("\n*** Penalties ***")
+                    print("*** Penalties ***")
                     
-                    print("\n---Before stewards from results -----\n")
-                    for res in results:
-                        print(f"{res}")
+                    # print("\n---Before stewards from results -----\n")
+                    # for res in results:
+                    #     print(f"{res}")
 
                     # time penalties
                     for penalty in penalties:
@@ -292,7 +292,7 @@ def apply_penalties():
                         if (not is_penalty_valid_for_race(penalty, input_dir, csv_file)):
                             continue                    
 
-                        print(f"\n Applying penalty {penalty}")
+                        print(f"Applying penalty {penalty}")
 
                         for driver in results:       
                             driverRaceName = ""
@@ -307,6 +307,7 @@ def apply_penalties():
                                 # driver.totalTimeMs = 24 * 36000000 + driver.totalTimeMs
                                 # driver.totalTimeString = convert_time(driver.totalTimeMs)
                                 driver.isDsq = True
+                                print(f"DSQ penalty: {driver.driver}")
                             else:
                                 driver.totalTimeMs += (penalty.penaltySeconds * 1000)
                                 driver.totalTimeString = convert_time(driver.totalTimeMs)
@@ -331,11 +332,11 @@ def apply_penalties():
                     # sortedResults = results.sort(key=lambda x: (x.totalTimeMs, x.laps), reverse=True)
                     winnerTimeMsAfterPenalties = 0
                     
-                    print("\n---Before stewards from drivers (sorted) -----\n")
-                    for res in sortedResults:
-                        print(f"{res}")
+                    # print("\n---Before stewards from drivers (sorted) -----\n")
+                    # for res in sortedResults:
+                    #     print(f"{res}")
 
-                    print(f" *** reorder ***")
+                    # print(f" *** reorder ***")
                     #clear/reorder positions
                     plusLapPositions = []
                     dnfs = []
@@ -355,22 +356,30 @@ def apply_penalties():
                             dnfs.append(res)
                             # sortedResults.remove(res)
                             # sortedResults.pop(i)
+                        elif res.isDsq or res.timing.lower() == "dsq":
+                            print(f"  dsq : {res.driver}")
+                            dsqs.append(res)
                         elif int(res.laps) < int(winnerLaps):
                             # print(f"\nplus lap: {res.driver}")
-                            plusLapPositions.append(res)
-                        elif res.isDsq:
-                            print(f"\ndsq : {res.driver}")
-                            dsqs.append(res)
+                            plusLapPositions.append(res)                        
                         else:
                             continue
                             # sortedResults.remove(res)
                         sortedResults.pop(i)
                         
                         
-                    print(f"\n *** plus lap positions ***")    
-                    for res in plusLapPositions:
-                        print(f"{res}")
-                    
+                    # print(f"\n *** plus lap / dndf / dsqs positions ***")    
+                    # for res in plusLapPositions:
+                    #     print(f"{res}")
+                    # for res in dnfs:
+                    #     print(f"{res}")
+                    if dsqs:
+                        print(f"\n *** plus lap / dndf / dsqs positions ***")    
+                        for res in dsqs:
+                            print(f"{res}")
+                        
+
+
                     sortedReorderPositions = []    
                     if plusLapPositions:
                         sortedReorderPositions = sorted(plusLapPositions, key=lambda x: (-x.laps, x.totalTimeMs))
@@ -380,9 +389,9 @@ def apply_penalties():
                     sortedResults.extend(dnfs)
                     
                     
-                    print(f" *** reorder end ***")
-                    for res in sortedResults:
-                        print(f"{res}")
+                    # print(f" *** reorder end ***")
+                    # for res in sortedResults:
+                    #     print(f"{res}")
 
                     for res in sortedResults:
                         # if (sortedResults.index(res) == 0):
@@ -440,7 +449,7 @@ def apply_penalties():
                                 timeStr = f"{res.timing}"
                             fileRows.append([res.position, res.driver, timeStr, res.bestLap, res.laps, res.driverPoints])
 
-                        print("lalal")
+                        # print("*** Penalties applied! ***")
 
                         fileRows.insert(0, ['Position', 'Driver', 'Total time', 'Best lap', 'Laps', 'Points'])
                         
