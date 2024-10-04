@@ -1,5 +1,6 @@
 import os
 import glob
+import shutil
 import csv
 from datetime import datetime
 from collections import defaultdict
@@ -117,7 +118,7 @@ def apply_penalties():
 
 
     # prepare penalties
-    print("\n------------\n")
+    print("\n--- PENALTIES ---\n")
     penalties = []
 
     try:
@@ -175,7 +176,7 @@ def apply_penalties():
                     winnerTimeMiliseconds = 0
                     # print(f"{reader}")
 
-                    print(f"\n*** Processing file: {csv_file.split('/')[-1]}")
+                    print(f"\n*** Penalties => Processing file: {csv_file.split('/')[-1]}")
 
                     for row in reader:
                         # print(f"{row}")
@@ -453,8 +454,8 @@ def apply_penalties():
 
                         fileRows.insert(0, ['Position', 'Driver', 'Total time', 'Best lap', 'Laps', 'Points'])
                         
-                        output_csv_file = csv_file.replace(".csv", "_penalties_applied.csv")
-                        # output_csv_file = csv_file
+                        # output_csv_file = csv_file.replace(".csv", "_penalties_applied.csv")
+                        output_csv_file = csv_file
                         with open(output_csv_file, mode='w', newline='', encoding='utf-8') as csvFile:
                             writer = csv.writer(csvFile)
                             writer.writerows(fileRows)    
