@@ -175,11 +175,14 @@ def apply_penalties():
                     winnerLaps = 0
                     winnerTimeMiliseconds = 0
                     # print(f"{reader}")
+                    # skipFile = False
 
                     print(f"\n*** Penalties => Processing file: {csv_file.split('/')[-1]}")
 
                     for row in reader:
-                        # print(f"{row}")
+
+
+                        # print(f"{row}")                        
                         if row['Position'] == 'Position':  # Pomijanie nagłówka
                             continue
                     
@@ -194,6 +197,9 @@ def apply_penalties():
                         winnerTimeMiliseconds = convert_time_to_miliseconds(winnerTime)
                         # print(f"winner time: {winnerTimeMiliseconds}")
 
+                        # if not row['Total time ms'] available - that means results are already reworked and penalties applied
+                        if not row['Total time ms']:
+                            break;
 
                         position = int(row['Position'])
                         driver = row['Driver']                

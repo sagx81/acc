@@ -117,7 +117,7 @@ def get_race_results():
                     seriesDir = "unknown"
                 
                 raceNumber = ""
-                if ("week league" in seriesDir.lower()):
+                if ("week league" in seriesDir.lower() or "week leauge" in seriesDir.lower()):
                     raceNumber = f" R{int(raceIndex)}"
                     # raceNumber = f" R{int(sessionIndex)}"
 
@@ -158,7 +158,10 @@ def get_race_results():
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
 
-                    if lap_count < min_laps_required:
+                    # skipp spectators
+                    if (lap_count == 0):
+                        continue
+                    elif lap_count < min_laps_required:
                         total_time_str = dnf_text
                         best_lap_str = dnf_text
                         points_awarded = 0

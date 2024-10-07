@@ -20,10 +20,11 @@ text_laps = "Okrążenia"
 
 current_dir = os.getcwd()
 ftp_input_dir = os.path.join(current_dir, "fromFTP")
-output_phase1 = os.path.join(current_dir, "output_phase1")
-output_individual_graphic = os.path.join(current_dir, "output_individual_graphic")
 results_phase1 = os.path.join(current_dir, "process_results_phase1")
+processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
+output_phase1 = os.path.join(current_dir, "output_phase1")
 process_graphic_individual = os.path.join(current_dir, "process_graphic_individual")
+output_individual_graphic = os.path.join(current_dir, "output_individual_graphic")
 
 
 graphicHeaders = ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']

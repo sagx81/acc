@@ -133,7 +133,7 @@ def generate_individual_graphic():
                 
                 # output_image_file = os.path.join(constants.current_dir, constants.output_individual_graphic, input_dir, imageFile)
                 output_image_file = os.path.join(directoryPath, imageFile)
-                bg_image.save(output_image_file)
+                bg_image.save(output_image_file, overwrite=True)
                 print(f"Result Image saved: {output_image_file}")
 
                 # os.remove(json_file)
