@@ -140,7 +140,7 @@ new_logo_width = 400  # Ustawienia szerokości dla logo
 new_logo_height = 300  # Ustawienia wysokości dla logo
 logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
 
-logo_x = 950  # Ustawienia pozycji X dla logo
+logo_x = 1000  # Ustawienia pozycji X dla logo
 logo_y = -70  # Ustawienia pozycji Y dla logo
 bg_image.paste(logo, (logo_x, logo_y), logo)
 
