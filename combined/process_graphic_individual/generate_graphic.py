@@ -4,6 +4,8 @@ import csv
 from PIL import Image, ImageDraw, ImageFont
 
 import constants
+# from combined import constants
+# from combined.entities.track_data import track_data
 
 input_dir = constants.output_phase1
 output_dir = constants.output_individual_graphic
@@ -62,8 +64,14 @@ def generate_individual_graphic():
                     draw.text((x_position - text_width // 2, header_y_start), str(header), fill="grey", font=font)
 
                 # TODO track name from track_data
-                track_name = os.path.basename(csv_file).split("-")[0].upper()
+                # short_name = os.path.basename(csv_file).split("-")[0].upper() # (data.get('trackName', 'unknown_track'))
+                short_name = os.path.basename(csv_file).split("-")[0].lower()
+                track_name = constants.get_track_name(short_name)
+
+                # track_name = os.path.basename(csv_file).split("-")[0].upper()
                 print(f"Track name: {track_name}")
+
+
 
                 title_text = track_name
                 title_bbox = draw.textbbox((0, 0), title_text, font=font)

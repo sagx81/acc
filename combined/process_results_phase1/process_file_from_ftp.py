@@ -6,7 +6,7 @@ import csv
 import datetime
 # from combined.constants import points
 # from PIL import Image, ImageDraw, ImageFont
-from process_results_phase1.track_data import track_data
+# from process_results_phase1.track_data import track_data
 from entities.processed_files import ProcessedFile
 # import track_data
 from constants import points

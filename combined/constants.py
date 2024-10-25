@@ -3,6 +3,7 @@ import os
 import csv
 
 from entities import entities
+from entities import track_data
 
 points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2]
 
@@ -93,3 +94,12 @@ def get_fastest_lap(results):
         if fastest_lap_time is None or row.bestLap < fastest_lap_time:
             fastest_lap_time = row.bestLap
     return fastest_lap_time
+
+
+def get_track_name(track):
+    track_name = track
+    track_info = track_data.track_data.get(track, {})
+    print(f"track info: {track_info}")
+    if track_info:
+        track_name = track_info.get('name', track)
+    return track_name
