@@ -11,6 +11,7 @@ from entities.processed_files import ProcessedFile
 # import track_data
 from constants import points
 from constants import dnf_text
+import constants
 
 def convert_time(ms):
     minutes = int(ms // 60000)
@@ -116,18 +117,27 @@ def get_race_results():
                 else:
                     seriesDir = "unknown"
                 
+
+                # week LEAUGE exception - wrong name was gnerated in the FTP, server was set with spelling issue
+                week_league = "WEEK LEAGUE"
+                if "week leauge" in seriesDir.lower():
+                    seriesDir = seriesDir.upper().replace("WEEK LEAUGE", week_league).replace("  ", " ")
+                
+                # determine race number by time the race was held
                 raceNumber = ""
-                if ("week league" in seriesDir.lower() or "week leauge" in seriesDir.lower()):
+                if ("week league" in seriesDir.lower()):
                     raceNumber = f" R{int(raceIndex)}"
                     # raceNumber = f" R{int(sessionIndex)}"
 
+                seriesDir = seriesDir.upper()    
                 output_dir = os.path.join(current_dir, output_phase1, seriesDir)
 
                 # print(f"\n Output dir: {output_dir}")
 
                 short_name = data.get('trackName', 'unknown_track')
-                track_info = track_data.get(short_name, {})
-                track_name = track_info.get('name', short_name)
+                track_name = constants.get_track_name(short_name)
+                # track_info = track_data.get(short_name, {})
+                # track_name = track_info.get('name', short_name)
 
                 base_name = os.path.basename(json_file)
                 date_part = base_name.split('_')[0]
@@ -282,7 +292,8 @@ def get_race_results():
         # with open(json_file, 'r', encoding='utf-16-le') as file:
         #         print(json.load(file))
         except Exception as e:
-            print(f"An error occurred processing file {json_file}: {e}")
+            print(f"Process Results Phase1 - An error occurred processing file {json_file}: {e}")
+            # return
 
     
     # save processed files
@@ -297,5 +308,5 @@ def get_race_results():
             writer = csv.writer(csv_file)
             writer.writerows(processedFiles)
     except Exception as e:
-        print(f"An error occurred processing file {processedFilesCSV}: {e}")
+        print(f"Process Results Phase 1 Save Processed File - An error occurred processing file {processedFilesCSV}: {e}")
 

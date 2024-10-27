@@ -128,7 +128,7 @@ def apply_penalties():
                 penalties.append(Penalty(r['RaceType'], r['Season'], r['Track'], r['RaceNumber'], r['Driver'], int(r['SecondsPenalty']), int(r['PositionPenalty']), float(r['IsDSQ'])))
 
     except Exception as e:
-                print(f"An error occurred processing file {penalties_csv}: {e}")
+                print(f"Apply Penalties open penalties csv file - An error occurred processing file {penalties_csv}: {e}")
 
 
     # prepare drivers map (TODO move to separate file)
@@ -467,7 +467,7 @@ def apply_penalties():
                             writer.writerows(fileRows)    
                     
                     except Exception as e:
-                        print(f"An error occurred saving {csv_file}: {e}")
+                        print(f"Apply Penalties save csv file - An error occurred saving {csv_file}: {e}")
                     
             except Exception as e:
-                print(f"An error occurred processing file {csv_file}: {e}")
+                print(f"Apply Penalties open csv file - An error occurred processing file {csv_file}: {e}")

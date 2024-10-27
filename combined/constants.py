@@ -97,9 +97,10 @@ def get_fastest_lap(results):
 
 
 def get_track_name(track):
+    # print(f"for track info: {track}")
     track_name = track
     track_info = track_data.track_data.get(track, {})
-    print(f"track info: {track_info}")
+    # print(f"track info: {track_info}")
     if track_info:
         track_name = track_info.get('name', track)
     return track_name

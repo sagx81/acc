@@ -147,4 +147,4 @@ def generate_individual_graphic():
                 # os.remove(json_file)
 
             except Exception as e:
-                print(f"An error occurred processing file {csv_file}: {e}")
+                print(f"Generate Individual Result Graphic - An error occurred processing file {csv_file}: {e}")
