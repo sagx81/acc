@@ -14,8 +14,10 @@ color_magenta = "magenta"
 
 dsq_text = "DSQ"
 dnf_text = "DNF"
-text_lap = "Okrażenie"
-text_laps = "Okrążenia"
+# text_lap = "Okrażenie"
+# text_laps = "Okrążenia"
+text_lap = "Okr."
+text_laps = "Okr."
 
 
 
@@ -29,6 +31,11 @@ output_individual_graphic = os.path.join(current_dir, "output_individual_graphic
 
 
 graphicHeaders = ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
+graphicHeadersStars = ['Pozycja', 'Kierowca', 'Team', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
+
+columnWidths = [170, 500, 400, 400, 250, 250]
+columnWidthsStars = [100, 400, 420, 400, 215, 215, 215]
+    
 
 def get_points_table():
     return points

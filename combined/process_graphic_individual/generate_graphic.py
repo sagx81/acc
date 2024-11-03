@@ -32,12 +32,24 @@ def generate_individual_graphic():
     header_y_start = 145
     header_line_height = 40
 
-    column_widths = [170, 500, 400, 400, 250, 250]
+    # regular_column_widths = [170, 500, 400, 400, 250, 250]
+    # stars_column_widths = [100, 400, 420, 400, 215, 215, 215]
     
     # input_dirs = os.path.join(constants.output_phase1, inputResultsFolder)
     dirs = glob.glob(os.path.join(constants.output_phase1, "*"))
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+
+            #TODO: to be removed
+            if 'stars' not in input_dir.lower():
+                continue
+
+            isStars = False
+            if 'stars' in input_dir.lower():
+                isStars = True
+
+                
+
 
             penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
             if os.path.exists(penaltiesAppliedCsv):
@@ -56,22 +68,28 @@ def generate_individual_graphic():
                 results = constants.get_results_from_csv(csv_file, constants.process_graphic_individual)
 
                 print(f"\n*** Results Image => Preparing Image file {csv_file}")
+                
+                graphicHeaders = constants.graphicHeaders
+                column_widths = constants.columnWidths
+    
+                if isStars:
+                    column_widths = constants.columnWidthsStars
+                    graphicHeaders = constants.graphicHeadersStars
 
-                for j, header in enumerate(constants.graphicHeaders):
+                print(f"{column_widths}  {graphicHeaders}")
+
+                # draw header
+                for j, header in enumerate(graphicHeaders):
                     x_position = header_x_start + sum(column_widths[:j]) + column_widths[j] // 2
                     text_bbox = draw.textbbox((0, 0), header, font=font)
                     text_width = text_bbox[2] - text_bbox[0]
                     draw.text((x_position - text_width // 2, header_y_start), str(header), fill="grey", font=font)
 
-                # TODO track name from track_data
-                # short_name = os.path.basename(csv_file).split("-")[0].upper() # (data.get('trackName', 'unknown_track'))
                 short_name = os.path.basename(csv_file).split("-")[0].lower()
                 track_name = constants.get_track_name(short_name)
 
                 # track_name = os.path.basename(csv_file).split("-")[0].upper()
-                print(f"Track name: {track_name}")
-
-
+                # print(f"Track name: {track_name}")
 
                 title_text = track_name
                 title_bbox = draw.textbbox((0, 0), title_text, font=font)
@@ -79,18 +97,17 @@ def generate_individual_graphic():
                 title_x = (bg_image.width - title_width) // 2
                 title_y = header_y_start - header_line_height - 60
 
+                # draw track Name (center title)
                 draw.text((title_x, title_y), title_text, fill="black", font=font)
-
+                
+                # lines calculation
                 result_x_start = 20
                 result_y_start = header_y_start + header_line_height + 38
                 result_line_height = 96
 
-                # print(f"{vars(results[0]).items()}")
-
-                # for i, row in enumerate(results[1:], start=1):
-
                 fastestLap = constants.get_fastest_lap(results)
 
+                # draw rows
                 for i, row in enumerate(results, start=0):
                     y_position = result_y_start + i * result_line_height
                     # print(f"row: {row}")
@@ -101,28 +118,66 @@ def generate_individual_graphic():
                         cellField = cell[0]
                         cellValue = cell[1]
 
+                        # ommit additional columns from csv result file
                         if cellField == "totalTimeMs" or cellField == "totalTimeString" or cellField == "isDsq":
                             jAdjustor = jAdjustor + 1
                             continue
                         j = j - jAdjustor
 
+                        # adjust columns index when Stars
+                        if isStars and j > 1:
+                            j = j+1
+
+                        #if stars then team as separate column
+                        team = ''
+                        driver = ''
+                        # prepare driver and team from csv splitted by '/n'
+                        if (cellField == 'driver' and len(cellValue.split('\n')) > 1 and 'stars' in input_dir.lower()):
+                            team = cellValue.split('\n')[0]
+                            driver = cellValue.split('\n')[1]
                         
+                        # if team:
+                        if (cellField == 'driver'):
+                            print(f"TEAM: {team}, driver: {driver}")
+
                         # print(f"--- {jAdjustor} {j} {sum(column_widths[:j])}")
 
                         x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2
                         
+                        # cell value
                         text_bbox = draw.textbbox((0, 0), str(cellValue), font=font)
                         text_width = text_bbox[2] - text_bbox[0]
 
+                        # replace lap/laps by constnant value
                         if ("laps" in str(cellValue)):
                             cellValue = cellValue.replace("laps", constants.text_laps)
                         elif ("lap" in str(cellValue)):
                             cellValue = cellValue.replace("lap", constants.text_lap)
 
+                        # replace DNF/DSQ from constants
                         if cellValue == constants.dnf_text or cellValue == constants.dsq_text:
                             draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_dnf, font=font)
+                        # color best lap 
                         elif cellField == "bestLap" and cellValue == fastestLap:
                             draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_magenta, font=font)
+                        elif isStars and cellField == "driver":
+                            # draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_default, font=font)
+
+                            #driver
+                            x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2                                    
+                            text_bbox = draw.textbbox((0, 0), driver, font=font)
+                            text_width = text_bbox[2] - text_bbox[0]
+                            draw.text((x_position - text_width // 2, y_position), str(driver), fill=constants.color_default, font=font)
+                            
+                            #team
+                            j=j+1
+                            x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2
+                            print(f"bbbox team {text_bbox}")
+                            text_bbox = draw.textbbox((0, 0), str(team), font=font)
+                            text_width = text_bbox[2] - text_bbox[0]
+                            draw.text((x_position - text_width // 2, y_position), str(team), fill=constants.color_default, font=font)
+                            
+                            #j=j+1
                         else:
                             draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_default, font=font)
 
