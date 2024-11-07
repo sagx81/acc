@@ -162,12 +162,15 @@ def get_race_results():
 
                 for i, line in enumerate(data['sessionResult']['leaderBoardLines']):
                     drivers = line['car']['drivers']
+                    driverNumber = line['car']['raceNumber']
+                    driverCar = line['car']['carModel']
+
                     driver_names = [driver['lastName'] for driver in drivers]
                     driver_names_str = ", ".join(driver_names)
                     total_time_ms = line['timing']['totalTime']
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
-
+                    
                     # skipp spectators
                     if (lap_count == 0):
                         continue

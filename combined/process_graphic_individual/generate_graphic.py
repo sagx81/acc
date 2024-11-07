@@ -137,8 +137,8 @@ def generate_individual_graphic():
                             driver = cellValue.split('\n')[1]
                         
                         # if team:
-                        if (cellField == 'driver'):
-                            print(f"TEAM: {team}, driver: {driver}")
+                        # if (cellField == 'driver'):
+                        #     print(f"TEAM: {team}, driver: {driver}")
 
                         # print(f"--- {jAdjustor} {j} {sum(column_widths[:j])}")
 
@@ -172,7 +172,7 @@ def generate_individual_graphic():
                             #team
                             j=j+1
                             x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2
-                            print(f"bbbox team {text_bbox}")
+                            # print(f"bbbox team {text_bbox}")
                             text_bbox = draw.textbbox((0, 0), str(team), font=font)
                             text_width = text_bbox[2] - text_bbox[0]
                             draw.text((x_position - text_width // 2, y_position), str(team), fill=constants.color_default, font=font)
