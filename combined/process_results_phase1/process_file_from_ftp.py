@@ -180,16 +180,21 @@ def get_race_results():
                             first_driver_time = total_time_ms
                             total_time_str = convert_time(total_time_ms)
                         else:
+                            time_difference = total_time_ms - first_driver_time
+                            timeDiffString = convert_time(time_difference)
+                            # sometimes there is negative value if total driver time was < than total time of the winner
+                            # for example when joining race after start    
+                            if ('-' not in timeDiffString):
+                                timeDiffString = f"+{timeDiffString}"
+                            
                             if lap_count < first_driver_laps:
                                 lapLabel = "lap"
                                 laps_difference = first_driver_laps - lap_count
-                                time_difference = total_time_ms - first_driver_time
                                 if laps_difference > 1:
                                     lapLabel = "laps"
-                                total_time_str = f"+{convert_time(time_difference)} (+{laps_difference} {lapLabel})"
+                                total_time_str = f"{timeDiffString} (+{laps_difference} {lapLabel})"
                             else:
-                                time_difference = total_time_ms - first_driver_time
-                                total_time_str = f"+{convert_time(time_difference)}"
+                                total_time_str = f"{timeDiffString}"
 
                         best_lap_str = convert_time(best_lap_ms)
                         points_awarded = points[i] if i < len(points) else 1
