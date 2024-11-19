@@ -16,16 +16,16 @@ results_phase1 = "process_results_phase1"
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 
 #optional - CLEANING for testing purposes only
-if os.path.exists(processedFilesCSV):
-    os.remove(processedFilesCSV)
-shutil.rmtree(constants.output_phase1, ignore_errors=True)
-shutil.rmtree(constants.output_individual_graphic, ignore_errors=True)
+# if os.path.exists(processedFilesCSV):
+#     os.remove(processedFilesCSV)
+# shutil.rmtree(constants.output_phase1, ignore_errors=True)
+# shutil.rmtree(constants.output_individual_graphic, ignore_errors=True)
 
 # ftp.get_ftp_files()
 
-process_file_from_ftp.get_race_results()
+# process_file_from_ftp.get_race_results()
 
-penalties_apply.apply_penalties()
+# penalties_apply.apply_penalties()
 
 # generate_graphic.generate_individual_graphic()
 

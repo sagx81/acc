@@ -1,6 +1,7 @@
 
 import os
 import csv
+import json
 
 from entities import entities
 from entities import track_data
@@ -29,7 +30,7 @@ output_phase1 = os.path.join(current_dir, "output_phase1")
 process_graphic_individual = os.path.join(current_dir, "process_graphic_individual")
 output_individual_graphic = os.path.join(current_dir, "output_individual_graphic")
 process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")
-
+drivers_file = os.path.join(current_dir, "entities", "drivers.json")
 
 graphicHeaders = ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
 graphicHeadersStars = ['Pozycja', 'Kierowca', 'Team', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
@@ -112,3 +113,77 @@ def get_track_name(track):
     if track_info:
         track_name = track_info.get('name', track)
     return track_name
+
+
+def get_driver(fromResults):
+    json_file = drivers_file
+    
+    # default name from results
+    driverName = fromResults  
+
+    try:
+        with open(json_file, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+
+
+            # for i, line in enumerate(data['sessionResult']['leaderBoardLines']):
+            #                     drivers = line['car']['drivers']
+            # print(f"l 130")
+
+            # name = data.get(['entries'],['drivers'])
+            for d in data['entries']:
+                driversObject = d['drivers'][0]
+                hasAlternateNames = False
+                name = driversObject['lastName']
+
+                if ('BAN' in name):
+                    continue
+
+                # getattr does not work :/
+                # x = getattr(driversObject, 'alternateNames', None)
+                # print(f"X - {x}")
+                
+                names = []
+
+                try: 
+                    names = driversObject['alternateNames']
+                except Exception as e:
+                    hasAlternateNames = True
+
+                names.append(name)
+                
+                namesLower = []
+                for n in names:
+                    namesLower.append(n.lower().strip())
+
+                if fromResults.lower().strip() in namesLower: #or fromResults.lower().strip() in name.lower().strip():
+                    driverName = name
+                    # print(f"Found driver: {driverName}")
+                    break
+                
+
+                # print(f"{driverName}")
+                # print(f"{driversObject}")
+                
+            
+                # names = []
+                # names = getattr(driversObject, 'alternateNames',[])
+                    
+
+                # if hasattr(driversObject, 'alternateNames'):
+                #     # names = driversObject['alternateNames']
+                #     names = getattr(driversObject, 'alternateNames')
+                #     # names = driversObject.alternateNames
+                #     print(f"names: {name} {names}")
+                    # names = driversObject['alternateNames']
+    
+
+            file.close()
+
+    except Exception as e:
+        print(f"GET DRIVER - An error occurred processing file {json_file}: {e}")
+
+    if driverName != fromResults:
+        print(f"found same drivers {driverName} - {fromResults}")
+
+    return driverName

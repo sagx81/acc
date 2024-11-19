@@ -58,7 +58,10 @@ def generate_GC_phase1():
     #         continue
 
     # input_dirs = os.path.join(constants.output_phase1, inputResultsFolder)
+
     dirs = glob.glob(os.path.join(constants.output_phase1, "*"))
+    # print(f"{dirs}  {constants.output_phase1}")
+    
     for input_dir in dirs:
         
         # clear general classification 
@@ -75,6 +78,8 @@ def generate_GC_phase1():
             if os.path.exists(penaltiesAppliedCsv):
                 csv_file = penaltiesAppliedCsv                
 
+            # print (f"CG??")
+
             try:
                 with open(csv_file, mode='r', encoding='utf-8') as file:
                     # reader = csv.DictReader(file)
@@ -88,7 +93,12 @@ def generate_GC_phase1():
                     #     points = int(row['Punkty'])
                     
                     for row in results:
-                        general_classification[row.driver] += row.points
+                        driverName = constants.get_driver(row.driver)
+                        # print(f"{driverName}")
+                        general_classification[driverName] += row.driverPoints
+                        # general_classification[row.driver] += row.driverPoints
+                    
+                    # print(f"general_classification")
 
                 # Dodanie pliku do przetworzonych
                 # processed_files.add(csv_file)
@@ -103,7 +113,13 @@ def generate_GC_phase1():
 
         # Tworzenie listy klasyfikacji generalnej
         general_classification_list = []
+        
+        # constants.get_driver('sagxx')        
+        
         for driver, points in general_classification.items():
+            # driverName = constants.get_driver(driver)
+            # print(f"{driverName} vs {driver}")
+            # general_classification_list.append([driverName, points])
             general_classification_list.append([driver, points])
 
         # Sortowanie klasyfikacji generalnej według punktów (malejąco)

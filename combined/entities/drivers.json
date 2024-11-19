@@ -79,7 +79,8 @@
           "lastName": "ChampOfHell94 HRT",
           "shortName": "CHA",
           "playerID": "M2535414293357824",
-          "driverCategory": 2
+          "driverCategory": 2,
+          "alternateNames": ["ChampOfHell94"]
         }
       ],
       "raceNumber": 43,
@@ -223,7 +224,8 @@
           "lastName": "Hubert",
           "shortName": "HUB",
           "playerID": "P298158363259400214",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["hubert_san"]
         }
       ],
       "raceNumber": 7,
@@ -295,7 +297,8 @@
           "lastName": "Kill3rku",
           "shortName": "KIL",
           "playerID": "M2533274917676648",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["Kill3rQ1978"]
         }
       ],
       "raceNumber": 23,
@@ -709,7 +712,8 @@
           "lastName": "Slawek",
           "shortName": "SLA",
           "playerID": "M2533274815947051",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["Slawek1980"]
         }
       ],
       "raceNumber": 198,
@@ -799,7 +803,8 @@
           "lastName": "Versoo",
           "shortName": "VER",
           "playerID": "M2533274915072368",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["Versoo90"]
         }
       ],
       "raceNumber": 6,
@@ -853,7 +858,8 @@
           "lastName": "Wyspa",
           "shortName": "WYS",
           "playerID": "M2535412857537951",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["Wyspa91"]
         }
       ],
       "raceNumber": 11,
@@ -925,7 +931,8 @@
           "lastName": "Zdybix",
           "shortName": "ZDY",
           "playerID": "M2533274864176698",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["Verstapenix"]
         }
       ],
       "raceNumber": 83,
@@ -1393,7 +1400,8 @@
           "lastName": "Chapsior",
           "shortName": "CHA",
           "playerID": "M2535417305612476",
-          "driverCategory": 0
+          "driverCategory": 0,
+          "alternateNames": ["Chaps#8045"]
         }
       ],
       "raceNumber": 2,
@@ -1519,7 +1527,8 @@
           "lastName": "MichaX",
           "shortName": "MIC",
           "playerID": "M2535435494294155",
-          "driverCategory": 1
+          "driverCategory": 1,
+          "alternateNames": ["MichaX#1419"]
         }
       ],
       "raceNumber": 74,
