@@ -33,6 +33,9 @@ output_individual_graphic = os.path.join(current_dir, "output_individual_graphic
 process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")
 drivers_file = os.path.join(current_dir, "entities", "drivers.json")
 
+logoFolder = os.path.join(process_graphic_individual, "files", "Logo")
+
+
 graphicHeaders = ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
 graphicHeadersStars = ['Pozycja', 'Kierowca', 'Team', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
 
@@ -207,7 +210,7 @@ def get_driver(fromResults):
     except Exception as e:
         print(f"GET DRIVER - An error occurred processing file {json_file}: {e}")
 
-    if driverName != fromResults:
-        print(f"found same drivers {driverName} - {fromResults}")
+    # if driverName != fromResults:
+    #     print(f"found same drivers {driverName} - {fromResults}")
 
     return driverName

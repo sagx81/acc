@@ -12,6 +12,7 @@ from collections import defaultdict
 # from PIL import Image, ImageDraw, ImageFont
 
 import constants
+from process_graphic_individual import generate_graphic_gc
 # from combined import constants
 # from combined.entities.track_data import track_data
 
@@ -21,6 +22,8 @@ background_image = os.path.join(constants.process_graphic_individual, "files", "
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 
 def generate_GC_phase1():
+
+    print("** General Classification ")
 
     # Ustalanie katalogu głównego projektu
 
@@ -150,7 +153,11 @@ def generate_GC_phase1():
 
         print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
 
-        
+        raceType = os.path.basename(input_dir).split(' ')[0]
+        if raceType == 'WEEK':
+            raceType = 'WL'
+
+        generate_graphic_gc.generate_gc(general_classification_list, raceType, output_csv_file)
         
         # GRAFIKA KG
         # Sprawdzenie istnienia plików graficznych
