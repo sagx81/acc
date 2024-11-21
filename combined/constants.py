@@ -2,6 +2,7 @@
 import os
 import csv
 import json
+import requests
 
 from entities import entities
 from entities import track_data
@@ -115,11 +116,34 @@ def get_track_name(track):
     return track_name
 
 
+def get_web_drivers():
+    # The API endpoint
+    url = "https://script.googleusercontent.com/macros/echo?user_content_key=3g5IKkMC0n8jyhO7VwdGPhnx2RWv7MjSKjeTHhFx07mdCMdfpWDNO-7iz2meYzRDZOhqhe5Clzu3uLiR_URnzX7cY2WY2gr-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
+
+    # A GET request to the API
+    response = requests.get(url)
+
+    # Print the response
+    # print(response.json())
+
+    return response
+    
+
+def get_driver_web(playerID, driversList):
+    for d in driversList:
+        if playerID == d.PlayerID:
+            return d.callsign
+
+    return None    
+
+
+
 def get_driver(fromResults):
     json_file = drivers_file
     
     # default name from results
     driverName = fromResults  
+
 
     try:
         with open(json_file, 'r', encoding='utf-8') as file:
