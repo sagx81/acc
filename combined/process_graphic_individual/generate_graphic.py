@@ -41,8 +41,8 @@ def generate_individual_graphic():
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
 
             #TODO: to be removed
-            if 'stars' not in input_dir.lower():
-                continue
+            # if 'stars' not in input_dir.lower():
+            #     continue
 
             isStars = False
             if 'stars' in input_dir.lower():
