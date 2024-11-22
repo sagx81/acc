@@ -95,8 +95,23 @@ def generate_GC_phase1():
                     #     driver = row['Kierowca']
                     #     points = int(row['Punkty'])
                     
+
+
                     for row in results:
-                        driverName = constants.get_driver(row.driver)
+                        name = row.driver
+
+                        #if stars then team as separate column
+                        team = ''
+                        driver = ''
+                        # prepare driver and team from csv splitted by '/n'
+                        if (len(row.driver.split('\n')) > 1 and 'stars' in input_dir.lower()):
+                            name = row.driver.split('\n')[0]
+                            # team = row.driver.split('\n')[0]
+                            # driver = row.driver.split('\n')[1]
+
+
+                        driverName = constants.get_driver(name)
+                        # driverName = constants.get_driver(row.driver)
                         # print(f"{driverName}")
                         general_classification[driverName] += row.driverPoints
                         # general_classification[row.driver] += row.driverPoints

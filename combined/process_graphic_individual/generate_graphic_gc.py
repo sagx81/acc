@@ -91,4 +91,4 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
     output_image_file = gcCsvFile.replace('csv','png')
     bg_image.save(output_image_file)
 
-    print(f"Klasyfikacja generalna została zapisana do pliku: {output_image_file}")
+    # print(f"Klasyfikacja generalna została zapisana do pliku: {output_image_file}")

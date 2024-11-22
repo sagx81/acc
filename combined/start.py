@@ -16,6 +16,9 @@ current_dir = os.getcwd()
 results_phase1 = "process_results_phase1"
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 
+# optional delete downloaded ftp files
+# shutil.rmtree(constants.ftp_input_dir, ignore_errors=True)
+
 #optional - CLEANING for testing purposes only
 if os.path.exists(processedFilesCSV):
     os.remove(processedFilesCSV)
