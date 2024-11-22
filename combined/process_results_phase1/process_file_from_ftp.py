@@ -65,13 +65,16 @@ processedFiles = []
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 
 def get_race_results():
+
+    print("\n*** Processing FTP files phase - 1 \n")
+
     processedFileHasValue = False
     filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
     previousRaceDay = ""    
     # for json_file in glob.glob(os.path.join(input_dir, "*.json")):
     for json_file in filesSorted:
         try:
-            print(f"Processing file: {json_file}")
+            # print(f"Processing file: {json_file}")
 
             if (json_file.split('_')[0] == previousRaceDay):
                 raceIndex += 1
@@ -85,7 +88,7 @@ def get_race_results():
                 processedFileHasValue = True
                 with open(processedFilesCSV, 'r', encoding='utf-8') as file:         
                     reader = csv.DictReader(file)           
-                    print(f"Reading processed files: {processedFilesCSV}")
+                    # print(f"Reading processed files: {processedFilesCSV}")
                     fileFound = False
                     for row in reader:
                         # row.data = json.load(file)          
@@ -93,13 +96,13 @@ def get_race_results():
                         fileToFind = os.path.basename(json_file)
                         
                         if (fileToFind in row['File']):
-                            print(f"\n SKIPPING file: {json_file}\n")
+                            # print(f"\n SKIPPING file: {json_file}\n")
                             fileFound = True
                             break
                     if (fileFound):
                         continue
             
-            print(f"Openning file: {json_file}")
+            # print(f"Openning file: {json_file}")
 
 
             with open(json_file, 'r', encoding='utf-16-le') as file:
@@ -109,7 +112,7 @@ def get_race_results():
                 # sessionIndex = data.get('sessionIndex')
                 # if ("gt3" in serverName.lower()):
                 if ("open" in serverName.lower()):
-                    print(f"\n SKIPPING file: {json_file}\n")
+                    # print(f"\n SKIPPING file: {json_file}\n")
                     continue
                 
                 if (serverName):
@@ -221,7 +224,7 @@ def get_race_results():
                 else:
                     fastest_lap_time_converted = None
 
-                print(f"output_csv_file: {output_csv_file}")
+                # print(f"output_csv_file: {output_csv_file}")
 
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)

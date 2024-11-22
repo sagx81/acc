@@ -151,7 +151,7 @@ def generate_GC_phase1():
             writer = csv.writer(file)
             writer.writerows([['Position', 'Driver', 'Points']] + general_classification_list)
 
-        print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
+        # print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
 
         raceType = os.path.basename(input_dir).split(' ')[0]
         if raceType == 'WEEK':

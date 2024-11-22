@@ -118,7 +118,7 @@ def apply_penalties():
 
 
     # prepare penalties
-    print("\n--- PENALTIES ---\n")
+    print("\n*** Penalties\n")
     penalties = []
 
     try:
@@ -160,7 +160,7 @@ def apply_penalties():
 
             # print(f"apply penalties: {applyPenalties}")
             if (not applyPenalties):
-                print(f" ** Penalties DO NOT apply for: {csv_file.split('/')[-1]}\n")
+                # print(f" ** Penalties DO NOT apply for: {csv_file.split('/')[-1]}\n")
                 continue
 
             try:
@@ -177,7 +177,7 @@ def apply_penalties():
                     # print(f"{reader}")
                     # skipFile = False
 
-                    print(f"\n*** Penalties => Processing file: {csv_file.split('/')[-1]}")
+                    # print(f"\n*** Penalties => Processing file: {csv_file.split('/')[-1]}")
 
                     for row in reader:
 
@@ -285,7 +285,7 @@ def apply_penalties():
                         results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, driverPoints))
 
                           
-                    print("*** Penalties ***")
+                    # print("*** Penalties ***")
                     
                     # print("\n---Before stewards from results -----\n")
                     # for res in results:
@@ -299,7 +299,7 @@ def apply_penalties():
                         if (not is_penalty_valid_for_race(penalty, input_dir, csv_file)):
                             continue                    
 
-                        print(f"Applying penalty {penalty}")
+                        # print(f"Applying penalty {penalty}")
 
                         for driver in results:       
                             driverRaceName = ""
@@ -314,7 +314,7 @@ def apply_penalties():
                                 # driver.totalTimeMs = 24 * 36000000 + driver.totalTimeMs
                                 # driver.totalTimeString = convert_time(driver.totalTimeMs)
                                 driver.isDsq = True
-                                print(f"DSQ penalty: {driver.driver}")
+                                # print(f"DSQ penalty: {driver.driver}")
                             else:
                                 driver.totalTimeMs += (penalty.penaltySeconds * 1000)
                                 driver.totalTimeString = convert_time(driver.totalTimeMs)
@@ -364,7 +364,7 @@ def apply_penalties():
                             # sortedResults.remove(res)
                             # sortedResults.pop(i)
                         elif res.isDsq or res.timing.lower() == "dsq":
-                            print(f"  dsq : {res.driver}")
+                            # print(f"  dsq : {res.driver}")
                             dsqs.append(res)
                         elif int(res.laps) < int(winnerLaps):
                             # print(f"\nplus lap: {res.driver}")
@@ -380,10 +380,11 @@ def apply_penalties():
                     #     print(f"{res}")
                     # for res in dnfs:
                     #     print(f"{res}")
-                    if dsqs:
-                        print(f"\n *** plus lap / dndf / dsqs positions ***")    
-                        for res in dsqs:
-                            print(f"{res}")
+                    
+                    # if dsqs:
+                    #     # print(f"\n *** plus lap / dndf / dsqs positions ***")    
+                    #     for res in dsqs:
+                    #         print(f"{res}")
                         
 
 

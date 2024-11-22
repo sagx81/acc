@@ -11,10 +11,11 @@ input_dir = constants.output_phase1
 output_dir = constants.output_individual_graphic
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
+logo_folder = os.path.join(constants.process_graphic_individual,"files", "Logo")
 
 def generate_individual_graphic():
 
-    print(f"\n\n ______ Generating individual graphics ____\n\n")
+    print(f"\n*** Generating individual graphics \n")
 
 
     if not os.path.isfile(background_image):
@@ -67,7 +68,7 @@ def generate_individual_graphic():
                     
                 results = constants.get_results_from_csv(csv_file, constants.process_graphic_individual)
 
-                print(f"\n*** Results Image => Preparing Image file {csv_file}")
+                # print(f"\n*** Results Image => Preparing Image file {csv_file}")
                 
                 graphicHeaders = constants.graphicHeaders
                 column_widths = constants.columnWidths
@@ -76,7 +77,7 @@ def generate_individual_graphic():
                     column_widths = constants.columnWidthsStars
                     graphicHeaders = constants.graphicHeadersStars
 
-                print(f"{column_widths}  {graphicHeaders}")
+                # print(f"{column_widths}  {graphicHeaders}")
 
                 # draw header
                 for j, header in enumerate(graphicHeaders):
@@ -193,11 +194,32 @@ def generate_individual_graphic():
                 else:
                     imageFile = os.path.basename(csv_file).replace(".csv", ".png")
                 
+
+                # logo
+                # Dodawanie logo
+                raceType = os.path.basename(input_dir).split(' ')[0]
+                if raceType == 'WEEK':
+                    raceType = 'WL'
+
+                logo_image = os.path.join(constants.logoFolder,f"{raceType}.png")
+
+                logo = Image.open(logo_image)
+                # logo_width, logo_height = logo.size
+
+                # Zmiana rozmiaru logo
+                new_logo_width = 400  # Ustawienia szerokości dla logo
+                new_logo_height = 400  # Ustawienia wysokości dla logo
+                logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
+
+                logo_x = 1500  # Ustawienia pozycji X dla logo
+                logo_y = -140  # Ustawienia pozycji Y dla logo
+                bg_image.paste(logo, (logo_x, logo_y), logo)
+
                 
                 # output_image_file = os.path.join(constants.current_dir, constants.output_individual_graphic, input_dir, imageFile)
                 output_image_file = os.path.join(directoryPath, imageFile)
                 bg_image.save(output_image_file, overwrite=True)
-                print(f"Result Image saved: {output_image_file}")
+                # print(f"Result Image saved: {output_image_file}")
 
                 # os.remove(json_file)
 
