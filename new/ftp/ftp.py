@@ -2,6 +2,8 @@ import ftplib
 import json
 import os
 
+import constants
+
 # def find_project_root(start_path, target_dir_name="acc-race-results"):
 #     current_path = start_path
 #     while True:
@@ -24,7 +26,8 @@ def get_ftp_files():
     ftpDetails_path = os.path.join(os.path.curdir, "ftp", "ftpDetails.json")
     
     # Stwórz folder z backupem z FTP, jeśli nie istnieje
-    newpath = r'./fromFTP'
+    #newpath = r'./fromFTP'
+    newpath = constants.ftp_input_dir
     if not os.path.exists(newpath):
         os.makedirs(newpath)
 

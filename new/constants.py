@@ -54,7 +54,8 @@ penalties_web = "https://docs.google.com/spreadsheets/d/1uLbXwCfIWfcnCMoQhm8L2ph
 
 
 current_dir = os.getcwd()
-ftp_input_dir = os.path.join(current_dir, "fromFTP")
+ftp_input_dir = os.path.join(current_dir, "files_from_ftp")
+
 results_phase1 = os.path.join(current_dir, "process_results_phase1")
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 output_phase1 = os.path.join(current_dir, "output_phase1")
