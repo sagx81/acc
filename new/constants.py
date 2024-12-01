@@ -51,12 +51,12 @@ text_laps = "Okr."
 drivers_web = "https://script.googleusercontent.com/macros/echo?user_content_key=LyuW03w8EuhJIzOkWPhbTRUzPG8lHG1GRQHA9jDwgXeze8yE4LWE2fyFJRcuZQwE2ecA4gQd5eB2lv77hZusmDTWH_yXNZhfm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
 tracks_web = "https://script.googleusercontent.com/macros/echo?user_content_key=punHLEL_HTf0TPMFDivsrJ6VbRM6M4wcia0LZQsCHyHBtVzeZqw7NH3OHxqaZs66Fe61kW3dZHlTXL6T2GM8WgazLDxn5THgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnESQPHwrIqDrspbZcwcyGUWNpg-j7QbH1aWBkOboVyd3OrPhuEWso0Ev8_rbr7QQsQdcwg74D7Hb22NpqdVDrr3blv1BIAhc4w&lib=M_NydfZsakw_hgQy0L_PP-73GRJM68q9Q"
 penalties_web = "https://docs.google.com/spreadsheets/d/1uLbXwCfIWfcnCMoQhm8L2phnhSOQgbfXHRf_WZeJaKM/edit?gid=0#gid=0"
-
+cars_web = "https://docs.google.com/spreadsheets/d/10pfmrTH4C9_cLfGPja-5k97HfHKSRhd1jsDCVlmh6Bg/edit?gid=0#gid=0"
 
 current_dir = os.getcwd()
-ftp_input_dir = os.path.join(current_dir, "files_from_ftp")
+files_from_ftp = os.path.join(current_dir, "files_from_ftp")
+files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
 
-results_phase1 = os.path.join(current_dir, "process_results_phase1")
 processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 output_phase1 = os.path.join(current_dir, "output_phase1")
 process_graphic_individual = os.path.join(current_dir, "process_graphic_individual")
