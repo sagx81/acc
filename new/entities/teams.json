@@ -1,0 +1,242 @@
+{
+    "Menel Team Skład": {
+        "KIE": {
+            "firstName": "",
+            "lastName": "Kielkozaur",
+            "shortName": "KIE",
+            "playerID": "M2533274937370993",
+            "driverCategory": 2,
+            "forcedCarModel": 31,
+            "raceNumber": 88
+        },
+        "ZDY": {
+            "firstName": "",
+            "lastName": "Zdybix",
+            "shortName": "ZDY",
+            "playerID": "M2533274864176698",
+            "driverCategory": 1,
+            "forcedCarModel": 31,
+            "raceNumber": 83
+        }
+    },
+    "Waffen FNM": {
+        "WUJ": {
+            "firstName": "",
+            "lastName": "Wuja",
+            "shortName": "WUJ",
+            "playerID": "M2533274806266823",
+            "driverCategory": 1,
+            "forcedCarModel": 26,
+            "raceNumber": 158
+        },
+        "YAC": {
+            "firstName": "",
+            "lastName": "Yachuu",
+            "shortName": "YAC",
+            "playerID": "M2533274858519928",
+            "driverCategory": 1,
+            "forcedCarModel": 26,
+            "raceNumber": 94
+        }
+    },
+    "Husaria Racing Team": {
+        "CHA": {
+            "firstName": "",
+            "lastName": "ChampOfHell94 HRT",
+            "shortName": "CHA",
+            "playerID": "M2535414293357824",
+            "driverCategory": 2,
+            "forcedCarModel": 35,
+            "raceNumber": 43
+        },
+        "WYS": {
+            "firstName": "",
+            "lastName": "Wyspa",
+            "shortName": "WYS",
+            "playerID": "M2535412857537951",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 11
+        }
+    },
+    "Dark Star": {
+        "BIO": {
+            "firstName": "",
+            "lastName": "Biomm",
+            "shortName": "BIO",
+            "playerID": "M2533274815216410",
+            "driverCategory": 1,
+            "forcedCarModel": 20,
+            "raceNumber": 666
+        },
+        "SAG": {
+            "firstName": "",
+            "lastName": "Sagxx",
+            "shortName": "SAG",
+            "playerID": "P820068980196546852",
+            "driverCategory": 2,
+            "forcedCarModel": 20,
+            "raceNumber": 981
+        }
+    },
+    "Speed and Power!": {
+        "D3A": {
+            "firstName": "",
+            "lastName": "D3AR316",
+            "shortName": "D3A",
+            "playerID": "M2535461481488995",
+            "driverCategory": 1,
+            "forcedCarModel": 34,
+            "raceNumber": 316
+        },
+        "KIL": {
+            "firstName": "",
+            "lastName": "Kill3rku",
+            "shortName": "KIL",
+            "playerID": "M2533274917676648",
+            "driverCategory": 1,
+            "forcedCarModel": 34,
+            "raceNumber": 23
+        }
+    },
+    "Stage24 Racing Team": {
+        "VER": {
+            "firstName": "",
+            "lastName": "Versoo",
+            "shortName": "VER",
+            "playerID": "M2533274915072368",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 6
+        },
+        "HUB": {
+            "firstName": "",
+            "lastName": "Hubert",
+            "shortName": "HUB",
+            "playerID": "P298158363259400214",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 7
+        }
+    },
+    "DrinkTeam": {
+        "KHA": {
+            "firstName": "",
+            "lastName": "Khasithe",
+            "shortName": "KHA",
+            "playerID": "M2535446506058100",
+            "driverCategory": 1,
+            "forcedCarModel": 20,
+            "raceNumber": 27
+        },
+        "THE": {
+            "firstName": "",
+            "lastName": "TheTropheus",
+            "shortName": "THE",
+            "playerID": "M2533274829289102",
+            "driverCategory": 1,
+            "forcedCarModel": 20,
+            "raceNumber": 29
+        }
+    },
+    "LOTUS": {
+        "CHA": {
+            "firstName": "",
+            "lastName": "Chapsior",
+            "shortName": "CHA",
+            "playerID": "M2535417305612476",
+            "driverCategory": 0,
+            "forcedCarModel": 33,
+            "raceNumber": 2
+        },
+        "PLU": {
+            "firstName": "",
+            "lastName": "PlugawyDZO",
+            "shortName": "PLU",
+            "playerID": "M2533274828870529",
+            "driverCategory": 1,
+            "forcedCarModel": 33,
+            "raceNumber": 91
+        }
+    },
+    "Szybcy i Wściekli": {
+        "MAT": {
+            "firstName": "",
+            "lastName": "MateuszKaz",
+            "shortName": "MAT",
+            "playerID": "P2428071898060109888",
+            "driverCategory": 1,
+            "forcedCarModel": 32,
+            "raceNumber": 90
+        },
+        "KOW": {
+            "firstName": "",
+            "lastName": "Kowen",
+            "shortName": "KOW",
+            "playerID": "M2535442275796797",
+            "driverCategory": 2,
+            "forcedCarModel": 32,
+            "raceNumber": 722
+        }
+    },
+    "VR46 WRT": {
+        "PES": {
+            "firstName": "",
+            "lastName": "Peszkin",
+            "shortName": "PES",
+            "playerID": "M2535452972641251",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 46
+        },
+        "SIT": {
+            "firstName": "",
+            "lastName": "Sitek2453",
+            "shortName": "SIT",
+            "playerID": "M2535451005492507",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": "16"
+        }
+    },
+    "Scuderia71": {
+        "PIR": {
+            "firstName": "",
+            "lastName": "Piron",
+            "shortName": "PIR",
+            "playerID": "M2535426538020770",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 720
+        },
+        "DZO": {
+            "firstName": "",
+            "lastName": "Dzonykirango",
+            "shortName": "DZO",
+            "playerID": "M2533274910738158",
+            "driverCategory": 1,
+            "forcedCarModel": 35,
+            "raceNumber": 15
+        }
+    },
+    "House Of Cars": {
+        "DRU": {
+            "firstName": "",
+            "lastName": "Drumefy",
+            "shortName": "DRU",
+            "playerID": "M2535409184659841",
+            "driverCategory": 1,
+            "forcedCarModel": 20,
+            "raceNumber": 42
+        },
+        "DRL": {
+            "firstName": "",
+            "lastName": "DrLaktoza",
+            "shortName": "DRL",
+            "playerID": "M2535451061354231",
+            "driverCategory": 1,
+            "forcedCarModel": 20,
+            "raceNumber": 114
+        }
+    }
+}
