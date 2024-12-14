@@ -1,8 +1,9 @@
 import ftplib
 import json
 import os
+from utils_entities import constants
 
-import constants
+#import constants
 
 def get_ftp_files():
 

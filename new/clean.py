@@ -1,7 +1,6 @@
 import os
 import shutil
-import constants
-
+from new.utils_entities import constants
 
 if os.path.exists(constants.processedFilesCSV):
     os.remove(constants.processedFilesCSV)

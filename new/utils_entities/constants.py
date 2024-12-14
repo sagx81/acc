@@ -4,8 +4,8 @@ import csv
 import json
 import requests
 
-from entities import entities
-from entities import track_data
+from utils_entities import entities
+from utils_entities import track_data
 
 points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2]
 
@@ -57,7 +57,7 @@ current_dir = os.getcwd()
 files_from_ftp = os.path.join(current_dir, "files_from_ftp")
 files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
 
-processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
+processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
 output_phase1 = os.path.join(current_dir, "output_phase1")
 process_graphic_individual = os.path.join(current_dir, "process_graphic_individual")
 output_individual_graphic = os.path.join(current_dir, "output_individual_graphic")

@@ -1,10 +1,6 @@
-import os
-import shutil
-import requests
 # import sys
 
 from ftp import ftp
-import constants
 
 # from process_graphic_individual import generate_graphic
 # import process_graphic_individual.generate_graphic
