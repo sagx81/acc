@@ -65,7 +65,8 @@ def get_ftp_files():
                     with open(local_file, 'wb') as f:
                         ftp.retrbinary("RETR " + file, f.write)
         else:
-            print("Brak plików kończących się na literę 'R' do przetworzenia")
+            print("No files with 'R' postifx") #Brak plików kończących się na literę 'R' do przetworzenia")
+
 
 
         # Qualify
@@ -82,10 +83,10 @@ def get_ftp_files():
                     with open(local_file, 'wb') as f:
                         ftp.retrbinary("RETR " + file, f.write)
         else:
-            print("Brak plików kończących się na literę 'Q' do przetworzenia")
+            print("No files with 'Q' postfix") #Brak plików kończących się na literę 'Q' do przetworzenia")
    
     else:
-        print("Brak plików do przetworzenia")
+        print("No files to process") #Brak plików do przetworzenia")
 
-    print(f"Kończymy pracę")
+    print(f"FTP Done") # Kończymy pracę")
     ftp.quit()

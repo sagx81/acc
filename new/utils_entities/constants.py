@@ -4,8 +4,11 @@ import csv
 import json
 import requests
 
-from utils_entities import entities
-from utils_entities import track_data
+# from utils_entities import entities
+# from utils_entities import track_data
+
+from new.utils_entities import entities
+from new.utils_entities import track_data
 
 points = [20, 16, 13, 11, 9, 7, 5, 4, 3, 2]
 

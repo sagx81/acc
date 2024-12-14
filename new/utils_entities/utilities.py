@@ -1,3 +1,6 @@
+import os
+
+
 def convert_time(ms):
     hours = int(ms // 3600000)
     minutes = int(ms // 60000)
@@ -46,6 +49,15 @@ def get_results_from_csv(csv_file: str, inovkedBy: str):
             
     # print(f"** Results prepared ** \n")
     return results
+
+def generate_unique_filename(output_dir, base_name, extension="png"):
+    counter = 1
+    output_file = os.path.join(output_dir, f"{base_name}.{extension}")
+    while os.path.exists(output_file):
+        output_file = os.path.join(output_dir, f"{base_name}({counter}).{extension}")
+        counter += 1
+    return output_file
+
 
 def get_fastest_lap(results):
     fastest_lap_time = None

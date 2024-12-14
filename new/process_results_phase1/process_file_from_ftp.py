@@ -5,10 +5,13 @@ import glob
 import csv
 import datetime
 
-import constants
-import utilities
+from utils_entities import constants
+from utils_entities import utilities
 
-from utils_entities.processed_files import ProcessedFile
+# from new.utils_entities import constants
+# from new.utils_entities import utilities
+
+from new.utils_entities.processed_files import ProcessedFile
 
 # from constants import points
 # from constants import dnf_text
@@ -133,7 +136,7 @@ def get_race_results():
                 seriesDir = seriesDir.upper()    
                 output_dir = os.path.join(current_dir, output_phase1, seriesDir)
 
-                # print(f"\n Output dir: {output_dir}")
+                #print(f"\n Output dir: {output_dir}")
 
                 short_name = data.get('trackName', 'unknown_track')
                 # track_name = constants.get_track_name(short_name)
@@ -152,7 +155,7 @@ def get_race_results():
                 base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}{postfix}"
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
-                output_csv_file = generate_unique_filename(output_dir, base_output_name, extension="csv")
+                output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
 
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
@@ -176,21 +179,24 @@ def get_race_results():
                     total_time_ms = line['timing']['totalTime']
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
-                    
+
+                    print("for loop \n")
+
                     # skipp spectators
                     if (lap_count == 0):
                         continue
                     elif lap_count < min_laps_required:
-                        total_time_str = dnf_text
-                        best_lap_str = dnf_text
+                        total_time_str = constants.dnf_text
+                        best_lap_str = constants.dnf_text
                         points_awarded = 0
                     else:
                         if i == 0:
                             first_driver_time = total_time_ms
-                            total_time_str = convert_time(total_time_ms)
+                            total_time_str = utilities.convert_time(total_time_ms)
                         else:
+                            #TODO crash here : first_driver_time is none , 1st driver DNF
                             time_difference = total_time_ms - first_driver_time
-                            timeDiffString = convert_time(time_difference)
+                            timeDiffString = utilities.convert_time(time_difference)
                             # sometimes there is negative value if total driver time was < than total time of the winner
                             # for example when joining race after start    
                             if ('-' not in timeDiffString):
@@ -205,9 +211,11 @@ def get_race_results():
                             else:
                                 total_time_str = f"{timeDiffString}"
 
-                        best_lap_str = convert_time(best_lap_ms)
-                        points_awarded = points[i] if i < len(points) else 1
+                        best_lap_str = utilities.convert_time(best_lap_ms)
+                        points_awarded = constants.points[i] if i < len(constants.points) else 1
 
+                    print("append results")
+                    print(f"{i}\n")
                     results.append([
                         i + 1,
                         driver_names_str,
@@ -221,13 +229,14 @@ def get_race_results():
 
                 results.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
 
+                print("best lap")
                 if best_lap_times:
                     fastest_lap_time = min(best_lap_times)
-                    fastest_lap_time_converted = convert_time(fastest_lap_time)
+                    fastest_lap_time_converted = utilities.convert_time(fastest_lap_time)
                 else:
                     fastest_lap_time_converted = None
 
-                # print(f"output_csv_file: {output_csv_file}")
+                #print(f"output_csv_file: {output_csv_file}")
 
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
