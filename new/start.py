@@ -25,7 +25,7 @@ from process_results_phase1 import process_file_from_ftp
 
 # Process steps:
 # 1. FTP
-#ftp.get_ftp_files()
+ftp.get_ftp_files()
 
 process_file_from_ftp.get_race_results()
 
