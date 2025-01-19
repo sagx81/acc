@@ -108,7 +108,7 @@ def get_race_results():
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
                     max_lap_count = max(lap_counts)
-                    min_laps_required = max_lap_count / 2
+                    min_laps_required = max_lap_count * 0.75
                 else:
                     min_laps_required = 0
 

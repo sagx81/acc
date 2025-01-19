@@ -4,6 +4,11 @@ python start.py
 python3 start.py
 
 
+python3 -m pip install Pillow
+
+
+
+
 Funkcjonalnosc:
 - pobiera pliki z ftp (wymaga konfiguracji fptDetails w katalogu /ftp wedle instrukcji w katalogu /ftp)
 - obrabia wyniki z ftp i wrzuca wyniki do output_phase1

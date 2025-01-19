@@ -172,3 +172,20 @@ def get_driver(fromResults):
     #     print(f"found same drivers {driverName} - {fromResults}")
 
     return driverName
+
+
+def is_penalty_valid_for_race(penalty, directory, file):
+    # print(f"penalty: {penalty}")
+    # print(f"directory: {directory}, file: {file}")
+
+    if (penalty.raceType.lower() == "wl"):
+        raceTypeCompare = "week league"
+    else:
+        raceTypeCompare = penalty.raceType
+
+    # print(f"raceTypeCompare: {raceTypeCompare}")
+    if ((str(directory.lower()).find(penalty.raceType.lower()) >= 0 or str(directory.lower()).find(raceTypeCompare) >= 0)
+        and str(directory.lower()).find(penalty.season.lower()) >= 0
+        and str(file.lower()).find(penalty.track.lower()) >= 0 
+        and str(file.lower()).find(penalty.raceNumber.lower()) >= 0):
+        return True

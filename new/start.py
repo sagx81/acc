@@ -2,10 +2,10 @@
 
 from ftp import ftp
 from process_results_phase1 import process_file_from_ftp
+from process_results_phase2_penalties_apply import penalties_apply
 
 # from process_graphic_individual import generate_graphic
 # import process_graphic_individual.generate_graphic
-# from penalties_apply import penalties_apply
 # from process_general_classification import process_GC_phase1
 
 # current_dir = os.getcwd()
@@ -29,7 +29,7 @@ ftp.get_ftp_files()
 
 process_file_from_ftp.get_race_results()
 
-# penalties_apply.apply_penalties()
+penalties_apply.apply_penalties()
 
 # generate_graphic.generate_individual_graphic()
 
