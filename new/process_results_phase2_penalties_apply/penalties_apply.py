@@ -5,62 +5,64 @@ import csv
 from datetime import datetime
 from collections import defaultdict
 from utils_entities.constants import points
-# import utils_entities.constants
+from utils_entities import constants
+from utils_entities import entities
+from utils_entities import utilities
 
-class Penalty:
-    def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds, penaltyPosition, isDsq):
-        self.raceType = raceType
-        self.season = season
-        self.track = track
-        self.raceNumber = raceNumber
-        self.driver = driver
-        self.penaltySeconds = penaltySeconds
-        self.penaltyPosition = penaltyPosition
-        self.isDsq = isDsq        
+# class Penalty:
+#     def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds, penaltyPosition, isDsq):
+#         self.raceType = raceType
+#         self.season = season
+#         self.track = track
+#         self.raceNumber = raceNumber
+#         self.driver = driver
+#         self.penaltySeconds = penaltySeconds
+#         self.penaltyPosition = penaltyPosition
+#         self.isDsq = isDsq        
 
-    def __repr__(self):
-        return f"{self.raceType} {self.season} {self.track} {self.raceNumber} {self.driver} {self.penaltySeconds} {self.penaltyPosition} {self.isDsq}"
-
-
-class ResultRow:
-    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, driverPoints, isDsq=False):
-        self.position = position
-        self.driver = driver
-        self.timing = timing
-        self.totalTimeMs = totalTimeMs
-        self.totalTimeString = totalTimeString
-        self.bestLap = bestLap
-        self.laps = laps
-        self.driverPoints = driverPoints
-        self.isDsq = isDsq
-
-    def __repr__(self):
-        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.driverPoints}"
+#     def __repr__(self):
+#         return f"{self.raceType} {self.season} {self.track} {self.raceNumber} {self.driver} {self.penaltySeconds} {self.penaltyPosition} {self.isDsq}"
 
 
-class DriverMap:
-    def __init__(self, discord, race):
-        self.fromDiscord = discord
-        self.fromRace = race
+# class ResultRow:
+#     def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, driverPoints, isDsq=False):
+#         self.position = position
+#         self.driver = driver
+#         self.timing = timing
+#         self.totalTimeMs = totalTimeMs
+#         self.totalTimeString = totalTimeString
+#         self.bestLap = bestLap
+#         self.laps = laps
+#         self.driverPoints = driverPoints
+#         self.isDsq = isDsq
 
-    def __repr__(self):
-        return f"{self.fromDiscord} {self.fromRace}"
+#     def __repr__(self):
+#         return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.driverPoints}"
 
-def is_penalty_valid_for_race(penalty, directory, file):
-    # print(f"penalty: {penalty}")
-    # print(f"directory: {directory}, file: {file}")
 
-    if (penalty.raceType.lower() == "wl"):
-        raceTypeCompare = "week league"
-    else:
-        raceTypeCompare = penalty.raceType
+# class DriverMap:
+#     def __init__(self, discord, race):
+#         self.fromDiscord = discord
+#         self.fromRace = race
 
-    # print(f"raceTypeCompare: {raceTypeCompare}")
-    if ((str(directory.lower()).find(penalty.raceType.lower()) >= 0 or str(directory.lower()).find(raceTypeCompare) >= 0)
-        and str(directory.lower()).find(penalty.season.lower()) >= 0
-        and str(file.lower()).find(penalty.track.lower()) >= 0 
-        and str(file.lower()).find(penalty.raceNumber.lower()) >= 0):
-        return True
+#     def __repr__(self):
+#         return f"{self.fromDiscord} {self.fromRace}"
+
+# def is_penalty_valid_for_race(penalty, directory, file):
+#     # print(f"penalty: {penalty}")
+#     # print(f"directory: {directory}, file: {file}")
+
+#     if (penalty.raceType.lower() == "wl"):
+#         raceTypeCompare = "week league"
+#     else:
+#         raceTypeCompare = penalty.raceType
+
+#     # print(f"raceTypeCompare: {raceTypeCompare}")
+#     if ((str(directory.lower()).find(penalty.raceType.lower()) >= 0 or str(directory.lower()).find(raceTypeCompare) >= 0)
+#         and str(directory.lower()).find(penalty.season.lower()) >= 0
+#         and str(file.lower()).find(penalty.track.lower()) >= 0 
+#         and str(file.lower()).find(penalty.raceNumber.lower()) >= 0):
+#         return True
 
 
 def convert_time(ms):
@@ -100,8 +102,11 @@ def convert_time_to_miliseconds(time):
 def apply_penalties():
 
     # Ustalanie katalogu głównego projektu
-    inputResultsFolder = "output_phase1"
-    applyPenaltiesFolder = "penalties_apply"
+    inputResultsFolder = constants.files_result_phase_1
+    applyPenaltiesFolder = constants.process_apply_changes
+    # inputResultsFolder = "output_phase1"
+    # applyPenaltiesFolder = "penalties_apply"
+    
     project_root = os.getcwd() 
 
     # Definiowanie dynamicznych ścieżek do katalogów wejściowych, wyjściowych oraz do plików czcionki i tła
@@ -125,7 +130,7 @@ def apply_penalties():
         with open(penalties_csv, mode='r', encoding='utf-8') as pFile:
             pReader = csv.DictReader(pFile)
             for r in pReader:
-                penalties.append(Penalty(r['RaceType'], r['Season'], r['Track'], r['RaceNumber'], r['Driver'], int(r['SecondsPenalty']), int(r['PositionPenalty']), float(r['IsDSQ'])))
+                penalties.append(entities.Penalty(r['RaceType'], r['Season'], r['Track'], r['RaceNumber'], r['Driver'], int(r['SecondsPenalty']), int(r['PositionPenalty']), float(r['IsDSQ'])))
 
     except Exception as e:
                 print(f"Apply Penalties open penalties csv file - An error occurred processing file {penalties_csv}: {e}")
@@ -155,7 +160,7 @@ def apply_penalties():
             # print(f"penalties: {penalties}")
             # print(f"csv_file: {csv_file}")
             for penalty in penalties:
-                if (is_penalty_valid_for_race(penalty, input_dir, csv_file)): 
+                if (utilities.is_penalty_valid_for_race(penalty, input_dir, csv_file)): 
                     applyPenalties = True
 
             # print(f"apply penalties: {applyPenalties}")
@@ -282,7 +287,7 @@ def apply_penalties():
                     
                         totalTimeString = convert_time(totalTimeMiliseconds)
                         # result = ResultRow(position, driver, timing, totalTime, bestLap, laps, points)
-                        results.append(ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, driverPoints))
+                        results.append(entities.ResultRow(position, driver, timing, totalTimeMiliseconds, totalTimeString, bestLap, laps, driverPoints))
 
                           
                     # print("*** Penalties ***")
@@ -296,7 +301,7 @@ def apply_penalties():
 
                         # print(f"penalty is valid?: {penalty}")
 
-                        if (not is_penalty_valid_for_race(penalty, input_dir, csv_file)):
+                        if (not utilities.is_penalty_valid_for_race(penalty, input_dir, csv_file)):
                             continue                    
 
                         # print(f"Applying penalty {penalty}")

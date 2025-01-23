@@ -59,9 +59,11 @@ cars_web = "https://docs.google.com/spreadsheets/d/10pfmrTH4C9_cLfGPja-5k97HfHKS
 current_dir = os.getcwd()
 files_from_ftp = os.path.join(current_dir, "files_from_ftp")
 files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
+files_result_phase_2 = os.path.join(current_dir, "files_results_phase_2")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
 output_phase1 = os.path.join(current_dir, "output_phase1")
+process_apply_changes = os.path.join(current_dir, "process_results_phase2_penalties_apply")
 process_graphic_individual = os.path.join(current_dir, "process_graphic_individual")
 output_individual_graphic = os.path.join(current_dir, "output_individual_graphic")
 process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")

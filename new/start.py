@@ -3,6 +3,8 @@
 from ftp import ftp
 from process_results_phase1 import process_file_from_ftp
 from process_results_phase2_penalties_apply import penalties_apply
+from process_results_phase4_graphics import generate_graphic
+ 
 
 # from process_graphic_individual import generate_graphic
 # import process_graphic_individual.generate_graphic
