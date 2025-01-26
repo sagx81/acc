@@ -1,14 +1,8 @@
-# import os
-# import glob
-# # import csv
-# from PIL import Image, ImageDraw, ImageFont
-
-# from utils_entities import constants
-
 import os
 import glob
 import sys
 from PIL import Image, ImageDraw, ImageFont
+from utils_entities import constants
 
 
 # def is_debug():
@@ -27,35 +21,28 @@ from PIL import Image, ImageDraw, ImageFont
 
 # print(f" is debug: {is_debug()}")
 
-DEBUG = False
-if (len(sys.argv) == 2 and sys.argv[1] == 'debug'):
-    DEBUG = True
     # print("IS DEBUG")
-
-# gettrace = getattr(sys, 'gettrace', None)
-# if gettrace is None:
-#     print('No sys.gettrace')
-# elif gettrace():
-#     print('Hmm, Big Debugger is watching me')
-# else:
-#     print("Let's do something interesting")
-#     print(1 / 0)
 
 # DEBUG = sys.gettrace() is not None
 # print(f"\nDEBUG MODE: {DEBUG}\n")
 
 
-if DEBUG:
-    from pathlib import Path
-    sys.path.append(str(Path(__file__).parent.parent))
-    from utils_entities import constants    
-else:
-    from utils_entities import constants
+# if DEBUG:
+#     from pathlib import Path
+#     sys.path.append(str(Path(__file__).parent.parent))
+#     from utils_entities import constants    
+# else:
+#     from utils_entities import constants
 
 
+# DEBUG = False
+# if (len(sys.argv) == 2 and sys.argv[1] == 'debug'):
+#     DEBUG = True
 
+
+    
 input_dir = constants.output_phase1
-output_dir = constants.output_individual_graphic
+output_dir = constants.files_individual_graphic
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 logo_folder = os.path.join(constants.process_graphic_individual,"files", "Logo")
@@ -64,6 +51,7 @@ def generate_individual_graphic():
 
     print(f"\n*** Generating individual graphics \n")
 
+    # '/home/pawel/code/acc/process_results_phase4_graphics/files/background/race results.png'
 
     if not os.path.isfile(background_image):
         raise FileNotFoundError(f"Background image not found: {background_image}")
@@ -229,10 +217,10 @@ def generate_individual_graphic():
                         else:
                             draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_default, font=font)
 
-                if not os.path.exists(constants.output_individual_graphic):
-                    os.makedirs(constants.output_individual_graphic)
+                if not os.path.exists(constants.files_individual_graphic):
+                    os.makedirs(constants.files_individual_graphic)
                 
-                directoryPath = os.path.join(constants.output_individual_graphic, os.path.basename(input_dir))
+                directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
                 if not os.path.exists(directoryPath):
                     os.makedirs(directoryPath)
                 
@@ -272,3 +260,6 @@ def generate_individual_graphic():
 
             except Exception as e:
                 print(f"Generate Individual Result Graphic - An error occurred processing file {csv_file}: {e}")
+
+# if DEBUG:
+#     generate_individual_graphic()

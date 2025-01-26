@@ -12,8 +12,10 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": false,
-            "cwd": "${workspaceFolder}",
+            // "cwd": "${workspaceFolder}",
             "args": ["debug"],
+            "cwd": "${fileDirname}"
+
         }
     ]
 }
