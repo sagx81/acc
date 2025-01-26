@@ -1,11 +1,58 @@
+# import os
+# import glob
+# # import csv
+# from PIL import Image, ImageDraw, ImageFont
+
+# from utils_entities import constants
+
 import os
 import glob
-import csv
+import sys
 from PIL import Image, ImageDraw, ImageFont
 
-from utils_entities import constants
-# from combined import constants
-# from combined.entities.track_data import track_data
+
+# def is_debug():
+#     import sys
+
+#     gettrace = getattr(sys, 'gettrace', None)
+
+#     if gettrace is None:
+#         return False
+#     else:
+#         v = gettrace()
+#         if v is None:
+#             return False
+#         else:
+#             return True
+
+# print(f" is debug: {is_debug()}")
+
+DEBUG = False
+if (len(sys.argv) == 2 and sys.argv[1] == 'debug'):
+    DEBUG = True
+    # print("IS DEBUG")
+
+# gettrace = getattr(sys, 'gettrace', None)
+# if gettrace is None:
+#     print('No sys.gettrace')
+# elif gettrace():
+#     print('Hmm, Big Debugger is watching me')
+# else:
+#     print("Let's do something interesting")
+#     print(1 / 0)
+
+# DEBUG = sys.gettrace() is not None
+# print(f"\nDEBUG MODE: {DEBUG}\n")
+
+
+if DEBUG:
+    from pathlib import Path
+    sys.path.append(str(Path(__file__).parent.parent))
+    from utils_entities import constants    
+else:
+    from utils_entities import constants
+
+
 
 input_dir = constants.output_phase1
 output_dir = constants.output_individual_graphic
