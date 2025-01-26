@@ -3,6 +3,7 @@ import glob
 import sys
 from PIL import Image, ImageDraw, ImageFont
 from utils_entities import constants
+from utils_entities import utilities
 
 
 # def is_debug():
@@ -40,8 +41,8 @@ from utils_entities import constants
 #     DEBUG = True
 
 
-    
-input_dir = constants.output_phase1
+
+input_files_dir = constants.files_result_phase_1
 output_dir = constants.files_individual_graphic
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
@@ -72,7 +73,7 @@ def generate_individual_graphic():
     # stars_column_widths = [100, 400, 420, 400, 215, 215, 215]
     
     # input_dirs = os.path.join(constants.output_phase1, inputResultsFolder)
-    dirs = glob.glob(os.path.join(constants.output_phase1, "*"))
+    dirs = glob.glob(os.path.join(input_files_dir, "*"))
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
 
@@ -101,7 +102,8 @@ def generate_individual_graphic():
                 # with open(csv_file, mode='r', encoding='utf-8') as file:
                     # reader = csv.DictReader(file)
                     
-                results = constants.get_results_from_csv(csv_file, constants.process_graphic_individual)
+                # results = constants.get_results_from_csv(csv_file, constants.process_graphic_individual)
+                results = utilities.get_results_from_csv(csv_file, constants.process_graphic_individual)
 
                 # print(f"\n*** Results Image => Preparing Image file {csv_file}")
                 
@@ -122,7 +124,7 @@ def generate_individual_graphic():
                     draw.text((x_position - text_width // 2, header_y_start), str(header), fill="grey", font=font)
 
                 short_name = os.path.basename(csv_file).split("-")[0].lower()
-                track_name = constants.get_track_name(short_name)
+                track_name = utilities.get_track_name(short_name)
 
                 # track_name = os.path.basename(csv_file).split("-")[0].upper()
                 # print(f"Track name: {track_name}")
@@ -141,7 +143,7 @@ def generate_individual_graphic():
                 result_y_start = header_y_start + header_line_height + 38
                 result_line_height = 96
 
-                fastestLap = constants.get_fastest_lap(results)
+                fastestLap = utilities.get_fastest_lap(results)
 
                 # draw rows
                 for i, row in enumerate(results, start=0):
@@ -237,19 +239,21 @@ def generate_individual_graphic():
                     raceType = 'WL'
 
                 logo_image = os.path.join(constants.logoFolder,f"{raceType}.png")
+                if os.path.exists(logo_image):
+                    logo = Image.open(logo_image)
 
-                logo = Image.open(logo_image)
+                    # Zmiana rozmiaru logo
+                    new_logo_width = 400  # Ustawienia szerokości dla logo
+                    new_logo_height = 400  # Ustawienia wysokości dla logo
+                    logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
+
+                    logo_x = 1500  # Ustawienia pozycji X dla logo
+                    logo_y = -140  # Ustawienia pozycji Y dla logo
+                    bg_image.paste(logo, (logo_x, logo_y), logo)
+
                 # logo_width, logo_height = logo.size
 
-                # Zmiana rozmiaru logo
-                new_logo_width = 400  # Ustawienia szerokości dla logo
-                new_logo_height = 400  # Ustawienia wysokości dla logo
-                logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
-
-                logo_x = 1500  # Ustawienia pozycji X dla logo
-                logo_y = -140  # Ustawienia pozycji Y dla logo
-                bg_image.paste(logo, (logo_x, logo_y), logo)
-
+                
                 
                 # output_image_file = os.path.join(constants.current_dir, constants.output_individual_graphic, input_dir, imageFile)
                 output_image_file = os.path.join(directoryPath, imageFile)
