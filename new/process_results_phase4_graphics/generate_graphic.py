@@ -77,6 +77,10 @@ def generate_individual_graphic():
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
 
+            if '(' in csv_file:
+                continue
+
+
             #TODO: to be removed
             # if 'stars' not in input_dir.lower():
             #     continue
