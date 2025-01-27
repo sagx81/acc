@@ -5,7 +5,7 @@ python3 start.py
 
 
 python3 -m pip install Pillow
-
+python3 -m pip install PyQt5
 
 
 
