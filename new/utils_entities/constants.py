@@ -60,6 +60,7 @@ current_dir = os.getcwd()
 files_from_ftp = os.path.join(current_dir, "files_from_ftp")
 files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
 files_result_phase_2 = os.path.join(current_dir, "files_results_phase_2")
+files_result_phase_3 = os.path.join(current_dir, "files_results_phase_3")
 files_individual_graphic = os.path.join(current_dir, "files_result4_individual_graphics")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
