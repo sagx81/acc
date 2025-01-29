@@ -11,13 +11,15 @@ import csv
 from collections import defaultdict
 # from PIL import Image, ImageDraw, ImageFont
 
-import constants
-from process_graphic_individual import generate_graphic_gc
+from utils_entities import constants
+from utils_entities import utilities
+from process_results_phase4_graphics import generate_graphic_gc
+# from process_graphic_individual import generate_graphic_gc
 # from combined import constants
 # from combined.entities.track_data import track_data
 
-# input_dir = constants.output_phase1
-output_dir = constants.output_individual_graphic
+input_dir = constants.files_result_phase_1
+output_dir = constants.files_result_phase_3
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 
