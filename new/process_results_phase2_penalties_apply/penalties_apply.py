@@ -204,7 +204,7 @@ def apply_penalties():
 
                         # if not row['Total time ms'] available - that means results are already reworked and penalties applied
                         if not row['Total time ms']:
-                            break;
+                            break
 
                         position = int(row['Position'])
                         driver = row['Driver']                

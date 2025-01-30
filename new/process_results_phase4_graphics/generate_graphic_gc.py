@@ -2,14 +2,13 @@ import os
 import glob
 import csv
 from PIL import Image, ImageDraw, ImageFont
-
-import constants
+from utils_entities import constants
 
 # GRAFIKA KG
 # Sprawdzenie istnienia plików graficznych
 
 input_dir = constants.output_phase1
-output_dir = constants.output_individual_graphic
+output_dir = constants.files_result_phase_3
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 # logo_image = os.path.join(constants.process_graphic_individual, "files", "Logo", "race results.png")
