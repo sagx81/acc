@@ -203,7 +203,7 @@ def apply_penalties():
                         # print(f"winner time: {winnerTimeMiliseconds}")
 
                         # if not row['Total time ms'] available - that means results are already reworked and penalties applied
-                        if not row['Total time ms']:
+                        if 'Total time ms' not in row or not row['Total time ms']:
                             break
 
                         position = int(row['Position'])
@@ -468,9 +468,11 @@ def apply_penalties():
                         
                         # output_csv_file = csv_file.replace(".csv", "_penalties_applied.csv")
                         output_csv_file = csv_file
-                        with open(output_csv_file, mode='w', newline='', encoding='utf-8') as csvFile:
+                        with open(output_csv_file, mode='w+', newline='', encoding='utf-8') as csvFile:
                             writer = csv.writer(csvFile)
-                            writer.writerows(fileRows)    
+                            writer.writerows(fileRows)
+                            csvFile.close()
+                            # csvFile.writerows(fileRows)    
                     
                     except Exception as e:
                         print(f"Apply Penalties save csv file - An error occurred saving {csv_file}: {e}")

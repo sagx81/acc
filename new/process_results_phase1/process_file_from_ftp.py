@@ -203,9 +203,11 @@ def get_race_results():
                 if not os.path.exists(output_dir):
                     os.makedirs(output_dir)
 
-                with open(output_csv_file, mode='w', newline='', encoding='utf-8') as csv_file:
+                with open(output_csv_file, mode='w+', newline='', encoding='utf-8') as csv_file:
                     writer = csv.writer(csv_file)
                     writer.writerows(results)
+                    csv_file.close()
+                    # csv_file.writerows(results)
 
                 # save processed file
                 #processedFiles.append([os.path.basename(json_file), datetime.datetime.now()])
