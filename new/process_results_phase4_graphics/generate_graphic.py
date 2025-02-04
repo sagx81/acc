@@ -80,10 +80,9 @@ def generate_individual_graphic():
             if '(' in csv_file:
                 continue
 
-
-            #TODO: to be removed
-            # if 'stars' not in input_dir.lower():
+            # if '_Q' in csv_file:
             #     continue
+
 
             isStars = False
             if 'stars' in input_dir.lower():
@@ -129,6 +128,23 @@ def generate_individual_graphic():
 
                 short_name = os.path.basename(csv_file).split("-")[0].lower()
                 track_name = utilities.get_track_name(short_name)
+
+                # prepare output path
+                if "penalties_applied" in csv_file:
+                    imageFile = os.path.basename(csv_file).replace("_penalties_applied.csv", ".png")
+                else:
+                    imageFile = os.path.basename(csv_file).replace(".csv", ".png")
+                
+                directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
+                if not os.path.exists(directoryPath):
+                    os.makedirs(directoryPath)
+
+
+                output_image_file = os.path.join(directoryPath, imageFile)
+                
+                # skipp if file exists
+                if (os.path.exists(output_image_file)):
+                    continue
 
                 # track_name = os.path.basename(csv_file).split("-")[0].upper()
                 # print(f"Track name: {track_name}")
@@ -226,14 +242,10 @@ def generate_individual_graphic():
                 if not os.path.exists(constants.files_individual_graphic):
                     os.makedirs(constants.files_individual_graphic)
                 
-                directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
-                if not os.path.exists(directoryPath):
-                    os.makedirs(directoryPath)
+                # directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
+                # if not os.path.exists(directoryPath):
+                #     os.makedirs(directoryPath)
                 
-                if "penalties_applied" in csv_file:
-                    imageFile = os.path.basename(csv_file).replace("_penalties_applied.csv", ".png")
-                else:
-                    imageFile = os.path.basename(csv_file).replace(".csv", ".png")
                 
 
                 # logo
@@ -259,8 +271,9 @@ def generate_individual_graphic():
 
                 
                 
-                # output_image_file = os.path.join(constants.current_dir, constants.output_individual_graphic, input_dir, imageFile)
-                output_image_file = os.path.join(directoryPath, imageFile)
+                
+                
+                # output_image_file = os.path.join(directoryPath, imageFile)
                 bg_image.save(output_image_file, overwrite=True)
                 # print(f"Result Image saved: {output_image_file}")
 

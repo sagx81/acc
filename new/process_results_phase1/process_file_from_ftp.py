@@ -27,11 +27,17 @@ def get_race_results():
 
     processedFileHasValue = False
     filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
-    previousRaceDay = ""    
+    previousRaceDay = ""   
 
     for json_file in filesSorted:
         try:
             # print(f"Processing file: {json_file}")
+
+            # get only files after 2025
+            filesFilter = os.path.join(input_dir,"250000_000000_0.json")
+
+            if (json_file < filesFilter):
+                continue
 
             if (json_file.split('_')[0] == previousRaceDay):
                 raceIndex += 1
@@ -104,6 +110,11 @@ def get_race_results():
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
                 output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
+
+                # skipp if file already exists (delete file manually if requires reporocess)
+                if os.path.exists(output_csv_file):
+                    continue
+
 
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
