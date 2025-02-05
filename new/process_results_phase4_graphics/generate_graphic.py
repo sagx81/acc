@@ -80,16 +80,12 @@ def generate_individual_graphic():
             if '(' in csv_file:
                 continue
 
-            # if '_Q' in csv_file:
-            #     continue
-
+            if '_Q' in csv_file:
+                continue
 
             isStars = False
             if 'stars' in input_dir.lower():
                 isStars = True
-
-                
-
 
             penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
             if os.path.exists(penaltiesAppliedCsv):
@@ -275,7 +271,7 @@ def generate_individual_graphic():
                 
                 # output_image_file = os.path.join(directoryPath, imageFile)
                 bg_image.save(output_image_file, overwrite=True)
-                # print(f"Result Image saved: {output_image_file}")
+                print(f"Result Image saved: {output_image_file}")
 
                 # os.remove(json_file)
 

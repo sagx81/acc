@@ -106,7 +106,8 @@ def get_race_results():
                     postfix = '_Q'
                     isQuali = True
 
-                base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}{postfix}"
+                # base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}{postfix}"
+                base_output_name = f"{date_part}-{time_part}-{short_name}-{seriesDir}{raceNumber}{postfix}"
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
                 output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
