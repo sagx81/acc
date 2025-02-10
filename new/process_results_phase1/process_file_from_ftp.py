@@ -7,6 +7,7 @@ import datetime
 
 from utils_entities import constants
 from utils_entities import utilities
+from utils_entities import entities
 from utils_entities.processed_files import ProcessedFile
 
 # from new.utils_entities import constants
@@ -125,6 +126,7 @@ def get_race_results():
                     min_laps_required = 0
 
                 results = []
+                results2 = []
                 best_lap_times = []
                 first_driver_time = None
                 first_driver_laps = max_lap_count
@@ -152,10 +154,15 @@ def get_race_results():
                         points_awarded = 0
                     # elif isQuali: ?????
                     else:
-                        if i == 0:
+                        if i == 0 and not isQuali:
                             first_driver_time = total_time_ms
                             first_driver_best_time_ms = best_lap_ms
                             total_time_str = utilities.convert_time(total_time_ms)
+                        elif i == 0 and isQuali:    
+                            first_driver_time = best_lap_ms
+                            first_driver_best_time_ms = best_lap_ms
+                            total_time_str = utilities.convert_time(best_lap_ms)
+                            total_time_ms = best_lap_ms
                         else:
                             #TODO crash here : first_driver_time is none , 1st driver DNF - noo, it is about Quali
                             if isQuali:
@@ -163,11 +170,15 @@ def get_race_results():
                             else:
                                 time_difference = total_time_ms - first_driver_time
                             timeDiffString = utilities.convert_time(time_difference)
+                            
                             # sometimes there is negative value if total driver time was < than total time of the winner
                             # for example when joining race after start    
+                            # in such case clear timing difference value, leave laps only
                             if ('-' not in timeDiffString):
                                 timeDiffString = f"+{timeDiffString}"
-                            
+                            else:
+                                timeDiffString = ""
+
                             if isQuali:
                                 total_time_ms = best_lap_ms
                                 total_time_str = utilities.convert_time(best_lap_ms)
@@ -188,18 +199,38 @@ def get_race_results():
 
                     # print("append results")
                     # print(f"{i}\n")
-                    
-                    results.append([
-                        i + 1,
-                        driver_names_str,
-                        total_time_str,
-                        total_time_ms,
-                        best_lap_str,
-                        lap_count,
-                        points_awarded
-                    ])
+
+                    results2.append(entities.ResultRow(i + 1, driver_names_str, 0, total_time_ms, total_time_str, best_lap_str, lap_count, points_awarded))
+                    # results.append([
+                    #     i + 1,
+                    #     driver_names_str,
+                    #     total_time_str,
+                    #     total_time_ms,
+                    #     best_lap_str,
+                    #     lap_count,
+                    #     points_awarded
+                    # ])
+
                     best_lap_times.append(best_lap_ms)
 
+                # points calculation : maxPoints = drivers count + 1
+                maxPoints = results2.__len__()
+                for i, r in enumerate(results2):
+                    if not (r.driverPoints == 0):
+                        r.driverPoints = maxPoints - i                        
+
+
+                # build csv output file
+                for i,r in enumerate(results2):
+                    results.append([
+                        r.position,
+                        r.driver,
+                        r.totalTimeString,
+                        r.totalTimeMs,
+                        r.bestLap,
+                        r.laps,
+                        r.driverPoints
+                    ])                    
                 results.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
 
                 # print("best lap")
