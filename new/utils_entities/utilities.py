@@ -1,5 +1,6 @@
 import os
 import csv
+import requests
 from . import entities
 from . import track_data
 
@@ -51,6 +52,43 @@ def get_results_from_csv(csv_file: str, inovkedBy: str):
             
     # print(f"** Results prepared ** \n")
     return results
+
+
+def get_results_from_csv2(csv_file, inovkedBy):
+    results = []
+    try:
+        with open(csv_file, mode='r', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+
+            for row in reader:
+                driverResult = entities.ResultRowV2()
+                
+                driverResult.position = int(row['Position'])
+                driverResult.driver = row['Driver']                
+                driverResult.timing = str(row['Total time']) 
+                driverResult.totalTimeString = str(row['Total time']) 
+                driverResult.totalTimeMs = int(row['Total time ms']) 
+                driverResult.bestLap = row['Best lap']
+                driverResult.laps = int(row['Laps'])
+                driverResult.points = int(row['Points'])        
+                driverResult.carId = int(row['Car ID'])
+                driverResult.raceNumber = int(row['Race Number'])
+                driverResult.carModel = int(row['Car Model'])
+                driverResult.carGroup = str(row['Car Group'])
+                driverResult.cupCategory = str(row['Cup Category'])
+                driverResult.ballastKg = int(row['Ballast Kg'])
+                driverResult.playerId = str(row['Player ID'])
+                driverResult.isWetSession = int(row['Is Wet Session'])
+                driverResult.isSpectator = int(row['Is Spectator'])
+                driverResult.missingMandatoryPitstop = int(row['Missing Mandatory Pitstop'])
+
+                results.append(driverResult)
+
+    except Exception as e:
+        print(f"Error: Reading from csv {csv_file} by {inovkedBy} : {e}")
+
+    return results
+
 
 def generate_unique_filename(output_dir, base_name, extension="png"):
     counter = 1
@@ -192,3 +230,50 @@ def is_penalty_valid_for_race(penalty, directory, file):
         and str(file.lower()).find(penalty.track.lower()) >= 0 
         and str(file.lower()).find(penalty.raceNumber.lower()) >= 0):
         return True
+
+
+def save_csv_file(output_csv_file, output_dir, results):
+    try:
+        print(f"output_csv_file: {output_csv_file}")
+
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+
+        with open(output_csv_file, mode='w+', newline='', encoding='utf-8') as csv_file:
+            writer = csv.writer(csv_file)
+            writer.writerows(results)
+            csv_file.close()
+    except Exception as e:
+        print(f"An error occurred saving file {output_csv_file}: {e}")
+
+
+def save_csv_results(output_csv_file, output_dir, resultsV2):
+    
+    # build csv output file
+    reultsCsv = []
+    for i,r in enumerate(resultsV2):
+        reultsCsv.append([
+            r.position,
+            r.driver,
+            r.totalTimeString,
+            r.totalTimeMs,
+            r.bestLap,
+            r.laps,
+            r.points,                        
+            r.carId,
+            r.raceNumber,
+            r.carModel,
+            r.carGroup,
+            r.cupCategory,
+            r.ballastKg,
+            r.playerId,
+            r.isWetSession,
+            r.isSpectator,
+            r.missingMandatoryPitstop
+
+        ])                    
+    reultsCsv.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points', 'Car ID', 'Race Number', 'Car Model', 'Car Group', 'Cup Category', 'Ballast Kg', 'Player ID', 'Is Wet Session', 'Is Spectator', 'Missing Mandatory Pitstop'])
+    
+    save_csv_file(output_csv_file+"2", output_dir, reultsCsv)
+
+

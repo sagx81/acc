@@ -156,6 +156,10 @@ def apply_penalties():
 
             # previousRaceDay = csv_file.split('_')[0]
 
+            # skipp Qualifications
+            if "_Q" in csv_file:
+                continue
+
             applyPenalties = False
             # print(f"penalties: {penalties}")
             # print(f"csv_file: {csv_file}")
@@ -406,21 +410,42 @@ def apply_penalties():
                     # for res in sortedResults:
                     #     print(f"{res}")
 
+                    maxPoints = len(sortedResults)
                     for res in sortedResults:
+                        # new points calculation
+                        # res.position = sortedResults.index(res) + 1
+                        i = sortedResults.index(res)
+                        res.position = i + 1
+                        if (res.driverPoints != 0):
+                            res.driverPoints = maxPoints - i
+                        else:
+                            res.driverPoints = 0
+
+
+                        # OLD points calculation
+                        # print(f"position: {res.position} vs {sortedResults.index(res) + 1}")
+                        # res.position = sortedResults.index(res) + 1
+                        # if (res.driverPoints != 0 and res.position <= len(points)):
+                        #     res.driverPoints = points[res.position - 1]                        
+                        # elif (res.driverPoints != 0 and res.position > len(points)):
+                        #     res.driverPoints = 1
+                        # else:
+                        #     res.driverPoints = 0
+
+
+                        
                         # if (sortedResults.index(res) == 0):
                         #     winnerTimeMsAfterPenalties = convert_time_to_miliseconds(res.totalTimeString)
                         #     res.timing = convert_time(winnerTimeMsAfterPenalties)
                         # else:
                         #     res.timing = convert_time(res.totalTimeMs-winnerTimeMsAfterPenalties)
                         
-                        # print(f"position: {res.position} vs {sortedResults.index(res) + 1}")
-                        res.position = sortedResults.index(res) + 1
-                        if (res.driverPoints != 0 and res.position <= len(points)):
-                            res.driverPoints = points[res.position - 1]                        
-                        elif (res.driverPoints != 0 and res.position > len(points)):
-                            res.driverPoints = 1
-                        else:
-                            res.driverPoints = 0
+
+                        
+                      
+
+
+
 
                     # set points after penalties ??
 

@@ -117,7 +117,6 @@ def get_race_results():
                 if os.path.exists(output_csv_file):
                     continue
 
-
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
                     max_lap_count = max(lap_counts)
@@ -127,18 +126,43 @@ def get_race_results():
 
                 results = []
                 results2 = []
+                resultsV2 = []
+                resultsV2csv = []
                 best_lap_times = []
                 first_driver_time = None
                 first_driver_laps = max_lap_count
                 first_driver_best_time_ms = 0
 
                 for i, line in enumerate(data['sessionResult']['leaderBoardLines']):
+                    
+                    #ResultRow V2 data
+                    driverResult = entities.ResultRowV2()
+                    driverResult.carId = line['car']['carId']
+                    driverResult.raceNumber = line['car']['raceNumber']
+                    driverResult.carModel = line['car']['carModel']
+                    driverResult.carGroup = line['car']['carGroup']
+                    driverResult.cupCategory = line['car']['cupCategory']
+                    driverResult.ballastKg = line['car']['ballastKg']
+                    driverResult.isWetSession = data['sessionResult']['isWetSession']
+                    driverResult.isSpectator = line["bIsSpectator"]
+                    driverResult.missingMandatoryPitstop = line["missingMandatoryPitstop"]
+                    
                     drivers = line['car']['drivers']
-                    driverNumber = line['car']['raceNumber']
-                    driverCar = line['car']['carModel']
-
+                    
                     driver_names = [driver['lastName'] for driver in drivers]
                     driver_names_str = ", ".join(driver_names)
+                    driverResult.driver = driver_names_str
+
+                    player_ids = [driver['playerId'] for driver in drivers]
+                    player_ids_str = ", ".join(player_ids)
+                    driverResult.playerId = player_ids_str                    
+                    
+                    # drivers = line['car']['drivers']
+                    # driverNumber = line['car']['raceNumber']
+                    # driverCar = line['car']['carModel']
+                    # driver_names = [driver['lastName'] for driver in drivers]
+                    # driver_names_str = ", ".join(driver_names)
+
                     total_time_ms = line['timing']['totalTime']
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
@@ -197,9 +221,20 @@ def get_race_results():
                         else:
                             points_awarded = constants.points[i] if i < len(constants.points) else 1
 
+
+                    #driver results V2
+                    driverResult.position = i + 1
+                    driverResult.totalTimeString = total_time_str
+                    driverResult.totalTimeMs = total_time_ms
+                    driverResult.bestLap = best_lap_str
+                    driverResult.laps = lap_count
+                    driverResult.points = points_awarded
+                    resultsV2.append(driverResult)
+                    
+                    
+                    
                     # print("append results")
                     # print(f"{i}\n")
-
                     results2.append(entities.ResultRow(i + 1, driver_names_str, 0, total_time_ms, total_time_str, best_lap_str, lap_count, points_awarded))
                     # results.append([
                     #     i + 1,
@@ -212,7 +247,7 @@ def get_race_results():
                     # ])
 
                     best_lap_times.append(best_lap_ms)
-
+                
                 # points calculation : maxPoints = drivers count + 1
                 maxPoints = results2.__len__()
                 for i, r in enumerate(results2):
@@ -233,13 +268,52 @@ def get_race_results():
                     ])                    
                 results.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
 
+
+
+
+                # V2 points calculation : maxPoints = drivers count + 1
+                maxPointsV2 = resultsV2.__len__()
+                for i, r in enumerate(resultsV2):
+                    if not (r.points == 0):
+                        r.points = maxPointsV2 - i    
+
+                # utilities.save_csv_results(output_csv_file, output_dir, resultsV2)
+
+
+
+                # # build csv output file
+                # for i,r in enumerate(resultsV2):
+                #     resultsV2csv.append([
+                #         r.position,
+                #         r.driver,
+                #         r.totalTimeString,
+                #         r.totalTimeMs,
+                #         r.bestLap,
+                #         r.laps,
+                #         r.points,                        
+                #         r.carId,
+                #         r.raceNumber,
+                #         r.carModel,
+                #         r.carGroup,
+                #         r.cupCategory,
+                #         r.ballastKg,
+                #         r.playerId,
+                #         r.isWetSession,
+                #         r.isSpectator,
+                #         r.missingMandatoryPitstopass
+
+                #     ])                    
+                # resultsV2.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points', 'Car ID', 'Race Number', 'Car Model', 'Car Group', 'Cup Category', 'Ballast Kg', 'Player ID', 'Is Wet Session', 'Is Spectator', 'Missing Mandatory Pitstop'])
+                
+                # utilities.save_csv_file(output_csv_file, output_dir, resultsV2)
+
                 # print("best lap")
                 
-                if best_lap_times:
-                    fastest_lap_time = min(best_lap_times)
-                    fastest_lap_time_converted = utilities.convert_time(fastest_lap_time)
-                else:
-                    fastest_lap_time_converted = None
+                # if best_lap_times:
+                #     fastest_lap_time = min(best_lap_times)
+                #     fastest_lap_time_converted = utilities.convert_time(fastest_lap_time)
+                # else:
+                #     fastest_lap_time_converted = None
 
                 print(f"output_csv_file: {output_csv_file}")
 

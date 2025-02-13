@@ -35,3 +35,54 @@ class ResultRow:
 
     def __repr__(self):
         return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.driverPoints}"
+
+
+class ResultRowV2:
+
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, position=0, driver=None, timing=None, totalTimeMs=0, totalTimeString=None, bestLap=None, laps=0, points=0, isDsq=False, isWetSession=False, carId=None, carModel=None, cupCategory=None, carGroup=None, teamName=None, raceNumber=None, carGuid=None, teamGuid=None, firstName=None, lastName=None, playerId=None, missingMandatoryPitstop=False, isSpectator=False, ballastKg=None):
+        self.position = position
+        self.driver = driver
+        self.timing = timing
+        self.totalTimeMs = totalTimeMs
+        self.totalTimeString = totalTimeString
+        self.bestLap = bestLap
+        self.laps = laps
+        self.points = points
+        self.isDsq = isDsq
+        self.isWetSession = isWetSession
+        self.carId = carId
+        self.carModel = carModel
+        self.cupCategory = cupCategory
+        self.carGroup = carGroup
+        self.ballastKg = ballastKg
+        self.teamName = teamName
+        self.raceNumber = raceNumber
+        self.carGuid = carGuid
+        self.teamGuid = teamGuid
+        self.firstName = firstName
+        self.lastName = lastName
+        self.playerId = playerId
+        self.missingMandatoryPitstop = missingMandatoryPitstop
+        self.isSpectator = isSpectator
+
+    def __repr__(self):
+        return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}, IsDsq: {self.isDsq}, IsWetSession: {self.isWetSession}, CarId: {self.carId}, CarModel: {self.carModel}, CupCategory: {self.cupCategory}, CarGroup: {self.carGroup}, TeamName: {self.teamName}, RaceNumber: {self.raceNumber}, CarGuid: {self.carGuid}, TeamGuid: {self.teamGuid}, FirstName: {self.firstName}, LastName: {self.lastName}, PlayerId: {self.playerId}, MissingMandatoryPitstop: {self.missingMandatoryPitstop}, IsSpectator: {self.isSpectator}, BallastKg: {self.ballastKg}"
+
+
+class DriverWeb:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, discordId, playerID, callsign, numer, ranga):
+        self.discordId = discordId
+        self.playerID = playerID
+        self.callsign = callsign
+        self.numer = numer
+        self.ranga = ranga
+
+    def __repr__(self):
+        return f"DiscordId: {self.discordId}, PlayerID: {self.playerID}, Callsign: {self.callsign}, Numer: {self.numer}, Ranga: {self.ranga}\n"
+

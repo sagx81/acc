@@ -80,7 +80,9 @@ def generate_individual_graphic():
             if '(' in csv_file:
                 continue
 
+            isQuali = False
             if '_Q' in csv_file:
+                isQuali = True
                 continue
 
             isStars = False
@@ -122,8 +124,10 @@ def generate_individual_graphic():
                     text_width = text_bbox[2] - text_bbox[0]
                     draw.text((x_position - text_width // 2, header_y_start), str(header), fill="grey", font=font)
 
-                short_name = os.path.basename(csv_file).split("-")[0].lower()
+                short_name = os.path.basename(csv_file).split("-")[2].lower()
                 track_name = utilities.get_track_name(short_name)
+                if isQuali:
+                    track_name = track_name + " (Kwalifikacje)"
 
                 # prepare output path
                 if "penalties_applied" in csv_file:
