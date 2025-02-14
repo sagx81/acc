@@ -103,7 +103,7 @@ def generate_unique_filename(output_dir, base_name, extension="png"):
 def get_fastest_lap(results):
     fastest_lap_time = None
     for row in results:
-        if fastest_lap_time is None or row.bestLap < fastest_lap_time:
+        if not row.bestLap == "00:00:000" and (fastest_lap_time is None or row.bestLap < fastest_lap_time):
             fastest_lap_time = row.bestLap
     return fastest_lap_time
 

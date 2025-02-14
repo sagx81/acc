@@ -56,6 +56,7 @@ def get_race_results():
             if (json_file < filesFilter):
                 continue
 
+
             # skipp Quali files from same day but earlier hour
             if isQuali and (date_part == sameDayQuali):
                 continue
@@ -100,6 +101,12 @@ def get_race_results():
                 continue
 
             if data:
+                
+                # skipp not valid files (session held but no valid best laps recorded)
+                if data['sessionResult']['bestlap'] == 0:
+                    continue
+                
+                # skipp if Open session
                 serverName = data.get('serverName')
                 if ("open" in serverName.lower()):
                     continue
@@ -137,8 +144,8 @@ def get_race_results():
                         else:
                             raceIndex = 2
                         sameDayRace = date_part
-                    elif isWeekLeague and isQuali:
-                        sameDayQuali = date_part
+                    # elif isWeekLeague and isQuali:
+                    #     sameDayQuali = date_part
 
                     raceNumber = ""
                     if isWeekLeague and not isQuali:
@@ -146,6 +153,9 @@ def get_race_results():
 
                 # Week League end
 
+                #skipp multiple Qualis from the same day
+                if isQuali:
+                    sameDayQuali = date_part
 
 
                 seriesDir = seriesDir.upper()    
