@@ -1,11 +1,14 @@
-- start aplikacji: 
-
-python start.py
-python3 start.py
-
-
+- wymagania:
+python3 -m pip install requests
 python3 -m pip install Pillow
 python3 -m pip install PyQt5
+
+
+- start aplikacji: 
+
+cd .../new
+python start.py
+python3 start.py
 
 
 

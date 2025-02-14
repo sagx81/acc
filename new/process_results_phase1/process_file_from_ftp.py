@@ -4,16 +4,14 @@ import json
 import glob
 import csv
 import datetime
+from pathlib import Path
 
 from utils_entities import constants
 from utils_entities import utilities
 from utils_entities import entities
-from utils_entities.processed_files import ProcessedFile
 
-# from new.utils_entities import constants
-# from new.utils_entities import utilities
-# from new.utils_entities.processed_files import ProcessedFile
-
+#processed files
+#from utils_entities.processed_files import ProcessedFile
 
 current_dir = os.getcwd()
 input_dir = constants.files_from_ftp
@@ -26,27 +24,42 @@ def get_race_results():
 
     print("\n*** Processing FTP files phase - 1 \n")
 
-    processedFileHasValue = False
-    filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
-    previousRaceDay = ""   
+    # processedFileHasValue = False
+    # filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
+    # path_object = Path(input_dir)
+    # filesSorted = sorted(path_object.glob("*.json"), key=lambda item: item.name, reverse=True)
+    # items = os.listdir(input_dir)
+
+    items = glob.glob(os.path.join(input_dir, "*.json"))
+    filesSorted = sorted(items, reverse=True)
+
+    # previousRaceDay = ""   
+    sameDayRace = ""
+    sameDayQuali = ""
 
     for json_file in filesSorted:
         try:
-            # print(f"Processing file: {json_file}")
 
-            # get only files after 2025
-            filesFilter = os.path.join(input_dir,"250000_000000_0.json")
+            base_name = os.path.basename(json_file)
+            date_part = base_name.split('_')[0]
+            time_part = base_name.split('_')[1]
+            
+            isQuali = False
+            postfix = ''
+            if '_Q' in json_file:
+                isQuali = True
+                postfix = '_Q'
+
+            # process files only after 2025
+            filesFilter = os.path.join(input_dir,"250200_000000_0.json")
 
             if (json_file < filesFilter):
                 continue
 
-            if (json_file.split('_')[0] == previousRaceDay):
-                raceIndex += 1
-            else:
-                raceIndex = 1
-
-            previousRaceDay = json_file.split('_')[0]
-            
+            # skipp Quali files from same day but earlier hour
+            if isQuali and (date_part == sameDayQuali):
+                continue
+                        
             # skipp if processed
             # if (os.path.exists(processedFilesCSV) ):
             #     processedFileHasValue = True
@@ -64,30 +77,76 @@ def get_race_results():
             #         if (fileFound):
             #             continue
             
-            # print(f"Openning file: {json_file}")
+            #try different json encodings (might change after FTP json file update)
+            data = None
+            try:
+                with open(json_file, 'r', encoding='utf-16-le') as file:
+                # with open(json_file, 'r', encoding='utf-8-sig') as file:
+                    data = json.load(file)
+            except Exception as e:
+                warning = 1
+                # print(f"Error reading file: {json_file} in UTF-16-LE. {e}. Trying to read in UTF-16")
 
-            with open(json_file, 'r', encoding='utf-16-le') as file:
-                data = json.load(file)
+            if not data:
+                try:
+                    with open(json_file, 'r', encoding='utf-16') as file:
+                        data = json.load(file)
+                except Exception as e:
+                    warning = 1
+                    # print(f"Error reading file: {json_file} in UTF-16. {e}")                    
 
+            if not data:
+                print(f"!! Could not read FILE: {json_file}")
+                continue
+
+            if data:
                 serverName = data.get('serverName')
                 if ("open" in serverName.lower()):
-                    # print(f"\n SKIPPING file: {json_file}\n")
                     continue
-                
+
+                # get server name
                 if (serverName):
                     seriesDir = serverName.split('|')[1].strip()
                 else:
                     seriesDir = "unknown"                
 
-                # week LEAUGE exception - wrong name was gnerated in the FTP, server was set with spelling issue
-                week_league = "WEEK LEAGUE"
-                if "week leauge" in seriesDir.lower():
-                    seriesDir = seriesDir.upper().replace("WEEK LEAUGE", week_league).replace("  ", " ")
+                # base_name = os.path.basename(json_file)
+                # date_part = base_name.split('_')[0]
+                # time_part = base_name.split('_')[1]
                 
+                # double space series naming exceptions
+                if "  " in seriesDir.lower():
+                    seriesDir = seriesDir.replace("  ", " ")
+
+
+                # Week League
                 # determine race number by time the race was held
-                raceNumber = ""
-                if ("week league" in seriesDir.lower()):
-                    raceNumber = f" R{int(raceIndex)}"
+                isWeekLeague = False
+                if "week league" in seriesDir.lower():
+                    isWeekLeague = True
+                # week LEAUGE exceptions - wrong name was gnerated in the FTP, server was set with spelling issue
+                if isWeekLeague:
+                    week_league_str = "WEEK LEAGUE"
+                    if isWeekLeague:
+                        seriesDir = seriesDir.upper().replace("WEEK LEAUGE", week_league_str).replace("  ", " ")
+
+                    # calculate week league reace number (exclude isQuali)                                              
+                    if isWeekLeague and not isQuali:
+                        if (date_part == sameDayRace):
+                            raceIndex = 1
+                        else:
+                            raceIndex = 2
+                        sameDayRace = date_part
+                    elif isWeekLeague and isQuali:
+                        sameDayQuali = date_part
+
+                    raceNumber = ""
+                    if isWeekLeague and not isQuali:
+                        raceNumber = f" R{int(raceIndex)}"
+
+                # Week League end
+
+
 
                 seriesDir = seriesDir.upper()    
                 output_dir = os.path.join(current_dir, output_phase1, seriesDir)
@@ -96,16 +155,9 @@ def get_race_results():
 
                 short_name = data.get('trackName', 'unknown_track')
 
-                base_name = os.path.basename(json_file)
-                date_part = base_name.split('_')[0]
-                time_part = base_name.split('_')[1]
-
-                # Quali files
-                isQuali = False
-                postfix = ''
-                if '_Q' in json_file:
-                    postfix = '_Q'
-                    isQuali = True
+                # base_name = os.path.basename(json_file)
+                # date_part = base_name.split('_')[0]
+                # time_part = base_name.split('_')[1]
 
                 # base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}{postfix}"
                 base_output_name = f"{date_part}-{time_part}-{short_name}-{seriesDir}{raceNumber}{postfix}"
@@ -117,10 +169,11 @@ def get_race_results():
                 if os.path.exists(output_csv_file):
                     continue
 
+                # min laps required for results
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
                     max_lap_count = max(lap_counts)
-                    min_laps_required = max_lap_count * 0.75
+                    min_laps_required = max_lap_count * 0.8
                 else:
                     min_laps_required = 0
 
@@ -166,6 +219,9 @@ def get_race_results():
                     total_time_ms = line['timing']['totalTime']
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
+
+                    if best_lap_ms >= total_time_ms:
+                        best_lap_ms = 0
 
                     # print("for loop \n")
 
