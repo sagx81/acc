@@ -17,7 +17,9 @@ GIT:
 - to commit:
   git config --global user.name "John Doe"
   git config --global user.email johndoe@example.com
-
+- to push:
+  create classic token
+  user username/email with token as password
 
 Funkcjonalnosc:
 - pobiera pliki z ftp (wymaga konfiguracji fptDetails w katalogu /ftp wedle instrukcji w katalogu /ftp)
