@@ -13,6 +13,12 @@ python3 start.py
 
 new/penalties.csv - kary
 
+GIT:
+- to commit:
+  git config --global user.name "John Doe"
+  git config --global user.email johndoe@example.com
+
+
 Funkcjonalnosc:
 - pobiera pliki z ftp (wymaga konfiguracji fptDetails w katalogu /ftp wedle instrukcji w katalogu /ftp)
 - obrabia wyniki z ftp i wrzuca wyniki do output_phase1

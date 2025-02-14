@@ -71,6 +71,7 @@ process_graphic_individual = os.path.join(current_dir, "process_results_phase4_g
 # process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")
 process_GC_phase1 = os.path.join(current_dir, "process_results_phase3_general_classification", "process_GC_phase1")
 drivers_file = os.path.join(current_dir, "entities", "drivers.json")
+penalties_file = os.path.join(current_dir, "penalties.csv")
 
 logoFolder = os.path.join(process_graphic_individual, "files", "Logo")
 

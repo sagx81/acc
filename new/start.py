@@ -28,7 +28,7 @@ from process_results_phase4_graphics import generate_graphic
 
 # Process steps:
 # 1. FTP
-# ftp.get_ftp_files()
+ftp.get_ftp_files()
 
 process_file_from_ftp.get_race_results()
 
