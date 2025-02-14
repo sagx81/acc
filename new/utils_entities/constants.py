@@ -65,9 +65,11 @@ files_individual_graphic = os.path.join(current_dir, "files_result4_individual_g
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
 output_phase1 = os.path.join(current_dir, "output_phase1")
-process_apply_changes = os.path.join(current_dir, "process_results_phase2_penalties_apply")
+process_apply_changes = current_dir
+# process_apply_changes = os.path.join(current_dir, "process_results_phase2_penalties_apply")
 process_graphic_individual = os.path.join(current_dir, "process_results_phase4_graphics")
-process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")
+# process_GC_phase1 = os.path.join(current_dir, "process_GC_phase1")
+process_GC_phase1 = os.path.join(current_dir, "process_results_phase3_general_classification", "process_GC_phase1")
 drivers_file = os.path.join(current_dir, "entities", "drivers.json")
 
 logoFolder = os.path.join(process_graphic_individual, "files", "Logo")

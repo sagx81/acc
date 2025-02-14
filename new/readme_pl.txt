@@ -11,6 +11,7 @@ python start.py
 python3 start.py
 
 
+new/penalties.csv - kary
 
 Funkcjonalnosc:
 - pobiera pliki z ftp (wymaga konfiguracji fptDetails w katalogu /ftp wedle instrukcji w katalogu /ftp)
