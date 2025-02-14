@@ -44,7 +44,7 @@ from utils_entities import utilities
 
 input_files_dir = constants.files_result_phase_1
 output_dir = constants.files_individual_graphic
-background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
+background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results_long.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 logo_folder = os.path.join(constants.process_graphic_individual,"files", "Logo")
 
