@@ -2,7 +2,7 @@
 import os
 import csv
 import json
-import requests
+# import requests
 
 from utils_entities import entities
 from utils_entities import track_data

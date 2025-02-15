@@ -186,11 +186,11 @@ def apply_penalties():
                                 timeStr = res.timing
                             else:
                                 timeStr = f"{res.timing}"
-                            fileRows.append([res.position, res.driver, timeStr, res.bestLap, res.laps, res.driverPoints])
+                            fileRows.append([res.position, res.driver, timeStr, res.totalTimeMs, res.bestLap, res.laps, res.driverPoints])
 
                         print("*** Penalties applied! ***")
 
-                        fileRows.insert(0, ['Position', 'Driver', 'Total time', 'Best lap', 'Laps', 'Points'])
+                        fileRows.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
                         
                         # output_csv_file = csv_file.replace(".csv", "_penalties_applied.csv")
                         output_csv_file = csv_file
