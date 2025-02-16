@@ -1,21 +1,70 @@
+ 
+# import os
+# import glob
+# import csv
+# from collections import defaultdict
+# from PIL import Image, ImageDraw, ImageFont
+
+
 import os
 import glob
 import csv
 from collections import defaultdict
+# from PIL import Image, ImageDraw, ImageFont
 
-from utils_entities import constants
-# from utils_entities import utilities
-from process_results_phase4_graphics import generate_graphic_gc
+import constants
+from process_graphic_individual import generate_graphic_gc
+# from combined import constants
+# from combined.entities.track_data import track_data
 
-input_dir = constants.files_result_phase_1
-output_dir = constants.files_result_phase_3
+# input_dir = constants.output_phase1
+output_dir = constants.output_individual_graphic
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 
 def generate_GC_phase1():
 
     print("** General Classification ")
-    dirs = glob.glob(os.path.join(constants.files_result_phase_1, "*"))
+
+    # Ustalanie katalogu głównego projektu
+
+    # Definiowanie dynamicznych ścieżek do katalogów wejściowych, wyjściowych oraz do plików czcionki i tła
+    # input_dir = os.path.join(project_root, "acc", "output", "GT3 S2")
+    # output_dir = os.path.join(project_root, "acc", "output", "GT3 S2")
+    # background_image = os.path.join(project_root, "files", "background", "general classification.jpg")
+    # font_path = os.path.join(project_root, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
+    # output_csv_file = os.path.join(project_root, "acc", "output", "GT3 S2", "klasyfikacja_generalna.csv")
+    # logo_image = os.path.join(project_root, "files", "Logo", "GT3-Liga.png")
+    # processed_files_log = os.path.join(project_root, "acc", "output", "GT3 S2", "processed_files.txt")
+
+    # Funkcja generująca unikalną nazwę pliku
+    # def generate_unique_filename(output_dir, base_name, extension="png"):
+    #     counter = 1
+    #     output_file = os.path.join(output_dir, f"{base_name}.{extension}")
+    #     while os.path.exists(output_file):
+    #         output_file = os.path.join(output_dir, f"{base_name}({counter}).{extension}")
+    #         counter += 1
+    #     return output_file
+
+    # Inicjalizacja struktury danych do przechowywania wyników
+    # general_classification = defaultdict(int)
+
+    # Wczytanie listy przetworzonych plików
+    # processed_files = set()
+    # if os.path.exists(processed_files_log):
+    #     with open(processed_files_log, 'r', encoding='utf-8') as file:
+    #         processed_files = set(line.strip() for line in file)
+
+    # Przetwarzanie każdego pliku CSV w katalogu wejściowym
+    # for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+    #     if csv_file in processed_files:
+    #         print(f"Plik już przetworzony: {csv_file}")
+    #         continue
+
+    # input_dirs = os.path.join(constants.output_phase1, inputResultsFolder)
+
+    dirs = glob.glob(os.path.join(constants.output_phase1, "*"))
+    # print(f"{dirs}  {constants.output_phase1}")
     
     for input_dir in dirs:
         
@@ -33,24 +82,42 @@ def generate_GC_phase1():
             if os.path.exists(penaltiesAppliedCsv):
                 csv_file = penaltiesAppliedCsv                
 
+            # print (f"CG??")
+
             try:
-                # with open(csv_file, mode='r', encoding='utf-8') as file:
+                with open(csv_file, mode='r', encoding='utf-8') as file:
                     # reader = csv.DictReader(file)
                     
-                results = constants.get_results_from_csv(csv_file, constants.process_GC_phase1)
+                    results = constants.get_results_from_csv(csv_file, constants.process_GC_phase1)
 
-                for row in results:
-                    name = row.driver
+                    # for row in reader:
+                    #     if row['Pozycja'] == 'Pozycja':  # Pomijanie nagłówka
+                    #         continue
+                    #     driver = row['Kierowca']
+                    #     points = int(row['Punkty'])
+                    
 
-                    #if stars then team as separate column
-                    team = ''
-                    driver = ''
-                    # prepare driver and team from csv splitted by '/n'
-                    if (len(row.driver.split('\n')) > 1 and 'stars' in input_dir.lower()):
-                        name = row.driver.split('\n')[0]
 
-                    driverName = constants.get_driver(name)
-                    general_classification[driverName] += row.driverPoints
+                    for row in results:
+                        name = row.driver
+
+                        #if stars then team as separate column
+                        team = ''
+                        driver = ''
+                        # prepare driver and team from csv splitted by '/n'
+                        if (len(row.driver.split('\n')) > 1 and 'stars' in input_dir.lower()):
+                            name = row.driver.split('\n')[0]
+                            # team = row.driver.split('\n')[0]
+                            # driver = row.driver.split('\n')[1]
+
+
+                        driverName = constants.get_driver(name)
+                        # driverName = constants.get_driver(row.driver)
+                        # print(f"{driverName}")
+                        general_classification[driverName] += row.driverPoints
+                        # general_classification[row.driver] += row.driverPoints
+                    
+                    # print(f"general_classification")
 
                 # Dodanie pliku do przetworzonych
                 # processed_files.add(csv_file)
@@ -66,7 +133,12 @@ def generate_GC_phase1():
         # Tworzenie listy klasyfikacji generalnej
         general_classification_list = []
         
+        # constants.get_driver('sagxx')        
+        
         for driver, points in general_classification.items():
+            # driverName = constants.get_driver(driver)
+            # print(f"{driverName} vs {driver}")
+            # general_classification_list.append([driverName, points])
             general_classification_list.append([driver, points])
 
         # Sortowanie klasyfikacji generalnej według punktów (malejąco)
@@ -76,10 +148,17 @@ def generate_GC_phase1():
         for i, item in enumerate(general_classification_list):
             item.insert(0, i + 1)
 
-        # directoryPath = os.path.join(constants.output_phase1, os.path.basename(input_dir))
-        directoryPath = os.path.join(constants.files_result_phase_1, os.path.basename(input_dir))
+        # Zapisywanie klasyfikacji generalnej do pliku CSV
+        # if "penalties_applied" in csv_file:
+        #     imageFile = os.path.basename(csv_file).replace("_penalties_applied.csv", ".png")
+        # else:
+        #     imageFile = os.path.basename(csv_file).replace(".csv", ".png")
+
+
+        directoryPath = os.path.join(constants.output_phase1, os.path.basename(input_dir))
         if not os.path.exists(directoryPath):
             os.makedirs(directoryPath)
+                
 
         output_csv_file_name = f"{os.path.basename(input_dir)}_GC.csv"
         output_csv_file = os.path.join(input_dir, output_csv_file_name)
@@ -88,7 +167,7 @@ def generate_GC_phase1():
             writer = csv.writer(file)
             writer.writerows([['Position', 'Driver', 'Points']] + general_classification_list)
 
-        print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
+        # print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
 
         raceType = os.path.basename(input_dir).split(' ')[0]
         if raceType == 'WEEK':

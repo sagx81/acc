@@ -2,7 +2,10 @@
 python3 -m pip install requests
 python3 -m pip install Pillow
 python3 -m pip install PyQt5
-
+ 
+- win debug:
+py -m pip install requests
+py -m pip install Pillow  
 
 - start aplikacji: 
 

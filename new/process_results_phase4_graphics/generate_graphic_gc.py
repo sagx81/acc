@@ -7,7 +7,8 @@ from utils_entities import constants
 # GRAFIKA KG
 # Sprawdzenie istnienia plików graficznych
 
-input_dir = constants.output_phase1
+# input_dir = constants.output_phase1
+input_dir = constants.files_result_phase_1
 output_dir = constants.files_result_phase_3
 background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
@@ -70,19 +71,19 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
             draw.text((x_position - text_width // 2, y_position), str(cell), fill="#191919", font=font)
 
     logo_image = os.path.join(constants.logoFolder,f"{raceType}.png")
+    if os.path.exists(logo_image):          
+        # Dodawanie logo
+        logo = Image.open(logo_image)
+        logo_width, logo_height = logo.size
 
-    # Dodawanie logo
-    logo = Image.open(logo_image)
-    logo_width, logo_height = logo.size
+        # Zmiana rozmiaru logo
+        new_logo_width = 400  # Ustawienia szerokości dla logo
+        new_logo_height = 400  # Ustawienia wysokości dla logo
+        logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
 
-    # Zmiana rozmiaru logo
-    new_logo_width = 400  # Ustawienia szerokości dla logo
-    new_logo_height = 400  # Ustawienia wysokości dla logo
-    logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
-
-    logo_x = 1500  # Ustawienia pozycji X dla logo
-    logo_y = -140  # Ustawienia pozycji Y dla logo
-    bg_image.paste(logo, (logo_x, logo_y), logo)
+        logo_x = 1500  # Ustawienia pozycji X dla logo
+        logo_y = -140  # Ustawienia pozycji Y dla logo
+        bg_image.paste(logo, (logo_x, logo_y), logo)
 
     # Zapisywanie obrazu
     # output_image_file = generate_unique_filename(output_dir, "klasyfikacja_generalna", extension="png")
