@@ -104,8 +104,8 @@ def generate_GC_phase1():
         print(f"Klasyfikacja generalna została zapisana do pliku: {output_csv_file}")
 
         raceType = os.path.basename(input_dir).split(' ')[0]
-        if raceType == 'WEEK':
-            raceType = 'WL'
+        # if raceType == 'WEEK':
+        #     raceType = 'WL'
 
         generate_graphic_gc.generate_gc(general_classification_list, raceType, output_csv_file)
         
