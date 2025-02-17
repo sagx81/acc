@@ -1,8 +1,10 @@
 import os
 import csv
 import requests
+import json
 from . import entities
 from . import track_data
+from . import constants
 
 def convert_time(ms):
     hours = int(ms // 3600000)
@@ -100,6 +102,12 @@ def generate_unique_filename(output_dir, base_name, extension="png"):
     return output_file
 
 
+def generate_GC_file(inputDir):
+    output_csv_file_name = f"{os.path.basename(inputDir)}_GC.csv"
+    output_csv_file = os.path.join(inputDir, output_csv_file_name)
+    return output_csv_file
+
+
 def get_fastest_lap(results):
     fastest_lap_time = None
     for row in results:
@@ -141,7 +149,7 @@ def get_driver_web(playerID, driversList):
 
 
 def get_driver(fromResults):
-    json_file = drivers_file
+    json_file = constants.drivers_file
     
     # default name from results
     driverName = fromResults  

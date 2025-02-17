@@ -80,6 +80,10 @@ def generate_individual_graphic():
             if '(' in csv_file:
                 continue
 
+            if '_GC' in csv_file:
+                continue
+
+
             isQuali = False
             if '_Q' in csv_file:
                 isQuali = True

@@ -395,6 +395,11 @@ def get_race_results():
                     csv_file.close()
                     # csv_file.writerows(results)
 
+                # delete general classification file to force reprocessing with new results
+                GcFile = utilities.generate_GC_file(input_dir)
+                if os.path.exists(GcFile):
+                    os.remove(GcFile)
+
                 # save processed file
                 #processedFiles.append([os.path.basename(json_file), datetime.datetime.now()])
                 

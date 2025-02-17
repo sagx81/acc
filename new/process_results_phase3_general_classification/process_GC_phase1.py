@@ -4,7 +4,7 @@ import csv
 from collections import defaultdict
 
 from utils_entities import constants
-# from utils_entities import utilities
+from utils_entities import utilities
 from process_results_phase4_graphics import generate_graphic_gc
 
 input_dir = constants.files_result_phase_1
@@ -15,18 +15,31 @@ font_path = os.path.join(constants.process_graphic_individual, "files", "fonts",
 def generate_GC_phase1():
 
     print("** General Classification ")
-    dirs = glob.glob(os.path.join(constants.files_result_phase_1, "*"))
+    dirs = glob.glob(os.path.join(constants.files_result_phase_1, "*"))    
     
     for input_dir in dirs:
-        
+
+        output_csv_file = utilities.generate_GC_file(input_dir)
+        # skipp if file exists
+        if (os.path.exists(output_csv_file)):
+            continue
+
         # clear general classification 
         general_classification = defaultdict(int)
 
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
 
             # skip general classification file
-            if '_gc_' in csv_file.lower():
+            if '_gc.' in csv_file.lower():
                 continue
+
+            # skipp 'before penalties' files
+            if '_beforepenalties' in csv_file.lower():
+                continue
+
+            # skipp Qualifications files
+            if '_Q' in csv_file:
+                continue            
 
             # take result with penalties if available
             penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
@@ -37,7 +50,7 @@ def generate_GC_phase1():
                 # with open(csv_file, mode='r', encoding='utf-8') as file:
                     # reader = csv.DictReader(file)
                     
-                results = constants.get_results_from_csv(csv_file, constants.process_GC_phase1)
+                results = utilities.get_results_from_csv(csv_file, constants.process_GC_phase1)
 
                 for row in results:
                     name = row.driver
@@ -49,7 +62,7 @@ def generate_GC_phase1():
                     if (len(row.driver.split('\n')) > 1 and 'stars' in input_dir.lower()):
                         name = row.driver.split('\n')[0]
 
-                    driverName = constants.get_driver(name)
+                    driverName = utilities.get_driver(name)
                     general_classification[driverName] += row.driverPoints
 
                 # Dodanie pliku do przetworzonych
@@ -81,8 +94,8 @@ def generate_GC_phase1():
         if not os.path.exists(directoryPath):
             os.makedirs(directoryPath)
 
-        output_csv_file_name = f"{os.path.basename(input_dir)}_GC.csv"
-        output_csv_file = os.path.join(input_dir, output_csv_file_name)
+        # output_csv_file_name = f"{os.path.basename(input_dir)}_GC.csv"
+        # output_csv_file = os.path.join(input_dir, output_csv_file_name)
                 
         with open(output_csv_file, mode='w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
