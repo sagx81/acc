@@ -43,7 +43,8 @@ def get_race_results():
             base_name = os.path.basename(json_file)
             date_part = base_name.split('_')[0]
             time_part = base_name.split('_')[1]
-            
+            raceNumber = ""
+
             isQuali = False
             postfix = ''
             if '_Q' in json_file:
@@ -146,8 +147,7 @@ def get_race_results():
                         sameDayRace = date_part
                     # elif isWeekLeague and isQuali:
                     #     sameDayQuali = date_part
-
-                    raceNumber = ""
+                    
                     if isWeekLeague and not isQuali:
                         raceNumber = f" R{int(raceIndex)}"
 
@@ -204,12 +204,15 @@ def get_race_results():
                     driverResult.raceNumber = line['car']['raceNumber']
                     driverResult.carModel = line['car']['carModel']
                     driverResult.carGroup = line['car']['carGroup']
-                    driverResult.cupCategory = line['car']['cupCategory']
-                    driverResult.ballastKg = line['car']['ballastKg']
+                    driverResult.cupCategory = line['car']['cupCategory']                    
                     driverResult.isWetSession = data['sessionResult']['isWetSession']
                     driverResult.isSpectator = line["bIsSpectator"]
                     driverResult.missingMandatoryPitstop = line["missingMandatoryPitstop"]
                     
+                    # ballast not always available
+                    if 'ballastKg' in line['car']:
+                        driverResult.ballastKg = line['car']['ballastKg']
+
                     drivers = line['car']['drivers']
                     
                     driver_names = [driver['lastName'] for driver in drivers]
