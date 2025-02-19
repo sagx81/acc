@@ -35,7 +35,7 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
         font = ImageFont.load_default()
 
     # Ustawienia pozycji początkowej dla nagłówków kolumn
-    header_y_start = 160
+    header_y_start = 60
     header_line_height = 40
 
     # Ustawianie stałej szerokości kolumn
