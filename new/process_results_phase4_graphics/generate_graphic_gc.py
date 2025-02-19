@@ -49,8 +49,9 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
     # Ustawienia pozycji dla pierwszej i drugiej kolumny
     left_column_x_start = 0
     right_column_x_start = 985
-    result_y_start = header_y_start + header_line_height + 50  # Odstęp poniżej nagłówków
+    # result_y_start = header_y_start + header_line_height + 50  # Odstęp poniżej nagłówków    
     result_line_height = 96
+    result_y_start = header_y_start + header_line_height + result_line_height + result_line_height/2   # Odstęp poniżej nagłówków
 
     # Rysowanie klasyfikacji generalnej dla lewej kolumny
     for i, row in enumerate(left_column):
@@ -61,20 +62,24 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
             text_width = text_bbox[2] - text_bbox[0]
             draw.text((x_position - text_width // 2, y_position), str(cell), fill="#191919", font=font)
 
+        draw.text((right_column_x_start, y_position), '|', fill="#191919", font=font)
+
+    lastHeight = 0
     # Rysowanie klasyfikacji generalnej dla prawej kolumny
     for i, row in enumerate(right_column):
         y_position = result_y_start + i * result_line_height
+        lastHeight = y_position
         for j, cell in enumerate(row):
             x_position = right_column_x_start + sum(column_widths[:j]) + column_widths[j] // 2
             text_bbox = draw.textbbox((0, 0), str(cell), font=font)
-            text_width = text_bbox[2] - text_bbox[0]
+            text_width = text_bbox[2] - text_bbox[0]            
             draw.text((x_position - text_width // 2, y_position), str(cell), fill="#191919", font=font)
 
     logo_image = os.path.join(constants.logoFolder,f"{raceType}.png")
     if os.path.exists(logo_image):          
         # Dodawanie logo
         logo = Image.open(logo_image)
-        logo_width, logo_height = logo.size
+        # logo_width, logo_height = logo.size
 
         # Zmiana rozmiaru logo
         new_logo_width = 400  # Ustawienia szerokości dla logo
@@ -88,7 +93,11 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
     # Zapisywanie obrazu
     # output_image_file = generate_unique_filename(output_dir, "klasyfikacja_generalna", extension="png")
 
+    # image resize
+    img = bg_image.crop((0, 0, bg_image.width, lastHeight + (5 * result_line_height/2)))
+
     output_image_file = gcCsvFile.replace('csv','png')
-    bg_image.save(output_image_file)
+    img.save(output_image_file)
+    # bg_image.save(output_image_file)
 
     # print(f"Klasyfikacja generalna została zapisana do pliku: {output_image_file}")

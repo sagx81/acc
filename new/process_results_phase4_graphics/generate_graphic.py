@@ -174,10 +174,11 @@ def generate_individual_graphic():
 
                 fastestLap = utilities.get_fastest_lap(results)
 
+                lastHeight = 0
                 # draw rows
                 for i, row in enumerate(results, start=0):
                     y_position = result_y_start + i * result_line_height
-                    # print(f"row: {row}")
+                    lastHeight = y_position                    
                     jAdjustor = 0                        
 
                     for j, cell in enumerate(vars(row).items()):                            
@@ -277,13 +278,13 @@ def generate_individual_graphic():
                     bg_image.paste(logo, (logo_x, logo_y), logo)
 
                 # logo_width, logo_height = logo.size
+                
+                # image resize
+                img = bg_image.crop((0, 0, bg_image.width, lastHeight + (5 * result_line_height/2)))
 
-                
-                
-                
-                
                 # output_image_file = os.path.join(directoryPath, imageFile)
-                bg_image.save(output_image_file, overwrite=True)
+                img.save(output_image_file, overwrite=True)
+                # bg_image.save(output_image_file, overwrite=True)
                 print(f"Result Image saved: {output_image_file}")
 
                 # os.remove(json_file)
