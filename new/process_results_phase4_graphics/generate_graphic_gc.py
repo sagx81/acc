@@ -10,7 +10,7 @@ from utils_entities import constants
 # input_dir = constants.output_phase1
 input_dir = constants.files_result_phase_1
 output_dir = constants.files_result_phase_3
-background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
+background_image = os.path.join(constants.process_graphic_individual, "files", "background", "general classification.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 # logo_image = os.path.join(constants.process_graphic_individual, "files", "Logo", "race results.png")
 
