@@ -19,7 +19,7 @@ from process_graphic_individual import generate_graphic_gc
 
 # input_dir = constants.output_phase1
 output_dir = constants.output_individual_graphic
-background_image = os.path.join(constants.process_graphic_individual, "files", "background", "race results.png")
+background_image = os.path.join(constants.process_graphic_individual, "files", "background", "general classification.png")
 font_path = os.path.join(constants.process_graphic_individual, "files", "fonts", "BigShouldersDisplay-Bold.ttf")
 
 def generate_GC_phase1():
