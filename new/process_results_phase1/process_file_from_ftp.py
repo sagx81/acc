@@ -323,6 +323,9 @@ def get_race_results():
                     if not (r.driverPoints == 0):
                         r.driverPoints = maxPoints - i                        
 
+                # recalculate total time                
+                if not isQuali:
+                    results2 = utilities.recalculate_total_time(results2)
 
                 # build csv output file
                 for i,r in enumerate(results2):
@@ -394,6 +397,18 @@ def get_race_results():
                     writer.writerows(results)
                     csv_file.close()
                     # csv_file.writerows(results)
+
+                # delete related graphic files
+                csvFile = os.path.basename(output_csv_file)
+                graphicFile = os.path.join(constants.files_individual_graphic, os.path.basename(output_dir),csvFile.replace(".csv", f".png"))
+                if os.path.exists(graphicFile):
+                    os.remove(graphicFile)
+                graphicFileBeforePenalties = graphicFile.replace(".png", f"_beforePenalties.png")
+                if os.path.exists(graphicFileBeforePenalties):
+                    os.remove(graphicFileBeforePenalties)                
+                beforePenaltiesFile = output_csv_file.replace(".csv", f"_beforePenalties.csv")                
+                if os.path.exists(beforePenaltiesFile):
+                    os.remove(beforePenaltiesFile)
 
                 # delete general classification file to force reprocessing with new results
                 GcFile = utilities.generate_GC_file(input_dir)

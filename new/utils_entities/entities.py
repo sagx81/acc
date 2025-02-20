@@ -22,7 +22,7 @@ class Penalty:
 
 
 class ResultRow:
-    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, driverPoints, isDsq=False):
+    def __init__(self, position, driver, timing, totalTimeMs, totalTimeString, bestLap, laps, driverPoints, isDsq=False, penaltyMs=0):
         self.position = position
         self.driver = driver
         self.timing = timing
@@ -32,10 +32,10 @@ class ResultRow:
         self.laps = laps
         self.driverPoints = driverPoints
         self.isDsq = isDsq
+        self.penaltyMs = penaltyMs
 
     def __repr__(self):
         return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.driverPoints}"
-
 
 class ResultRowV2:
 

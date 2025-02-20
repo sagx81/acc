@@ -285,3 +285,69 @@ def save_csv_results(output_csv_file, output_dir, resultsV2):
     save_csv_file(output_csv_file+"2", output_dir, reultsCsv)
 
 
+
+def recalculate_total_time(results):
+    for i,row in enumerate(results):
+
+        if i == 0:
+            continue
+
+        previousTotalTimeMs = results[i-1].totalTimeMs
+        previousLapsCount = results[i-1].laps
+        previousPenaltyMs = results[i-1].penaltyMs
+
+        ignoreLaps = True
+        if (row.isDsq):
+            row.totalTimeString = "DSQ"
+        elif ("DNF" in row.bestLap):
+            row.totalTimeString = "DNF"        
+        elif row.position > 1 and row.totalTimeMs < previousTotalTimeMs and previousPenaltyMs > 0:
+            ignoreLaps = False
+            row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs + (2*previousPenaltyMs)))}"
+        elif (previousTotalTimeMs > 0):            
+            ignoreLaps = False
+            row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs))}"
+            
+        # + laps
+        if not ignoreLaps and row.laps > 0 and row.laps - previousLapsCount < 0:
+                row.totalTimeString = row.totalTimeString + f" (+ {abs(row.laps - previousLapsCount)} {constants.text_lap})"
+
+        # if previousPenaltyMs > 0:
+        #     row.totalTimeString = row.totalTimeString + f" +{convert_time(previousPenaltyMs)}            
+
+        # previousTotalTimeMs = row.totalTimeMs
+        # previousLapsCount = row.laps
+        # previousPenaltyMs = row.penaltyMs
+
+    return results
+
+# def recalculate_total_time(results):
+#     previousTotalTimeMs = 0
+#     previousLapsCount = 0
+#     previousPenaltyMs = 0
+#     for row in results:
+#         ignoreLaps = True
+#         if (row.isDsq):
+#             row.totalTimeString = "DSQ"
+#         elif ("DNF" in row.bestLap):
+#             row.totalTimeString = "DNF"        
+#         elif row.position > 1 and row.totalTimeMs < previousTotalTimeMs and previousPenaltyMs > 0:
+#             ignoreLaps = False
+#             row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs + (2*previousPenaltyMs)))}"
+#         elif (previousTotalTimeMs > 0):            
+#             ignoreLaps = False
+#             row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs))}"
+            
+#         # + laps
+#         if not ignoreLaps and row.laps > 0 and row.laps - previousLapsCount < 0:
+#                 row.totalTimeString = row.totalTimeString + f" (+ {abs(row.laps - previousLapsCount)} {constants.text_lap})"
+
+#         # if previousPenaltyMs > 0:
+#         #     row.totalTimeString = row.totalTimeString + f" +{convert_time(previousPenaltyMs)}
+            
+
+#         previousTotalTimeMs = row.totalTimeMs
+#         previousLapsCount = row.laps
+#         previousPenaltyMs = row.penaltyMs
+
+#     return results

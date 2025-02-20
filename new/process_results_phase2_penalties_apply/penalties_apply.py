@@ -62,6 +62,10 @@ def apply_penalties():
             if (not applyPenalties):
                 continue
 
+            # skipp if penalties already applied
+            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv")):
+                continue
+                
             try:
                 if ("penalties" in csv_file.lower() or "copy" in csv_file.lower()) :
                     continue
@@ -117,7 +121,8 @@ def apply_penalties():
                                 driver.isDsq = True
                             else:
                                 driver.totalTimeMs += (penalty.penaltySeconds * 1000)
-                                driver.totalTimeString = utilities.convert_time(driver.totalTimeMs)
+                                driver.penaltyMs = (penalty.penaltySeconds * 1000)
+                                # driver.totalTimeString = utilities.convert_time(driver.totalTimeMs)                                
                             break
                     
                     # set position after penalties                         
@@ -127,6 +132,7 @@ def apply_penalties():
                     plusLapPositions = []
                     dnfs = []
                     dsqs = []
+
 
                     for i, res in reversed(list(enumerate(sortedResults))):
                         if ("dnf" in res.timing.lower()):
@@ -157,6 +163,9 @@ def apply_penalties():
                         else:
                             res.driverPoints = 0
 
+                    # recalculate total time str
+                    sortedResults = utilities.recalculate_total_time(sortedResults)
+
                     # save to file
                     try:
                         # make a copy
@@ -166,27 +175,28 @@ def apply_penalties():
                             shutil.copyfile(csv_file, fileCopy)
 
                         fileRows = []
-                        lapsMoreThanWinner = 0 
+                        # lapsMoreThanWinner = 0 
                         for res in sortedResults:                            
+                            fileRows.append([res.position, res.driver, res.totalTimeString, res.totalTimeMs, res.bestLap, res.laps, res.driverPoints])
 
-                            if ("dnf" not in res.timing.lower()):
-                                lapsMoreThanWinner = int(winnerLaps) - int(res.laps)
+                            # if ("dnf" not in res.timing.lower()):
+                            #     lapsMoreThanWinner = int(winnerLaps) - int(res.laps)
                             
                             # lapsLabel = "lap"
                             # if lapsMoreThanWinner > 1:
                             #     lapsLabel = "laps"
 
-                            if (res.position == 1):
-                                timeStr = res.timing
-                            elif (res.isDsq):
-                                timeStr = "DSQ"
-                            elif ("DNF" in res.bestLap):
-                                timeStr = "DNF"
-                            elif (lapsMoreThanWinner >= 1):
-                                timeStr = res.timing
-                            else:
-                                timeStr = f"{res.timing}"
-                            fileRows.append([res.position, res.driver, timeStr, res.totalTimeMs, res.bestLap, res.laps, res.driverPoints])
+                            # if (res.position == 1):
+                            #     timeStr = res.timing
+                            # elif (res.isDsq):
+                            #     timeStr = "DSQ"
+                            # elif ("DNF" in res.bestLap):
+                            #     timeStr = "DNF"
+                            # elif (lapsMoreThanWinner >= 1):
+                            #     timeStr = res.timing
+                            # else:
+                            #     timeStr = f"{res.timing}"
+                            # fileRows.append([res.position, res.driver, timeStr, res.totalTimeMs, res.bestLap, res.laps, res.driverPoints])
 
                         print("*** Penalties applied! ***")
 

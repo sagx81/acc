@@ -187,7 +187,7 @@ def generate_individual_graphic():
                         cellValue = cell[1]
 
                         # ommit additional columns from csv result file
-                        if cellField == "totalTimeMs" or cellField == "totalTimeString" or cellField == "isDsq":
+                        if cellField == "totalTimeMs" or cellField == "totalTimeString" or cellField == "isDsq" or cellField == "penaltyMs":
                             jAdjustor = jAdjustor + 1
                             continue
                         j = j - jAdjustor
@@ -203,6 +203,7 @@ def generate_individual_graphic():
                         if (cellField == 'driver' and len(cellValue.split('\n')) > 1 and 'stars' in input_dir.lower()):
                             team = cellValue.split('\n')[0]
                             driver = cellValue.split('\n')[1]
+                        
                         
                         # if team:
                         # if (cellField == 'driver'):
