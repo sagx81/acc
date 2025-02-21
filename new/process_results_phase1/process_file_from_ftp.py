@@ -411,7 +411,7 @@ def get_race_results():
                     os.remove(beforePenaltiesFile)
 
                 # delete general classification file to force reprocessing with new results
-                GcFile = utilities.generate_GC_file(input_dir)
+                GcFile = utilities.generate_GC_file(output_dir)
                 if os.path.exists(GcFile):
                     os.remove(GcFile)
 
