@@ -4,6 +4,25 @@
       "drivers": [
         {
           "firstName": "",
+          "lastName": "Drzymalski",
+          "shortName": "Drz",
+          "playerId": "M2533274917676648",
+          "driverCategory": 1,
+          "alternateNames": ["Drzymalski#23"]
+        }
+      ],
+      "raceNumber": 23,
+      "customCar": "",
+      "forcedCarModel": -1,
+      "overrideDriverInfo": 1,
+      "isServerAdmin": 0,
+      "overrideCarModelForCustomCar": 1,
+      "configVersion": 1
+    },
+    {
+      "drivers": [
+        {
+          "firstName": "",
           "lastName": "ANAK",
           "shortName": "ANA",
           "playerID": "M2535424123464720",
