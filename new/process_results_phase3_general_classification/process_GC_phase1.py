@@ -41,6 +41,11 @@ def generate_GC_phase1():
             if '_Q' in csv_file:
                 continue            
 
+            # skipp csv2 files
+            if '.csv2' in csv_file:
+                continue            
+
+
             # take result with penalties if available
             penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
             if os.path.exists(penaltiesAppliedCsv):

@@ -326,6 +326,7 @@ def get_race_results():
                 # recalculate total time                
                 if not isQuali:
                     results2 = utilities.recalculate_total_time(results2)
+                    resultsV2 = utilities.recalculate_total_time(resultsV2)
 
                 # build csv output file
                 for i,r in enumerate(results2):
@@ -349,7 +350,7 @@ def get_race_results():
                     if not (r.points == 0):
                         r.points = maxPointsV2 - i    
 
-                # utilities.save_csv_results(output_csv_file, output_dir, resultsV2)
+                utilities.save_csv_results(output_csv_file, output_dir, resultsV2)
 
 
 

@@ -42,7 +42,7 @@ class ResultRowV2:
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls)
 
-    def __init__(self, position=0, driver=None, timing=None, totalTimeMs=0, totalTimeString=None, bestLap=None, laps=0, points=0, isDsq=False, isWetSession=False, carId=None, carModel=None, cupCategory=None, carGroup=None, teamName=None, raceNumber=None, carGuid=None, teamGuid=None, firstName=None, lastName=None, playerId=None, missingMandatoryPitstop=False, isSpectator=False, ballastKg=None):
+    def __init__(self, position=0, driver=None, timing=None, totalTimeMs=0, totalTimeString=None, bestLap=None, laps=0, points=0, isDsq=False, isWetSession=False, carId=None, carModel=None, cupCategory=None, carGroup=None, teamName=None, raceNumber=None, carGuid=None, teamGuid=None, firstName=None, lastName=None, playerId=None, missingMandatoryPitstop=False, isSpectator=False, ballastKg=None,penaltyMs=0):
         self.position = position
         self.driver = driver
         self.timing = timing
@@ -67,6 +67,7 @@ class ResultRowV2:
         self.playerId = playerId
         self.missingMandatoryPitstop = missingMandatoryPitstop
         self.isSpectator = isSpectator
+        self.penaltyMs = penaltyMs
 
     def __repr__(self):
         return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}, IsDsq: {self.isDsq}, IsWetSession: {self.isWetSession}, CarId: {self.carId}, CarModel: {self.carModel}, CupCategory: {self.cupCategory}, CarGroup: {self.carGroup}, TeamName: {self.teamName}, RaceNumber: {self.raceNumber}, CarGuid: {self.carGuid}, TeamGuid: {self.teamGuid}, FirstName: {self.firstName}, LastName: {self.lastName}, PlayerId: {self.playerId}, MissingMandatoryPitstop: {self.missingMandatoryPitstop}, IsSpectator: {self.isSpectator}, BallastKg: {self.ballastKg}"

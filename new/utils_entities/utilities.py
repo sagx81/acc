@@ -91,6 +91,20 @@ def get_results_from_csv2(csv_file, inovkedBy):
 
     return results
 
+def get_penalties_from_csv():
+    penalties_csv = constants.penalties_file
+    penalties = []
+    try:
+        with open(penalties_csv, mode='r', encoding='utf-8') as pFile:
+            pReader = csv.DictReader(pFile)
+            for r in pReader:
+                penalties.append(entities.Penalty(r['RaceType'], r['Season'], r['Track'], r['RaceNumber'], r['Driver'], int(r['SecondsPenalty']), int(r['PositionPenalty']), float(r['IsDSQ'])))
+
+    except Exception as e:
+        print(f"Apply Penalties open penalties csv file - An error occurred reading penalties file {penalties_csv}: {e}")
+
+    return penalties
+
 
 def generate_unique_filename(output_dir, base_name, extension="png"):
     counter = 1

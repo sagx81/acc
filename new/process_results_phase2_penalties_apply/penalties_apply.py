@@ -12,15 +12,6 @@ from utils_entities import utilities
 
 def apply_penalties():
 
-    # Ustalanie katalogu głównego projektu
-    # inputResultsFolder = constants.files_result_phase_1
-    # applyPenaltiesFolder = constants.process_apply_changes
-    
-    # project_root = os.getcwd() 
-
-    # Definiowanie dynamicznych ścieżek do katalogów wejściowych, wyjściowych oraz do plików czcionki i tła
-    # penalties_csv = os.path.join(project_root,applyPenaltiesFolder, "penalties.csv")
-    # input_dirs = os.path.join(project_root, inputResultsFolder)
     penalties_csv = constants.penalties_file
     input_dirs = constants.files_result_phase_1
 
@@ -43,9 +34,6 @@ def apply_penalties():
 
     except Exception as e:
         print(f"Apply Penalties open penalties csv file - An error occurred processing file {penalties_csv}: {e}")
-
-
-    # prepare drivers map (TODO move to separate file)
 
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
