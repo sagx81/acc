@@ -206,7 +206,7 @@ def get_race_results():
                     driverResult.carGroup = line['car']['carGroup']
                     driverResult.cupCategory = line['car']['cupCategory']                    
                     driverResult.isWetSession = data['sessionResult']['isWetSession']
-                    driverResult.isSpectator = line["bIsSpectator"]
+                    driverResult.isSpectator = int(line["bIsSpectator"])
                     driverResult.missingMandatoryPitstop = line["missingMandatoryPitstop"]
                     
                     # ballast not always available
