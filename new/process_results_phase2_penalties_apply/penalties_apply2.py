@@ -17,7 +17,7 @@ def apply_penalties():
     dirs = glob.glob(os.path.join(input_dirs, "*"))
 
     # prepare penalties
-    print("\n*** Penalties\n")
+    print("\n*** Penalties 2 \n")
     penalties = utilities.get_penalties_from_csv()
 
     for input_dir in dirs:
@@ -32,16 +32,21 @@ def apply_penalties():
                 continue
 
             # skipp if penalties already applied (when _beforePenalties file exists for given csv)
-            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv2")):
+            if os.path.exists(csv_file.replace(".csv2", f"_beforePenalties.csv2")):
                 continue
 
             # check if penalties apply to current race
             applyPenalties = False
+            validPenalties = []
             for penalty in penalties:
                 if (utilities.is_penalty_valid_for_race(penalty, input_dir, csv_file)): 
-                    applyPenalties = True
-            if (not applyPenalties):
+                    validPenalties.append(penalty)
+                    # applyPenalties = True
+            
+            if len(validPenalties) == 0:
                 continue
+            # if (not applyPenalties):
+            #     continue
 
 
             try:
@@ -51,7 +56,7 @@ def apply_penalties():
                 winnerLaps = results[0].laps
 
                 # apply penalties
-                for penalty in penalties:
+                for penalty in validPenalties:
                     for driver in results:                                   
                         
                         # find penalty driver
@@ -62,8 +67,9 @@ def apply_penalties():
     
                         # DSQ
                         if (penalty.isDsq):
-                            driver.driverPoints = 0
+                            driver.points = 0
                             driver.totalTimeString = constants.dsq_text
+                            driver.timing = constants.dsq_text
                             driver.isDsq = True
                         else:
                             driver.totalTimeMs += (penalty.penaltySeconds * 1000)
@@ -108,8 +114,8 @@ def apply_penalties():
                 maxPoints = len(sortedResults)
                 for i, res in enumerate(sortedResults):
                     res.position = i + 1
-                    if (res.driverPoints != 0):
-                        res.driverPoints = maxPoints - i
+                    if (res.points != 0):
+                        res.points = maxPoints - i
 
                 # recalculate total time str
                 sortedResults = utilities.recalculate_total_time(sortedResults)
@@ -117,7 +123,7 @@ def apply_penalties():
                 # save to file
                 try:
                     # make a copy of original file
-                    fileCopy = csv_file.replace(".csv", f"_beforePenalties.csv2")
+                    fileCopy = csv_file.replace(".csv2", f"_beforePenalties.csv2")
                     if not os.path.exists(fileCopy): 
                         shutil.copyfile(csv_file, fileCopy)
 
@@ -129,4 +135,4 @@ def apply_penalties():
                     print(f"Apply Penalties save csv file - An error occurred saving {csv_file}: {e}")
                 
             except Exception as e:
-                print(f"Apply Penalties open csv file - An error occurred processing file {csv_file}: {e}")
+                print(f"2 Apply Penalties open csv file - An error occurred processing file {csv_file}: {e}")

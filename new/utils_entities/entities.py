@@ -72,6 +72,17 @@ class ResultRowV2:
     def __repr__(self):
         return f"Pos: {self.position}, Driver: {self.driver}, Timing: {self.timing}, TotalTimeMs: {self.totalTimeMs}, TotalTime: {self.totalTimeString}, BestLap: {self.bestLap}, Laps: {self.laps}, Points:  {self.points}, IsDsq: {self.isDsq}, IsWetSession: {self.isWetSession}, CarId: {self.carId}, CarModel: {self.carModel}, CupCategory: {self.cupCategory}, CarGroup: {self.carGroup}, TeamName: {self.teamName}, RaceNumber: {self.raceNumber}, CarGuid: {self.carGuid}, TeamGuid: {self.teamGuid}, FirstName: {self.firstName}, LastName: {self.lastName}, PlayerId: {self.playerId}, MissingMandatoryPitstop: {self.missingMandatoryPitstop}, IsSpectator: {self.isSpectator}, BallastKg: {self.ballastKg}"
 
+class IndividualGraphicRow:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, position=0, driver=None, timing=None, bestLap=None, laps=0, points=0):
+        self.position = position
+        self.driver = driver
+        self.timing = timing
+        self.bestLap = bestLap
+        self.laps = laps
+        self.points = points
 
 class DriverWeb:
     def __new__(cls, *args, **kwargs):

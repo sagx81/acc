@@ -296,7 +296,7 @@ def save_csv_results(output_csv_file, output_dir, resultsV2):
         ])                    
     reultsCsv.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points', 'Car ID', 'Race Number', 'Car Model', 'Car Group', 'Cup Category', 'Ballast Kg', 'Player ID', 'Is Wet Session', 'Is Spectator', 'Missing Mandatory Pitstop'])
     
-    save_csv_file(output_csv_file+"2", output_dir, reultsCsv)
+    save_csv_file(output_csv_file, output_dir, reultsCsv)
 
 
 

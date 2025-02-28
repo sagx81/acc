@@ -350,7 +350,7 @@ def get_race_results():
                     if not (r.points == 0):
                         r.points = maxPointsV2 - i    
 
-                utilities.save_csv_results(output_csv_file, output_dir, resultsV2)
+                utilities.save_csv_results(output_csv_file+"2", output_dir, resultsV2)
 
 
 

@@ -63,6 +63,8 @@ files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
 files_result_phase_2 = os.path.join(current_dir, "files_results_phase_2")
 files_result_phase_3 = os.path.join(current_dir, "files_results_phase_3")
 files_individual_graphic = os.path.join(current_dir, "files_result4_individual_graphics")
+files_result_png = os.path.join(current_dir, "results","png")
+files_result_csv = os.path.join(current_dir, "results","csv")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
 # output_phase1 = os.path.join(current_dir, "output_phase1")
@@ -79,6 +81,11 @@ logoFolder = os.path.join(process_graphic_individual, "files", "Logo")
 
 graphicHeaders = ['Pozycja', 'Kierowca', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
 graphicHeadersStars = ['Pozycja', 'Kierowca', 'Team', 'Łączny czas', 'Naj. okrążenie', 'Okrążenia', 'Punkty']
+graphicFiles = os.path.join(current_dir, "graphic_files")
+backgroundImagePath = os.path.join(graphicFiles, "background", "race results.png")
+fontBoldPath = os.path.join(graphicFiles,"fonts", "BigShouldersDisplay-Bold.ttf")
+seriesLogosFolder = os.path.join(graphicFiles,"Logo")
+carLogosFolder = os.path.join(graphicFiles,"cars")
 
 columnWidths = [170, 500, 400, 400, 250, 250]
 columnWidthsStars = [100, 400, 420, 400, 215, 215, 215]
