@@ -64,25 +64,29 @@ def get_results_from_csv2(csv_file, inovkedBy):
 
             for row in reader:
                 driverResult = entities.ResultRowV2()
-                
-                driverResult.position = int(row['Position'])
+
+
+                # safe_cast('tst', int) # will return None
+                # safe_cast('tst', int, 0) # will return 0
+
+                driverResult.position = safe_cast(row['Position'],int,0)
                 driverResult.driver = row['Driver']                
                 driverResult.timing = str(row['Total time']) 
                 driverResult.totalTimeString = str(row['Total time']) 
-                driverResult.totalTimeMs = int(row['Total time ms']) 
+                driverResult.totalTimeMs = safe_cast(row['Total time ms'],int,0) 
                 driverResult.bestLap = row['Best lap']
-                driverResult.laps = int(row['Laps'])
-                driverResult.points = int(row['Points'])        
-                driverResult.carId = int(row['Car ID'])
-                driverResult.raceNumber = int(row['Race Number'])
-                driverResult.carModel = int(row['Car Model'])
-                driverResult.carGroup = str(row['Car Group'])
-                driverResult.cupCategory = str(row['Cup Category'])
-                driverResult.ballastKg = int(row['Ballast Kg'])
+                driverResult.laps = safe_cast(row['Laps'],int,0)
+                driverResult.points = safe_cast(row['Points'],int,0)
+                driverResult.carId = safe_cast(row['Car ID'],int,0)
+                driverResult.raceNumber = safe_cast(row['Race Number'],int,0)
+                driverResult.carModel = safe_cast(row['Car Model'],int,0)
+                driverResult.carGroup = safe_cast(row['Car Group'],int,0)
+                driverResult.cupCategory = str(row['Cup Category'],int,0)
+                driverResult.ballastKg = safe_cast(row['Ballast Kg'],int,0)
                 driverResult.playerId = str(row['Player ID'])
-                driverResult.isWetSession = int(row['Is Wet Session'])
-                driverResult.isSpectator = int(row['Is Spectator'])
-                driverResult.missingMandatoryPitstop = int(row['Missing Mandatory Pitstop'])
+                driverResult.isWetSession = safe_cast(row['Is Wet Session'],int,0)
+                driverResult.isSpectator = safe_cast(row['Is Spectator'],int,0)
+                driverResult.missingMandatoryPitstop = safe_cast(row['Missing Mandatory Pitstop'],int,0)
 
                 results.append(driverResult)
 
@@ -334,6 +338,13 @@ def recalculate_total_time(results):
         # previousPenaltyMs = row.penaltyMs
 
     return results
+
+
+def safe_cast(val, to_type, default=None):
+    try:
+        return to_type(val)
+    except (ValueError, TypeError):
+        return default
 
 # def recalculate_total_time(results):
 #     previousTotalTimeMs = 0
