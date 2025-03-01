@@ -65,28 +65,26 @@ def get_results_from_csv2(csv_file, inovkedBy):
             for row in reader:
                 driverResult = entities.ResultRowV2()
 
+                driverResult.position = map_field(row,'Position',int)
 
-                # safe_cast('tst', int) # will return None
-                # safe_cast('tst', int, 0) # will return 0
-
-                driverResult.position = safe_cast(row['Position'],int,0)
-                driverResult.driver = row['Driver']                
-                driverResult.timing = str(row['Total time']) 
-                driverResult.totalTimeString = str(row['Total time']) 
-                driverResult.totalTimeMs = safe_cast(row['Total time ms'],int,0) 
-                driverResult.bestLap = row['Best lap']
-                driverResult.laps = safe_cast(row['Laps'],int,0)
-                driverResult.points = safe_cast(row['Points'],int,0)
-                driverResult.carId = safe_cast(row['Car ID'],int,0)
-                driverResult.raceNumber = safe_cast(row['Race Number'],int,0)
-                driverResult.carModel = safe_cast(row['Car Model'],int,0)
-                driverResult.carGroup = safe_cast(row['Car Group'],int,0)
-                driverResult.cupCategory = str(row['Cup Category'],int,0)
-                driverResult.ballastKg = safe_cast(row['Ballast Kg'],int,0)
-                driverResult.playerId = str(row['Player ID'])
-                driverResult.isWetSession = safe_cast(row['Is Wet Session'],int,0)
-                driverResult.isSpectator = safe_cast(row['Is Spectator'],int,0)
-                driverResult.missingMandatoryPitstop = safe_cast(row['Missing Mandatory Pitstop'],int,0)
+                driverResult.driver = map_field(row,'Driver',str) #row['Driver']                
+                driverResult.timing = map_field(row,'Total time',str) #str(row['Total time']) 
+                driverResult.totalTimeString = map_field(row,'Total time',str) #str(row['Total time']) 
+                driverResult.totalTimeMs = map_field(row,'Total time ms',int) #safe_cast(row['Total time ms'],int,0) 
+                driverResult.bestLap = map_field(row,'Best lap',str) #row['Best lap']
+                driverResult.laps = map_field(row,'Laps',int) #safe_cast(row['Laps'],int,0)
+                driverResult.points = map_field(row,'Points',int) #safe_cast(row['Points'],int,0)
+          
+                driverResult.carId = map_field(row,'Car ID',int) 
+                driverResult.raceNumber = map_field(row,'Race Number',int) #safe_cap_field(row,'Driver',Lapsr) #ro #st(row['Race Number'],int,0)
+                driverResult.carModel = map_field(row,'Car Model',int) #safe_cast(row['Car Model'],int,0)
+                driverResult.carGroup = map_field(row,'Car Group',int) #safe_cast(row['Car Group'],int,0)
+                driverResult.cupCategory = map_field(row,'Cup Category',str) #str(row['Cup Category'],int,0)
+                driverResult.ballastKg = map_field(row,'Ballast Kg',int)
+                driverResult.playerId = map_field(row,'Player ID',str) #str(row['Player ID'])
+                driverResult.isWetSession = map_field(row,'Is Wet Session',int) #safe_cast(row['Is Wet Session'],int,0)
+                driverResult.isSpectator = map_field(row,'Is Spectator',int) #safe_cast(row['Is Spectator'],int,0)
+                driverResult.missingMandatoryPitstop = map_field(row,'Missing Mandatory Pitstop',int) #safe_cast(row['Missing Mandatory Pitstop'],int,0)
 
                 results.append(driverResult)
 
@@ -345,6 +343,17 @@ def safe_cast(val, to_type, default=None):
         return to_type(val)
     except (ValueError, TypeError):
         return default
+
+def map_field(row, field, to_type):
+    if to_type == int: 
+        defVal = 0
+    else:
+        defVal = ''
+    
+    if row.__contains__(field):
+        return safe_cast(row[field], to_type, defVal)
+
+    return defVal
 
 # def recalculate_total_time(results):
 #     previousTotalTimeMs = 0
