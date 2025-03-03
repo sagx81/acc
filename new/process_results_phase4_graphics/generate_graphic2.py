@@ -14,22 +14,22 @@ logo_folder = constants.seriesLogosFolder
 
 def generate_individual_graphic():
 
-    print(f"\n*** Generating individual graphics \n")
+    print(f"\n*** Generating individual graphics V2\n")
 
     if not os.path.isfile(background_image):
         raise FileNotFoundError(f"Background image not found: {background_image}")    
     
-    try:
-        font = ImageFont.truetype(font_path, font_size)
-    except IOError:
-        print(f"Could not load font at {font_path}. Using default font.")
-        font = ImageFont.load_default()
-
     header_x_start = 20
     header_y_start = 145
     header_line_height = 40
     font_size = 47
 
+    try:
+        font = ImageFont.truetype(font_path, font_size)
+    except IOError:
+        print(f"Could not load font at {font_path}. Using default font.")
+        font = ImageFont.load_default()
+    
     dirs = glob.glob(os.path.join(input_files_dir, "*"))
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv2")):
@@ -90,9 +90,9 @@ def generate_individual_graphic():
                 # if "penalties_applied" in csv_file:
                 #     imageFile = os.path.basename(csv_file).replace("_penalties_applied.csv", ".png")
                 # else:
-                imageFile = os.path.basename(csv_file).replace(".csv2", ".png2")            
+                imageFile = os.path.basename(csv_file).replace(".csv2", "_2.png")            
                 # directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
-                directoryPath = constants.files_result_png
+                directoryPath = os.path.join(constants.files_result_png, os.path.basename(input_dir))
                 if not os.path.exists(directoryPath):
                     os.makedirs(directoryPath)
                 output_image_file = os.path.join(directoryPath, imageFile)
@@ -130,6 +130,8 @@ def generate_individual_graphic():
                         cellField = cell[0]
                         cellValue = cell[1]
 
+
+
                         # ommit additional columns from csv result file
                         # if cellField == "totalTimeMs" or cellField == "totalTimeString" or cellField == "isDsq" or cellField == "penaltyMs":
                         #     jAdjustor = jAdjustor + 1
@@ -160,6 +162,21 @@ def generate_individual_graphic():
                         # cell value
                         text_bbox = draw.textbbox((0, 0), str(cellValue), font=font)
                         text_width = text_bbox[2] - text_bbox[0]
+
+                        carLogo = 'bmw'
+                        carLogoImage = os.path.join(constants.carLogosFolder ,f"{carLogo}.png")
+                        if cellField == 'driver' and os.path.exists(carLogoImage):
+                            logo = Image.open(carLogoImage)
+
+                            # Zmiana rozmiaru logo
+                            new_logo_width = 80  # Ustawienia szerokości dla logo
+                            new_logo_height = 80  # Ustawienia wysokości dla logo
+                            logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
+
+                            logo_x = x_position + text_width  # Ustawienia pozycji X dla logo
+                            logo_y = y_position - 10  # Ustawienia pozycji Y dla logo
+                            bg_image.paste(logo, (logo_x, logo_y), logo)
+
 
                         # replace lap/laps by constnant value
                         if ("laps" in str(cellValue)):
