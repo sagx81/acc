@@ -29,6 +29,8 @@ def generate_individual_graphic():
     except IOError:
         print(f"Could not load font at {font_path}. Using default font.")
         font = ImageFont.load_default()
+
+    cars = utilities.get_cars()
     
     dirs = glob.glob(os.path.join(input_files_dir, "*"))
     for input_dir in dirs:
@@ -98,8 +100,8 @@ def generate_individual_graphic():
                 output_image_file = os.path.join(directoryPath, imageFile)
                 
                 # skipp if file exists
-                if (os.path.exists(output_image_file)):
-                    continue
+                # if (os.path.exists(output_image_file)):
+                #     continue
 
                 title_text = title
                 title_bbox = draw.textbbox((0, 0), title_text, font=font)
@@ -124,7 +126,7 @@ def generate_individual_graphic():
                     lastHeight = y_position                    
                     jAdjustor = 0                        
 
-                    graphicResult = entities.IndividualGraphicRow(row.position, row.driver, row.timing, row.bestLap, row.laps, row.points)
+                    graphicResult = entities.IndividualGraphicRow(row.position, row.driver, row.timing, row.bestLap, row.laps, row.points)                    
                     for j, cell in enumerate(vars(graphicResult).items()):                            
                         # print(f"cell: {cell}")
                         cellField = cell[0]
@@ -163,19 +165,22 @@ def generate_individual_graphic():
                         text_bbox = draw.textbbox((0, 0), str(cellValue), font=font)
                         text_width = text_bbox[2] - text_bbox[0]
 
-                        carLogo = 'bmw'
-                        carLogoImage = os.path.join(constants.carLogosFolder ,f"{carLogo}.png")
-                        if cellField == 'driver' and os.path.exists(carLogoImage):
-                            logo = Image.open(carLogoImage)
+                        # car logo
+                        if cellField == 'driver':
+                            carLogo = utilities.get_driver_car_model(cars, row.carModel)
+                            carLogoImage = os.path.join(constants.carLogosFolder ,f"{carLogo}.png")
+                            if os.path.exists(carLogoImage):
+                                logo = Image.open(carLogoImage)
 
-                            # Zmiana rozmiaru logo
-                            new_logo_width = 80  # Ustawienia szerokości dla logo
-                            new_logo_height = 80  # Ustawienia wysokości dla logo
-                            logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
+                                # Zmiana rozmiaru logo
+                                new_logo_width = 120  # Ustawienia szerokości dla logo
+                                new_logo_height = 80  # Ustawienia wysokości dla logo
+                                logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
 
-                            logo_x = x_position + text_width  # Ustawienia pozycji X dla logo
-                            logo_y = y_position - 10  # Ustawienia pozycji Y dla logo
-                            bg_image.paste(logo, (logo_x, logo_y), logo)
+                                logo_x = 550  # Ustawienia pozycji X dla logo
+                                # logo_x = x_position + text_width  # Ustawienia pozycji X dla logo
+                                logo_y = y_position - 10  # Ustawienia pozycji Y dla logo
+                                bg_image.paste(logo, (logo_x, logo_y), logo)
 
 
                         # replace lap/laps by constnant value

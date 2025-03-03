@@ -6,6 +6,7 @@ from process_results_phase2_penalties_apply import penalties_apply
 from process_results_phase2_penalties_apply import penalties_apply2
 from process_results_phase3_general_classification import process_GC_phase1
 from process_results_phase4_graphics import generate_graphic
+from process_results_phase4_graphics import generate_graphic2
  
 
 # from process_graphic_individual import generate_graphic
@@ -37,5 +38,6 @@ penalties_apply.apply_penalties()
 penalties_apply2.apply_penalties()
 
 generate_graphic.generate_individual_graphic()
+# generate_graphic2.generate_individual_graphic()
 
 process_GC_phase1.generate_GC_phase1()

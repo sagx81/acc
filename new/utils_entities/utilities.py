@@ -355,33 +355,23 @@ def map_field(row, field, to_type):
 
     return defVal
 
-# def recalculate_total_time(results):
-#     previousTotalTimeMs = 0
-#     previousLapsCount = 0
-#     previousPenaltyMs = 0
-#     for row in results:
-#         ignoreLaps = True
-#         if (row.isDsq):
-#             row.totalTimeString = "DSQ"
-#         elif ("DNF" in row.bestLap):
-#             row.totalTimeString = "DNF"        
-#         elif row.position > 1 and row.totalTimeMs < previousTotalTimeMs and previousPenaltyMs > 0:
-#             ignoreLaps = False
-#             row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs + (2*previousPenaltyMs)))}"
-#         elif (previousTotalTimeMs > 0):            
-#             ignoreLaps = False
-#             row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs))}"
+def get_cars():
+    results = []
+    
+    with open(constants.carsCsvFile, mode='r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+
+        for row in reader:
+            id = int(row['ID'])
+            driver = row['Name']                
+            timing = str(row['Year']) 
+            results.append(entities.Car(id, driver, timing))
             
-#         # + laps
-#         if not ignoreLaps and row.laps > 0 and row.laps - previousLapsCount < 0:
-#                 row.totalTimeString = row.totalTimeString + f" (+ {abs(row.laps - previousLapsCount)} {constants.text_lap})"
+    return results
 
-#         # if previousPenaltyMs > 0:
-#         #     row.totalTimeString = row.totalTimeString + f" +{convert_time(previousPenaltyMs)}
-            
-
-#         previousTotalTimeMs = row.totalTimeMs
-#         previousLapsCount = row.laps
-#         previousPenaltyMs = row.penaltyMs
-
-#     return results
+def get_driver_car_model(cars, driverCarId):    
+    car = [x for x in cars if x.id == driverCarId]             
+    if len(car) > 0:
+        return car[0].name.split(' ')[0].lower()
+    else:
+        return None

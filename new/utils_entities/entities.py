@@ -76,9 +76,11 @@ class IndividualGraphicRow:
     def __new__(cls, *args, **kwargs):
         return super().__new__(cls)
 
+    # def __init__(self, position=0, driver=None, car=None, timing=None, bestLap=None, laps=0, points=0):
     def __init__(self, position=0, driver=None, timing=None, bestLap=None, laps=0, points=0):
         self.position = position
         self.driver = driver
+        # self.car = car
         self.timing = timing
         self.bestLap = bestLap
         self.laps = laps
@@ -98,3 +100,14 @@ class DriverWeb:
     def __repr__(self):
         return f"DiscordId: {self.discordId}, PlayerID: {self.playerID}, Callsign: {self.callsign}, Numer: {self.numer}, Ranga: {self.ranga}\n"
 
+class Car:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, id, name, year):
+        self.id = id
+        self.name = name
+        self.year = year
+
+    def __repr__(self):
+        return f"Id: {self.id}, Name: {self.name}, Year: {self.year}\n"

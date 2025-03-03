@@ -58,6 +58,7 @@ cars_web = "https://docs.google.com/spreadsheets/d/10pfmrTH4C9_cLfGPja-5k97HfHKS
 cars_logos = "https://www.carlogos.org/car-brands/"
 
 current_dir = os.getcwd()
+utilsFolder = os.path.join(current_dir, "utils_entities")
 files_from_ftp = os.path.join(current_dir, "files_from_ftp")
 files_result_phase_1 = os.path.join(current_dir, "files_results_phase_1")
 files_result_phase_2 = os.path.join(current_dir, "files_results_phase_2")
@@ -67,6 +68,8 @@ files_result_png = os.path.join(current_dir, "results","png")
 files_result_csv = os.path.join(current_dir, "results","csv")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
+carsCsvFile = utilsFolder = os.path.join(utilsFolder, "cars.csv")
+
 # output_phase1 = os.path.join(current_dir, "output_phase1")
 process_apply_changes = current_dir
 # process_apply_changes = os.path.join(current_dir, "process_results_phase2_penalties_apply")
@@ -87,7 +90,8 @@ fontBoldPath = os.path.join(graphicFiles,"fonts", "BigShouldersDisplay-Bold.ttf"
 seriesLogosFolder = os.path.join(graphicFiles,"Logo")
 carLogosFolder = os.path.join(graphicFiles,"cars")
 
-columnWidths = [170, 500, 400, 400, 250, 250]
+columnWidths = [100, 570, 400, 400, 250, 250]
+# columnWidths = [100, 400, 200, 400, 400, 250, 250]
 columnWidthsStars = [100, 400, 420, 400, 215, 215, 215]
     
 
