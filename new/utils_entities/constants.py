@@ -56,6 +56,7 @@ tracks_web = "https://script.googleusercontent.com/macros/echo?user_content_key=
 penalties_web = "https://docs.google.com/spreadsheets/d/1uLbXwCfIWfcnCMoQhm8L2phnhSOQgbfXHRf_WZeJaKM/edit?gid=0#gid=0"
 cars_web = "https://docs.google.com/spreadsheets/d/10pfmrTH4C9_cLfGPja-5k97HfHKSRhd1jsDCVlmh6Bg/edit?gid=0#gid=0"
 cars_logos = "https://www.carlogos.org/car-brands/"
+# https://pngimg.com/
 
 current_dir = os.getcwd()
 utilsFolder = os.path.join(current_dir, "utils_entities")
@@ -66,6 +67,7 @@ files_result_phase_3 = os.path.join(current_dir, "files_results_phase_3")
 files_individual_graphic = os.path.join(current_dir, "files_result4_individual_graphics")
 files_result_png = os.path.join(current_dir, "results","png")
 files_result_csv = os.path.join(current_dir, "results","csv")
+files_results = os.path.join(current_dir, "results")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
 carsCsvFile = utilsFolder = os.path.join(utilsFolder, "cars.csv")

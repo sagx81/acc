@@ -169,12 +169,13 @@ def generate_individual_graphic():
                         if cellField == 'driver':
                             carLogo = utilities.get_driver_car_model(cars, row.carModel)
                             carLogoImage = os.path.join(constants.carLogosFolder ,f"{carLogo}.png")
+                            # carLogoImage = os.path.join(constants.carLogosFolder ,"mercedes-amg.png")
                             if os.path.exists(carLogoImage):
                                 logo = Image.open(carLogoImage)
 
                                 # Zmiana rozmiaru logo
-                                new_logo_width = 120  # Ustawienia szerokości dla logo
-                                new_logo_height = 80  # Ustawienia wysokości dla logo
+                                new_logo_width = 140  # Ustawienia szerokości dla logo
+                                new_logo_height = 100  # Ustawienia wysokości dla logo
                                 logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
 
                                 logo_x = 550  # Ustawienia pozycji X dla logo
