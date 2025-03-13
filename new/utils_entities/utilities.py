@@ -2,6 +2,7 @@ import os
 import csv
 import requests
 import json
+import glob
 from . import entities
 from . import track_data
 from . import constants
@@ -469,3 +470,13 @@ def get_driver_car_model(cars, driverCarId):
         return car[0].name.split(' ')[0].lower()
     else:
         return None
+    
+
+def get_series_directories():
+    series = glob.glob(os.path.join(constants.files_results, "*"))
+    return series
+
+def get_serie_csv_files(series_dir):
+    csv_files = glob.glob(os.path.join(series_dir, 'csv', "*.csv"))
+    return csv_files
+     

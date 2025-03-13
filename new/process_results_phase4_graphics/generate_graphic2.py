@@ -32,9 +32,13 @@ def generate_individual_graphic():
 
     cars = utilities.get_cars()
     
-    dirs = glob.glob(os.path.join(input_files_dir, "*"))
+    # dirs = glob.glob(os.path.join(input_files_dir, "*"))
+    # dirs = input_dirs = constants.files_results
+    # dirs = glob.glob(os.path.join(input_dirs, "*"))
+    dirs = utilities.get_series_directories()
     for input_dir in dirs:
-        for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+        # for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+        for csv_file in utilities.get_serie_csv_files(input_dir):
 
             if '(' in csv_file:
                 continue
@@ -98,7 +102,7 @@ def generate_individual_graphic():
                 # else:
                 
                 # imageFile = os.path.basename(csv_file).replace(".csv2", "_2.png")            
-                imageFile = os.path.basename(csv_file).replace(".csv", "_2.png")            
+                imageFile = os.path.basename(csv_file).replace(".csv", ".png")            
 
                 # directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
                 # directoryPath = os.path.join(constants.files_result_png, os.path.basename(input_dir))

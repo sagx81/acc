@@ -13,7 +13,8 @@ from utils_entities import utilities
 def apply_penalties():
         
     # series directories
-    input_dirs = constants.files_result_phase_1
+    # input_dirs = constants.files_result_phase_1
+    input_dirs = constants.files_results
     dirs = glob.glob(os.path.join(input_dirs, "*"))
 
     # prepare penalties
@@ -21,7 +22,7 @@ def apply_penalties():
     penalties = utilities.get_penalties_from_csv()
 
     for input_dir in dirs:
-        for csv_file in glob.glob(os.path.join(input_dir, "*.csv2")):
+        for csv_file in glob.glob(os.path.join(input_dir, 'csv', "*.csv")):
     
             # skipp Qualifications
             if "_Q" in csv_file:
@@ -32,7 +33,7 @@ def apply_penalties():
                 continue
 
             # skipp if penalties already applied (when _beforePenalties file exists for given csv)
-            if os.path.exists(csv_file.replace(".csv2", f"_beforePenalties.csv2")):
+            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv2")):
                 continue
 
             # check if penalties apply to current race
@@ -123,7 +124,7 @@ def apply_penalties():
                 # save to file
                 try:
                     # make a copy of original file
-                    fileCopy = csv_file.replace(".csv2", f"_beforePenalties.csv2")
+                    fileCopy = csv_file.replace(".csv", f"_beforePenalties.csv")
                     if not os.path.exists(fileCopy): 
                         shutil.copyfile(csv_file, fileCopy)
 

@@ -178,7 +178,7 @@ def get_race_results():
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
                 output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
-                output_csv_file2 = utilities.generate_unique_filename(output_dir2, base_output_name, extension="csv2")       
+                output_csv_file2 = utilities.generate_unique_filename(output_dir2, base_output_name, extension="csv")       
                 
                 # skipp if file already exists (delete file manually if requires reporocess)
                 if os.path.exists(output_csv_file):
@@ -414,6 +414,7 @@ def get_race_results():
 
                 # delete related graphic files
                 csvFile = os.path.basename(output_csv_file)
+                
                 graphicFile = os.path.join(constants.files_individual_graphic, os.path.basename(output_dir),csvFile.replace(".csv", f".png"))
                 if os.path.exists(graphicFile):
                     os.remove(graphicFile)
