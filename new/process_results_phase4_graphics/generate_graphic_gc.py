@@ -3,6 +3,7 @@ import glob
 import csv
 from PIL import Image, ImageDraw, ImageFont
 from utils_entities import constants
+from utils_entities import utilities
 
 # GRAFIKA KG
 # Sprawdzenie istnienia plików graficznych
@@ -20,7 +21,7 @@ font_path = os.path.join(constants.process_graphic_individual, "files", "fonts",
 # if not os.path.exists(logo_image):
 #     raise FileNotFoundError(f"Logo image not found: {logo_image}")
 
-def generate_gc(general_classification_list, raceType, gcCsvFile):
+def generate_gc(general_classification_list, raceType, gcCsvFile, inputDir=''):
 
     # Tworzenie obrazu tła
     bg_image = Image.open(background_image)
@@ -97,6 +98,11 @@ def generate_gc(general_classification_list, raceType, gcCsvFile):
     img = bg_image.crop((0, 0, bg_image.width, lastHeight + (5 * result_line_height/2)))
 
     output_image_file = gcCsvFile.replace('csv','png')
+    # just to handle V2 (to be removed)
+    if 'png2' in output_image_file:
+        output_image_file = utilities.generate_GC_file2_png(input_dir)
+        # output_image_file = output_image_file.replace('png2','png').replace('/csv/','/png/')
+        # output_image_file = os.path.join(constants.files_result_png,os.path.basename(output_image_file.replace('png2','.png')))
     img.save(output_image_file)
     # bg_image.save(output_image_file)
 

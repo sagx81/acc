@@ -17,17 +17,21 @@ def generate_GC_phase1():
     print("** General Classification ")
     dirs = glob.glob(os.path.join(constants.files_result_phase_1, "*"))    
     
+    driversList = utilities.get_drivers_list_offline()
+
     for input_dir in dirs:
 
-        output_csv_file = utilities.generate_GC_file(input_dir)
+        # output_csv_file = utilities.generate_GC_file(input_dir)
+        output_csv_file = utilities.generate_GC_file2_csv(os.path.basename(input_dir))
+        output_csv_file = output_csv_file + "2"
         # skipp if file exists
-        if (os.path.exists(output_csv_file)):
-            continue
+        # if (os.path.exists(output_csv_file)):
+        #     continue
 
         # clear general classification 
         general_classification = defaultdict(int)
 
-        for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+        for csv_file in glob.glob(os.path.join(input_dir, "*.csv2")):
 
             # skip general classification file
             if '_gc.' in csv_file.lower():
@@ -41,27 +45,24 @@ def generate_GC_phase1():
             if '_Q' in csv_file:
                 continue            
 
-            # skipp csv2 files
-            if '.csv2' in csv_file:
-                continue            
-
 
             # take result with penalties if available
-            penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
-            if os.path.exists(penaltiesAppliedCsv):
-                csv_file = penaltiesAppliedCsv                
+            # penaltiesAppliedCsv = csv_file.replace(".csv", "_penalties_applied.csv")
+            # if os.path.exists(penaltiesAppliedCsv):
+            #     csv_file = penaltiesAppliedCsv                
 
             try:
                 # with open(csv_file, mode='r', encoding='utf-8') as file:
                     # reader = csv.DictReader(file)
                     
-                results = utilities.get_results_from_csv(csv_file, constants.process_GC_phase1)
+                # results = utilities.get_results_from_csv(csv_file, constants.process_GC_phase1)
+                # results = utilities.get_results_from_csv(csv_file)
+                results = utilities.get_results_from_csv2(csv_file, 'Generate GC phase1 V2')
 
                 for row in results:
 
 
                     name = row.driver
-
                     
 
                     #if stars then team as separate column
@@ -70,9 +71,13 @@ def generate_GC_phase1():
                     # prepare driver and team from csv splitted by '/n'
                     if (len(row.driver.split('\n')) > 1 and 'stars' in input_dir.lower()):
                         name = row.driver.split('\n')[0]
+                    # driverName = utilities.get_driver(name)
+                    # driverName = utilities.get_driver_web(results.playerId)
+                    driverName = utilities.get_driver_name(row.playerId, driversList)
+                    if not driverName:
+                        driverName = name
 
-                    driverName = utilities.get_driver(name)
-                    general_classification[driverName] += row.driverPoints
+                    general_classification[driverName] += row.points
 
                 # Dodanie pliku do przetworzonych
                 # processed_files.add(csv_file)
@@ -116,7 +121,7 @@ def generate_GC_phase1():
         # if raceType == 'WEEK':
         #     raceType = 'WL'
 
-        generate_graphic_gc.generate_gc(general_classification_list, raceType, output_csv_file)
+        generate_graphic_gc.generate_gc(general_classification_list, raceType, output_csv_file, input_dir)
         
         # GRAFIKA KG
         # Sprawdzenie istnienia plików graficznych

@@ -117,12 +117,37 @@ def generate_unique_filename(output_dir, base_name, extension="png"):
     #     counter += 1
     return output_file
 
+def generate_unique_filename2(output_dir, base_name, extension="csv"):
+    counter = 1
+    output_file = os.path.join(output_dir, f"{base_name}.{extension}")
+    # generate new file name if exists
+    # while os.path.exists(output_file):
+    #     output_file = os.path.join(output_dir, f"{base_name}({counter}).{extension}")
+    #     counter += 1
+    return output_file
+
+
 
 def generate_GC_file(inputDir):
     output_csv_file_name = f"{os.path.basename(inputDir)}_GC.csv"
     output_csv_file = os.path.join(inputDir, output_csv_file_name)
     return output_csv_file
 
+def generate_GC_file2_csv(inputDir):
+    output_csv_file_name = f"{os.path.basename(inputDir)}_GC.csv"
+    directoryPath = os.path.join(constants.files_results,inputDir, 'csv')
+    if not os.path.exists(directoryPath):
+        os.makedirs(directoryPath)
+    output_csv_file = os.path.join(directoryPath, output_csv_file_name)
+    return output_csv_file
+
+def generate_GC_file2_png(inputDir):
+    output_file_name = f"{os.path.basename(inputDir)}_GC.png"
+    directoryPath = os.path.join(constants.files_results,os.path.basename(inputDir), 'png')
+    if not os.path.exists(directoryPath):
+        os.makedirs(directoryPath)
+    output_file = os.path.join(directoryPath, output_file_name)
+    return output_file
 
 def get_fastest_lap(results):
     fastest_lap_time = None
@@ -142,26 +167,84 @@ def get_track_name(track):
     return track_name
 
 
-def get_web_drivers():
-    # The API endpoint
-    url = "https://script.googleusercontent.com/macros/echo?user_content_key=3g5IKkMC0n8jyhO7VwdGPhnx2RWv7MjSKjeTHhFx07mdCMdfpWDNO-7iz2meYzRDZOhqhe5Clzu3uLiR_URnzX7cY2WY2gr-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
+def update_drivers_list_from_web():
+    response = requests.get(constants.drivers_web_url)
+    if response.status_code == 200 and len(response.json()) > 0:
+        print(f"Getting drivers list from web...")
+        # Parse the JSON response
+        data = response.json()
+        
+        file_path = constants.driversOfflineFile
+        # Open the file in write mode and save the JSON data
+        with open(file_path, 'w') as json_file:
+            json.dump(data, json_file, indent=4)
 
-    # A GET request to the API
-    response = requests.get(url)
 
-    # Print the response
-    # print(response.json())
+# def get_web_drivers():
+#     # The API endpoint
+#     url = "https://script.googleusercontent.com/macros/echo?user_content_key=3g5IKkMC0n8jyhO7VwdGPhnx2RWv7MjSKjeTHhFx07mdCMdfpWDNO-7iz2meYzRDZOhqhe5Clzu3uLiR_URnzX7cY2WY2gr-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
 
-    return response
+#     # A GET request to the API
+#     response = requests.get(url)
+#     if response.status_code != 200:
+#         print(f"Error: {response.json()}")
+
+#     # Print the response
+#     # print(response.json())
+
+#     return response.json()
     
 
-def get_driver_web(playerID, driversList):
+# def get_driver_web(playerID, driversList):
+#     for d in driversList:
+#         if playerID == d.PlayerID:
+#             return d.callsign
+
+#     return None    
+
+def get_driver_name(playerID, driversList):
     for d in driversList:
-        if playerID == d.PlayerID:
-            return d.callsign
+        if playerID == d['PlayerID']:
+            return d['callsign']
 
     return None    
 
+
+
+# def get_web_drivers():
+#     # The API endpoint
+#     url = "https://script.googleusercontent.com/macros/echo?user_content_key=3g5IKkMC0n8jyhO7VwdGPhnx2RWv7MjSKjeTHhFx07mdCMdfpWDNO-7iz2meYzRDZOhqhe5Clzu3uLiR_URnzX7cY2WY2gr-m5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
+
+#     # A GET request to the API
+#     response = requests.get(url)
+
+#     # Print the response
+#     # print(response.json())
+
+#     return response
+
+def get_drivers_list_web():    
+    response = requests.get(constants.drivers_web_url)
+    if response.status_code == 200:
+        print(f"Getting drivers list from web...")
+        # Parse the JSON response
+        data = response.json()
+        
+        # Now you can work with the data
+        return data
+    else:
+        print(f"Getting drivers list from offline file...")
+        get_drivers_list_offline()
+    # for d in driversList:
+    #     if playerID == d.PlayerID:
+    #         return d.callsign
+
+    
+def get_drivers_list_offline():
+    file_path = constants.driversOfflineFile
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data
 
 
 def get_driver(fromResults):
@@ -302,9 +385,10 @@ def save_csv_results(output_csv_file, output_dir, resultsV2):
 
 
 
-def recalculate_total_time(results):
+def recalculate_total_time(results):    
+    originalTotalTimeMs = []
     for i,row in enumerate(results):
-
+        originalTotalTimeMs.append(row.totalTimeMs) 
         if i == 0:
             continue
 
@@ -312,11 +396,21 @@ def recalculate_total_time(results):
         previousLapsCount = results[i-1].laps
         previousPenaltyMs = results[i-1].penaltyMs
 
+        # adjust totalTimeMS (to avoid situations where driver in back has shorter total time than driver in front)
+        # adding the difference to the previous driver total time
+        # if row.totalTimeMs < previousTotalTimeMs:
+        previousOriginalTotalTimeMs = originalTotalTimeMs[i-1]
+        if row.totalTimeMs < previousTotalTimeMs or previousTotalTimeMs != previousOriginalTotalTimeMs :
+            originalTimeDiffMs = abs(previousOriginalTotalTimeMs - originalTotalTimeMs[i])
+            row.totalTimeMs = previousTotalTimeMs + originalTimeDiffMs
+            # row.totalTimeMs = previousTotalTimeMs + (previousTotalTimeMs - row.totalTimeMs)
+
         ignoreLaps = True
         if (row.isDsq):
             row.totalTimeString = "DSQ"
         elif ("DNF" in row.bestLap):
             row.totalTimeString = "DNF"        
+        # might be redundant if we 'adjust' totalTimeMS
         elif row.position > 1 and row.totalTimeMs < previousTotalTimeMs and previousPenaltyMs > 0:
             ignoreLaps = False
             row.totalTimeString = f"+{convert_time(abs(row.totalTimeMs - previousTotalTimeMs + (2*previousPenaltyMs)))}"

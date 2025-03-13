@@ -34,7 +34,7 @@ def generate_individual_graphic():
     
     dirs = glob.glob(os.path.join(input_files_dir, "*"))
     for input_dir in dirs:
-        for csv_file in glob.glob(os.path.join(input_dir, "*.csv2")):
+        for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
 
             if '(' in csv_file:
                 continue
@@ -78,30 +78,38 @@ def generate_individual_graphic():
                 track_name = utilities.get_track_name(short_name)
                 title = track_name
 
+                befoerePenalties = ""
+                if 'beforePenalties' in csv_file:
+                    befoerePenalties = " (przed karami)"
+
                 additionalTitleText = ""
                 if isQuali:
                     additionalTitleText = " (Kwalifikacje)"
                 if ' R1' in csv_file:
-                    additionalTitleText = " (Wyścig 1)"
+                    additionalTitleText = f" (Wyścig 1)"
                 elif ' R2' in csv_file:
-                    additionalTitleText =  " (Wyścig 2)"
+                    additionalTitleText =  f" (Wyścig 2)"
 
-                title = title + additionalTitleText
+                title = title + additionalTitleText + befoerePenalties
 
                 # prepare output path
                 # if "penalties_applied" in csv_file:
                 #     imageFile = os.path.basename(csv_file).replace("_penalties_applied.csv", ".png")
                 # else:
-                imageFile = os.path.basename(csv_file).replace(".csv2", "_2.png")            
+                
+                # imageFile = os.path.basename(csv_file).replace(".csv2", "_2.png")            
+                imageFile = os.path.basename(csv_file).replace(".csv", "_2.png")            
+
                 # directoryPath = os.path.join(constants.files_individual_graphic, os.path.basename(input_dir))
-                directoryPath = os.path.join(constants.files_result_png, os.path.basename(input_dir))
+                # directoryPath = os.path.join(constants.files_result_png, os.path.basename(input_dir))
+                directoryPath = os.path.join(constants.files_results, os.path.basename(input_dir), 'png')
                 if not os.path.exists(directoryPath):
                     os.makedirs(directoryPath)
                 output_image_file = os.path.join(directoryPath, imageFile)
                 
                 # skipp if file exists
-                # if (os.path.exists(output_image_file)):
-                #     continue
+                if (os.path.exists(output_image_file)):
+                    continue
 
                 title_text = title
                 title_bbox = draw.textbbox((0, 0), title_text, font=font)

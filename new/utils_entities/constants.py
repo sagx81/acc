@@ -51,12 +51,16 @@ text_laps = "Okr."
 # RedBull Ring"
 
 # online / web
-drivers_web = "https://script.googleusercontent.com/macros/echo?user_content_key=LyuW03w8EuhJIzOkWPhbTRUzPG8lHG1GRQHA9jDwgXeze8yE4LWE2fyFJRcuZQwE2ecA4gQd5eB2lv77hZusmDTWH_yXNZhfm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
+# drivers_web = "https://script.googleusercontent.com/macros/echo?user_content_key=LyuW03w8EuhJIzOkWPhbTRUzPG8lHG1GRQHA9jDwgXeze8yE4LWE2fyFJRcuZQwE2ecA4gQd5eB2lv77hZusmDTWH_yXNZhfm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnIMcFqZ4NRP4V9dkDbDfGqP3H1XDEV0PUFNGKS__Ipk73m3BsCic2BHaTrdxilTDGH8_RHSnmqSsHMOr95VxP6_b3lj62okUAQ&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
+drivers_web_url = "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLjpDS7AEI8mjebZ8r6C7H9956QrAJcYEIT54kH4KNaQAktPGdWlIwM1avQWmVnDkLOr9V7GFsK4hDaAtmV016NbfJHIU6B5h9yvP1tYEvzRFZcrqw62NNrQOq7BuqLYZ62-YZjrZVPjesSRgkfdcMJm-onpPLtFx1uQwG0t8V5fZqMF9Hb6yz7oSm5Dc5bz1GS4kDdWh5Wg7kidsO18iJnii8uuywDcUcm5WeIKiDb8djNJAiYJzEuCKI1sE-OqtCkntAV8byFk1EZ9yrRsktLt9YA5fw&lib=MSdb85PJGIoSjHGusMzot873GRJM68q9Q"
 tracks_web = "https://script.googleusercontent.com/macros/echo?user_content_key=punHLEL_HTf0TPMFDivsrJ6VbRM6M4wcia0LZQsCHyHBtVzeZqw7NH3OHxqaZs66Fe61kW3dZHlTXL6T2GM8WgazLDxn5THgm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnESQPHwrIqDrspbZcwcyGUWNpg-j7QbH1aWBkOboVyd3OrPhuEWso0Ev8_rbr7QQsQdcwg74D7Hb22NpqdVDrr3blv1BIAhc4w&lib=M_NydfZsakw_hgQy0L_PP-73GRJM68q9Q"
 penalties_web = "https://docs.google.com/spreadsheets/d/1uLbXwCfIWfcnCMoQhm8L2phnhSOQgbfXHRf_WZeJaKM/edit?gid=0#gid=0"
 cars_web = "https://docs.google.com/spreadsheets/d/10pfmrTH4C9_cLfGPja-5k97HfHKSRhd1jsDCVlmh6Bg/edit?gid=0#gid=0"
 cars_logos = "https://www.carlogos.org/car-brands/"
 # https://pngimg.com/
+
+# sets minimal file name, before defined date files will not be taken by the process - season start might be set here
+processFilesFilter = "250209_000000_0.json"
 
 current_dir = os.getcwd()
 utilsFolder = os.path.join(current_dir, "utils_entities")
@@ -70,7 +74,8 @@ files_result_csv = os.path.join(current_dir, "results","csv")
 files_results = os.path.join(current_dir, "results")
 
 processedFilesCSV = os.path.join(current_dir, files_result_phase_1, "processed_files.csv")
-carsCsvFile = utilsFolder = os.path.join(utilsFolder, "cars.csv")
+carsCsvFile = os.path.join(utilsFolder, "cars.csv")
+driversOfflineFile = os.path.join(utilsFolder, "drivers_web.json")
 
 # output_phase1 = os.path.join(current_dir, "output_phase1")
 process_apply_changes = current_dir

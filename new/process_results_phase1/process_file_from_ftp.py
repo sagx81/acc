@@ -37,6 +37,8 @@ def get_race_results():
     sameDayRace = ""
     sameDayQuali = ""
 
+    driversList = utilities.get_drivers_list_offline()
+
     for json_file in filesSorted:
         try:
 
@@ -52,7 +54,8 @@ def get_race_results():
                 postfix = '_Q'
 
             # process files only after 2025
-            filesFilter = os.path.join(input_dir,"250200_000000_0.json")
+            # filesFilter = os.path.join(input_dir,"250200_000000_0.json")
+            filesFilter = os.path.join(input_dir,constants.processFilesFilter)
 
             if (json_file < filesFilter):
                 continue
@@ -160,6 +163,7 @@ def get_race_results():
 
                 seriesDir = seriesDir.upper()    
                 output_dir = os.path.join(current_dir, output_phase1, seriesDir)
+                output_dir2 = os.path.join(constants.files_results, seriesDir, 'csv')
 
                 #print(f"\n Output dir: {output_dir}")
 
@@ -174,7 +178,8 @@ def get_race_results():
 
                 # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
                 output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
-
+                output_csv_file2 = utilities.generate_unique_filename(output_dir2, base_output_name, extension="csv2")       
+                
                 # skipp if file already exists (delete file manually if requires reporocess)
                 if os.path.exists(output_csv_file):
                     continue
@@ -213,8 +218,8 @@ def get_race_results():
                     if 'ballastKg' in line['car']:
                         driverResult.ballastKg = line['car']['ballastKg']
 
-                    drivers = line['car']['drivers']
-                    
+                    # OLD Driver get
+                    drivers = line['car']['drivers']                    
                     driver_names = [driver['lastName'] for driver in drivers]
                     driver_names_str = ", ".join(driver_names)
                     driverResult.driver = driver_names_str
@@ -223,6 +228,12 @@ def get_race_results():
                     player_ids_str = ", ".join(player_ids)
                     driverResult.playerId = player_ids_str                    
                     
+                    driver_name = ''
+                    if len(player_ids) > 0:
+                        driver_name = utilities.get_driver_name(player_ids[0], driversList)
+                    else:
+                        driver_name = driver_names_str
+
                     # drivers = line['car']['drivers']
                     # driverNumber = line['car']['raceNumber']
                     # driverCar = line['car']['carModel']
@@ -304,7 +315,7 @@ def get_race_results():
                     
                     # print("append results")
                     # print(f"{i}\n")
-                    results2.append(entities.ResultRow(i + 1, driver_names_str, 0, total_time_ms, total_time_str, best_lap_str, lap_count, points_awarded))
+                    results2.append(entities.ResultRow(i + 1, driver_name, 0, total_time_ms, total_time_str, best_lap_str, lap_count, points_awarded))
                     # results.append([
                     #     i + 1,
                     #     driver_names_str,
@@ -351,7 +362,8 @@ def get_race_results():
                         r.points = maxPointsV2 - i    
 
                 # output_dir= os.path.join(constants.files_results, seriesDir,"csv")
-                utilities.save_csv_results(output_csv_file+"2", output_dir, resultsV2)
+                # utilities.save_csv_results(output_csv_file+"2", output_dir, resultsV2)
+                utilities.save_csv_results(output_csv_file2, output_dir2, resultsV2)
 
 
 
