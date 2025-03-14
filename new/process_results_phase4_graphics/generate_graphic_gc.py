@@ -98,11 +98,17 @@ def generate_gc(general_classification_list, raceType, gcCsvFile, inputDir=''):
     img = bg_image.crop((0, 0, bg_image.width, lastHeight + (5 * result_line_height/2)))
 
     output_image_file = gcCsvFile.replace('csv','png')
+
+    outputDir = os.path.dirname(output_image_file)
+    if not os.path.exists(outputDir):
+            os.makedirs(outputDir)
+
     # just to handle V2 (to be removed)
-    if 'png2' in output_image_file:
-        output_image_file = utilities.generate_GC_file2_png(input_dir)
+    # if 'png2' in output_image_file:
+    #     output_image_file = utilities.generate_GC_file2_png(input_dir)
         # output_image_file = output_image_file.replace('png2','png').replace('/csv/','/png/')
         # output_image_file = os.path.join(constants.files_result_png,os.path.basename(output_image_file.replace('png2','.png')))
+
     img.save(output_image_file)
     # bg_image.save(output_image_file)
 

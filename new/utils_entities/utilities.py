@@ -421,7 +421,7 @@ def recalculate_total_time(results):
             
         # + laps
         if not ignoreLaps and row.laps > 0 and row.laps - previousLapsCount < 0:
-                row.totalTimeString = row.totalTimeString + f" (+ {abs(row.laps - previousLapsCount)} {constants.text_lap})"
+                row.totalTimeString = row.totalTimeString + f" (+{abs(row.laps - previousLapsCount)} {constants.text_lap})"
 
         # if previousPenaltyMs > 0:
         #     row.totalTimeString = row.totalTimeString + f" +{convert_time(previousPenaltyMs)}            

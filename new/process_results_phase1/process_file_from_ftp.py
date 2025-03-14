@@ -412,9 +412,9 @@ def get_race_results():
                     csv_file.close()
                     # csv_file.writerows(results)
 
+                # clear related V1 files if found something to be processed
                 # delete related graphic files
-                csvFile = os.path.basename(output_csv_file)
-                
+                csvFile = os.path.basename(output_csv_file)                                
                 graphicFile = os.path.join(constants.files_individual_graphic, os.path.basename(output_dir),csvFile.replace(".csv", f".png"))
                 if os.path.exists(graphicFile):
                     os.remove(graphicFile)
@@ -424,11 +424,35 @@ def get_race_results():
                 beforePenaltiesFile = output_csv_file.replace(".csv", f"_beforePenalties.csv")                
                 if os.path.exists(beforePenaltiesFile):
                     os.remove(beforePenaltiesFile)
-
                 # delete general classification file to force reprocessing with new results
                 GcFile = utilities.generate_GC_file(output_dir)
                 if os.path.exists(GcFile):
                     os.remove(GcFile)
+
+
+                # clear related V2 files if found something to be processed
+                # output_csv_file2
+                #delete _beforePenalties - to force applyPenalties again
+                beforePenaltiesFile2 = output_csv_file2.replace(".csv", f"_beforePenalties.csv")                
+                if os.path.exists(beforePenaltiesFile2):
+                    os.remove(beforePenaltiesFile2)
+
+                # delete related graphic files
+                graphicResultFolder = os.path.dirname(os.path.dirname(output_csv_file2))
+                graphicFileName2 = os.path.basename(output_csv_file2).replace(".csv", f".png")                
+                graphicFile2 = os.path.join(graphicResultFolder, graphicFileName2)
+                if os.path.exists(graphicFile2):
+                    os.remove(graphicFile2)
+                graphicFileBeforePenalties2 = graphicFile2.replace(".png", f"_beforePenalties.png")
+                if os.path.exists(graphicFileBeforePenalties2):
+                    os.remove(graphicFileBeforePenalties2)                
+                # delete general classification file to force reprocessing with new results
+                # GcCsvFile = utilities.generate_GC_file2_csv(output_dir2)
+                # if os.path.exists(GcCsvFile):
+                #     os.remove(GcCsvFile)
+                # GcPngFile = utilities.generate_GC_file2_png(output_dir2)
+                # if os.path.exists(GcPngFile):
+                #     os.remove(GcPngFile)        
 
                 # save processed file
                 #processedFiles.append([os.path.basename(json_file), datetime.datetime.now()])

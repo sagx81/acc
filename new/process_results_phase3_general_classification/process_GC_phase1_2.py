@@ -6,6 +6,7 @@ from collections import defaultdict
 from utils_entities import constants
 from utils_entities import utilities
 from process_results_phase4_graphics import generate_graphic_gc
+# from process_results_phase4_graphics import generate_graphic_gc2
 
 input_dir = constants.files_result_phase_1
 output_dir = constants.files_result_phase_3
@@ -14,24 +15,26 @@ font_path = os.path.join(constants.process_graphic_individual, "files", "fonts",
 
 def generate_GC_phase1():
 
-    print("** General Classification ")
-    dirs = glob.glob(os.path.join(constants.files_result_phase_1, "*"))    
-    
-    driversList = utilities.get_drivers_list_offline()
+    print("** General Classification V2 ")
 
+    driversList = utilities.get_drivers_list_offline()
+    
+    dirs = utilities.get_series_directories()    
     for input_dir in dirs:
 
         # output_csv_file = utilities.generate_GC_file(input_dir)
         output_csv_file = utilities.generate_GC_file2_csv(os.path.basename(input_dir))
-        output_csv_file = output_csv_file + "2"
+        # output_csv_file = output_csv_file + "2"
+        
         # skipp if file exists
-        # if (os.path.exists(output_csv_file)):
-        #     continue
+        if (os.path.exists(output_csv_file)):
+            continue
 
         # clear general classification 
         general_classification = defaultdict(int)
 
-        for csv_file in glob.glob(os.path.join(input_dir, "*.csv2")):
+        # for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
+        for csv_file in utilities.get_serie_csv_files(input_dir):
 
             # skip general classification file
             if '_gc.' in csv_file.lower():

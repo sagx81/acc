@@ -35,9 +35,8 @@ from process_results_phase4_graphics import generate_graphic2
 # DRIVERS web update
 # # Updates drivers list from web URL. Retrievs .json file with drivers list and updates local file which is used by other functionalities. 
 # If request fails then previous drivers file is used.
-# utilities.update_drivers_list_from_web()
+utilities.update_drivers_list_from_web()
 
-# Process steps:
 # 1. FTP
 ftp.get_ftp_files()
 
