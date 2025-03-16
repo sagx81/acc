@@ -102,7 +102,7 @@
         "PlayerID": "M2535446506058100",
         "callsign": "Khasithe",
         "numer": 27,
-        "Ranga": "SILVER+"
+        "Ranga": "GOLD"
     },
     {
         "DiscordID": "727875253572993055",
@@ -123,7 +123,7 @@
         "PlayerID": "M2535442275796797",
         "callsign": "Kowen",
         "numer": 722,
-        "Ranga": "GOLD+"
+        "Ranga": "PLATINUM"
     },
     {
         "DiscordID": "522085396230832138",
@@ -165,7 +165,7 @@
         "PlayerID": "M2533274901937449",
         "callsign": "Escudo Wolf",
         "numer": 69,
-        "Ranga": "BRONZE"
+        "Ranga": "BRONZE+"
     },
     {
         "DiscordID": "922099665237839945",
@@ -249,14 +249,14 @@
         "PlayerID": "P820068980196546852",
         "callsign": "Sagxx",
         "numer": 981,
-        "Ranga": "GOLD+"
+        "Ranga": "PLATINUM"
     },
     {
         "DiscordID": "816366464869072897",
         "PlayerID": "P1597516131133164259",
         "callsign": "Dziadygagoat",
         "numer": 3,
-        "Ranga": "IRON+"
+        "Ranga": "BRONZE"
     },
     {
         "DiscordID": "287999718670204959",
@@ -522,7 +522,7 @@
         "PlayerID": "M2535418471356438",
         "callsign": "Chadeka90",
         "numer": 34,
-        "Ranga": "SILVER"
+        "Ranga": "BRONZE+"
     },
     {
         "DiscordID": "801381109622505482",
@@ -543,14 +543,14 @@
         "PlayerID": "M2535417305612476",
         "callsign": "Chapsior",
         "numer": 2,
-        "Ranga": "BRONZE"
+        "Ranga": "BRONZE+"
     },
     {
         "DiscordID": "1248581286558433364",
         "PlayerID": "P4150822641923286275",
         "callsign": "Fikumacz",
         "numer": 78,
-        "Ranga": "IRON+"
+        "Ranga": "BRONZE"
     },
     {
         "DiscordID": "276982384363307008",
@@ -634,7 +634,7 @@
         "PlayerID": "M2535448698298643",
         "callsign": "VonLobo",
         "numer": 666,
-        "Ranga": "IRON+"
+        "Ranga": "BRONZE"
     },
     {
         "DiscordID": "567037944792350721",
@@ -662,7 +662,7 @@
         "PlayerID": "M2535451061354231",
         "callsign": "DrLaktoza",
         "numer": 114,
-        "Ranga": "BRONZE"
+        "Ranga": "BRONZE+"
     },
     {
         "DiscordID": "961672155119120484",
@@ -725,7 +725,7 @@
         "PlayerID": "P8071619485256217668",
         "callsign": "JMG",
         "numer": 159,
-        "Ranga": "IRON+"
+        "Ranga": "BRONZE"
     },
     {
         "DiscordID": "327520334851080192",
@@ -746,6 +746,13 @@
         "PlayerID": "P3075937548985922042",
         "callsign": "Slowhand",
         "numer": 313,
+        "Ranga": "IRON+"
+    },
+    {
+        "DiscordID": "861275965753524265",
+        "PlayerID": "P861275965753524265",
+        "callsign": "Patryk Felu\u015b",
+        "numer": 221,
         "Ranga": "IRON+"
     },
     {
