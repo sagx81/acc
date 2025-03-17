@@ -98,9 +98,11 @@ seriesLogosFolder = os.path.join(graphicFiles,"Logo")
 carLogosFolder = os.path.join(graphicFiles,"cars")
 
 columnWidths = [100, 570, 400, 400, 250, 250]
+result_line_height = 96
 # columnWidths = [100, 400, 200, 400, 400, 250, 250]
-columnWidthsStars = [100, 400, 420, 400, 215, 215, 215]
-    
+columnWidthsStars = [100, 400, 420, 400, 215, 200, 150]
+result_line_height_stars = 130
+
 
 # def get_points_table():
 #     return points

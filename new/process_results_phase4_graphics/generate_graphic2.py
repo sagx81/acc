@@ -59,16 +59,26 @@ def generate_individual_graphic():
             try:    
 
                 graphicHeaders = constants.graphicHeaders
-                column_widths = constants.columnWidths    
-                
+                column_widths = constants.columnWidths
+                result_x_start = 20
+                result_line_height = constants.result_line_height
+    
+
+                results = utilities.get_results_from_csv2(csv_file, constants.process_graphic_individual)
+
+                # trying: set isStars (teams and muliple drivers) if \n found in driver name
+                if '\n' in results[0].driver:
+                    isStars = True
+
                 if isStars:
                     column_widths = constants.columnWidthsStars
                     graphicHeaders = constants.graphicHeadersStars
+                    result_line_height = constants.result_line_height_stars
 
                 bg_image = Image.open(background_image)
                 draw = ImageDraw.Draw(bg_image)
 
-                results = utilities.get_results_from_csv2(csv_file, constants.process_graphic_individual)
+                
 
                 # draw header
                 for j, header in enumerate(graphicHeaders):
@@ -125,9 +135,9 @@ def generate_individual_graphic():
                 draw.text((title_x, title_y), title_text, fill="black", font=font)
                 
                 # lines calculation
-                result_x_start = 20
+                # result_x_start = 20
                 result_y_start = header_y_start + header_line_height + 38
-                result_line_height = 96
+                # result_line_height = constants.result_line_height
 
                 fastestLap = utilities.get_fastest_lap(results)
 
@@ -160,10 +170,13 @@ def generate_individual_graphic():
                         team = ''
                         driver = ''
                         # # prepare driver and team from csv splitted by '/n'
-                        if (cellField == 'driver' and len(cellValue.split('\n')) > 1 and 'stars' in input_dir.lower()):
-                            team = cellValue.split('\n')[0]
-                            driver = cellValue.split('\n')[1]
-                        
+                        if (cellField == 'driver' and len(cellValue.split('\n')) > 1 and isStars):
+                            drivers = cellValue.split(',')
+                            for d in drivers:
+                                team = d.split('\n')[0]
+                                driver += f"{d.split('\n')[1]}\n"
+                                # driver += drivers[1]                            
+                            
                         
                         # if team:
                         # if (cellField == 'driver'):
@@ -191,6 +204,10 @@ def generate_individual_graphic():
                                 logo = logo.resize((new_logo_width, new_logo_height), Image.LANCZOS)
 
                                 logo_x = 550  # Ustawienia pozycji X dla logo
+                                if isStars:
+                                    logo_x = bg_image.width - 150
+
+                                
                                 # logo_x = x_position + text_width  # Ustawienia pozycji X dla logo
                                 logo_y = y_position - 10  # Ustawienia pozycji Y dla logo
                                 bg_image.paste(logo, (logo_x, logo_y), logo)
