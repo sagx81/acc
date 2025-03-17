@@ -22,13 +22,20 @@ def generate_individual_graphic():
     header_x_start = 20
     header_y_start = 145
     header_line_height = 40
-    font_size = 47
+    # font_size = constants.font_size
 
     try:
-        font = ImageFont.truetype(font_path, font_size)
+        font = ImageFont.truetype(font_path, constants.font_size)
     except IOError:
         print(f"Could not load font at {font_path}. Using default font.")
         font = ImageFont.load_default()
+
+    try:
+        fontStars = ImageFont.truetype(font_path, constants.font_size_stars)
+    except IOError:
+        print(f"Could not load font at {font_path}. Using default font.")
+        fontStars = ImageFont.load_default()
+
 
     cars = utilities.get_cars()
     
@@ -73,7 +80,7 @@ def generate_individual_graphic():
                 if isStars:
                     column_widths = constants.columnWidthsStars
                     graphicHeaders = constants.graphicHeadersStars
-                    result_line_height = constants.result_line_height_stars
+                    # result_line_height = constants.result_line_height_stars
 
                 bg_image = Image.open(background_image)
                 draw = ImageDraw.Draw(bg_image)
@@ -136,7 +143,9 @@ def generate_individual_graphic():
                 
                 # lines calculation
                 # result_x_start = 20
-                result_y_start = header_y_start + header_line_height + 38
+                # result_y_start = header_y_start + header_line_height + 38
+                result_y_start = header_y_start + header_line_height + 30
+
                 # result_line_height = constants.result_line_height
 
                 fastestLap = utilities.get_fastest_lap(results)
@@ -229,10 +238,12 @@ def generate_individual_graphic():
                             # draw.text((x_position - text_width // 2, y_position), str(cellValue), fill=constants.color_default, font=font)
 
                             #driver
-                            x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2                                    
-                            text_bbox = draw.textbbox((0, 0), driver, font=font)
+                            # x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 2                                    
+                            x_position = result_x_start + sum(column_widths[:j]) + column_widths[j] // 5                                    
+                            text_bbox = draw.textbbox((0, 0), driver, font=fontStars)
                             text_width = text_bbox[2] - text_bbox[0]
-                            draw.text((x_position - text_width // 2, y_position), str(driver), fill=constants.color_default, font=font)
+                            # draw.text((x_position - text_width // 2, y_position), str(driver), fill=constants.color_default, font=fontStars)
+                            draw.text((x_position, y_position), str(driver), fill=constants.color_default, font=fontStars)
                             
                             #team
                             j=j+1
