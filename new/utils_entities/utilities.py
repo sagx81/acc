@@ -109,6 +109,34 @@ def get_penalties_from_csv():
     return penalties
 
 
+def get_gc_penalties_from_csv():
+    penalties_csv = constants.penalties_file
+    penalties = []
+    try:
+        with open(penalties_csv, mode='r', encoding='utf-8') as pFile:
+            pReader = csv.DictReader(pFile)
+            for r in pReader:
+                penalty = entities.Penalty(
+                    r['RaceType'], 
+                    r['Season'], 
+                    r['Track'], 
+                    r['RaceNumber'], 
+                    r['Driver'], 
+                    int(r['SecondsPenalty'] or 0), 
+                    int(r['PositionPenalty'] or 0), 
+                    float(r['IsDSQ'] or False), 
+                    int(r['GCPenaltyPoints'] or 0)
+                )
+                if penalty.track == "" or penalty.gcPenaltyPoints > 0:
+                    penalties.append(penalty)
+
+    except Exception as e:
+        print(f"Apply Penalties open penalties csv file - An error occurred reading penalties file {penalties_csv}: {e}")
+
+    return penalties
+
+
+
 def generate_unique_filename(output_dir, base_name, extension="png"):
     counter = 1
     output_file = os.path.join(output_dir, f"{base_name}.{extension}")
@@ -340,6 +368,20 @@ def is_penalty_valid_for_race(penalty, directory, file):
         return True
 
 
+def is_penalty_valid_for_race_type(penalty, input_dir):
+    directory = os.path.basename(input_dir)    
+    if (penalty.raceType.lower() == "wl"):
+        raceTypeCompare = "week league"
+    else:
+        raceTypeCompare = penalty.raceType
+
+    if ((str(directory.lower()).find(penalty.raceType.lower()) >= 0 or str(directory.lower()).find(raceTypeCompare) >= 0)
+        and str(directory.lower()).find(penalty.season.lower())) >= 0:
+        return True
+    
+    return False
+
+
 def save_csv_file(output_csv_file, output_dir, results):
     try:
         print(f"output_csv_file: {output_csv_file}")
@@ -480,3 +522,22 @@ def get_serie_csv_files(series_dir):
     csv_files = glob.glob(os.path.join(series_dir, 'csv', "*.csv"))
     return csv_files
      
+
+def should_skip_file_processing(csv_file):
+    # skipp Qualifications
+    if "_Q" in csv_file:
+        return True
+
+    # skipp penalties/copy files
+    if ("penalties" in csv_file.lower() or "copy" in csv_file.lower()) :
+        return True
+
+    # skipp if penalties already applied
+    if '_beforepenalties' in csv_file.lower():
+        return True
+    
+    # skip general classification file
+    if '_gc.' in csv_file.lower():
+        return True
+
+    return False

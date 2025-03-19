@@ -38,8 +38,23 @@ def apply_penalties():
     for input_dir in dirs:
         for csv_file in glob.glob(os.path.join(input_dir, "*.csv")):
     
-            # skipp Qualifications
-            if "_Q" in csv_file:
+            # # skipp Qualifications
+            # if "_Q" in csv_file:
+            #     continue
+
+            # # skipp penalties/copy files
+            # if ("penalties" in csv_file.lower() or "copy" in csv_file.lower()) :
+            #     continue
+
+            # # skipp if penalties already applied
+            # if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv")):
+            #     continue
+
+            # # skip general classification file
+            # if '_gc.' in csv_file.lower():
+            #     continue
+
+            if utilities.should_skip_file_processing(csv_file):
                 continue
 
             applyPenalties = False
@@ -48,10 +63,6 @@ def apply_penalties():
                     applyPenalties = True
 
             if (not applyPenalties):
-                continue
-
-            # skipp if penalties already applied
-            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv")):
                 continue
                 
             try:

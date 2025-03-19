@@ -1,43 +1,44 @@
-RaceType,Season,Track,RaceNumber,Driver,SecondsPenalty,PositionPenalty,IsDSQ,PenaltyPoints
-GT4,S1,red_bull,,kielkozaur,30,0,0,1
-GT4,S1,red_bull,,drlaktoza,0,0,1,0
-WL,S4,suzuka,R1,vonlobo,60,0,0,5
-WL,S4,suzuka,R1,dziadygagoat,60,0,0,5
-WL,S4,suzuka,R1,fikumacz,30,0,0,1
-WL,S4,suzuka,R2,fikumacz,30,0,0,1
-WL,S4,suzuka,R2,dzonykirango,400,0,0,0
-Super Trofeo,S1,kyalami,,Fikumacz,30,0,0,1
-Super Trofeo,S1,kyalami,,VonLobo,30,0,0,1
-WL,S4,silverstone,R2,D. Krol,20,0,0,0
-WL,S4,silverstone,R2,Chadeka90,30,0,0,1
-WL,S4,silverstone,R1,Drzymalski#23,30,0,0,2
-WL,S4,silverstone,R2,DrLaktoza,60,0,0,5
-WL,S4,monza,R2,Cristians,60,0,0,5
-WL,S4,monza,R1,Sitek2453,30,0,0,1
-WL,S4,monza,R2,D. Krol,30,0,0,1
-WL,S4,monza,R1,Khasithe,30,0,0,1
-WL,S4,monza,R2,D. Krol,10,0,0,1
-Super Trofeo,S1,zandvoort,,VonLobo,15,0,0,2
-Super Trofeo,S1,zandvoort,,DrLaktoza,60,0,0,5
-WL,S4,brands_hatch,R2,Głaz,60,0,0,5
-WL,S4,brands_hatch,R2,KubaC701,30,0,0,1
-WL,S4,brands_hatch,R2,drLaktoza,30,0,0,1 
-WL,S4,brands_hatch,R2,Kielkozaur,60,0,0,5
-WL,S4,brands_hatch,R2,Chapsior,60,0,0,5
-WL,S4,brands_hatch,R2,Dziadygagoat,30,0,0,1
-WL,S4,brands_hatch,R1,Dzonykirango,30,0,0,1
-WL,S4,brands_hatch,R1,Drzymalski#23,30,0,0,1
-WL,S4,brands_hatch,R2,KubaC701,60,0,0,5
-WL,S4,brands_hatch,R2,Chapsior,10,0,0,4
-WL,S4,brands_hatch,R2,ChampOfHell94 HRT,30,0,0,3
-WL,S4,brands_hatch,R2,Sitek2453,30,0,0,1
-WL,S4,brands_hatch,R2,Wyspa,15,0,0,1
-GT4,S1,donington,,File77,30,0,0,3
-WL,S4,nurburgring,R2,KapitanBronz,10,0,0,1
-WL,S4,nurburgring,R1,KapitanBronz,30,0,0,3
-WL,S4,nurburgring,R2,File77,30,0,0,3
-WL,S4,nurburgring,R2,File77,30,0,0,3
-WL,S4,nurburgring,R2,Vini,0,0,0,3
-WL,S4,nurburgring,R1,Arenjnk,15,0,0,1
-WL,S4,nurburgring,R1,Cristians,0,0,1,0
-WL,S4,nurburgring,R2,Cristians,0,0,1,0
+RaceType,Season,Track,RaceNumber,Driver,SecondsPenalty,PositionPenalty,IsDSQ,PenaltyPoints,GCPenaltyPoints
+GT4,S1,red_bull,,kielkozaur,30,0,0,1,
+GT4,S1,red_bull,,drlaktoza,0,0,1,0,
+WL,S4,suzuka,R1,vonlobo,60,0,0,5,
+WL,S4,suzuka,R1,dziadygagoat,60,0,0,5,
+WL,S4,suzuka,R1,fikumacz,30,0,0,1,
+WL,S4,suzuka,R2,fikumacz,30,0,0,1,
+WL,S4,suzuka,R2,dzonykirango,400,0,0,0,
+Super Trofeo,S1,kyalami,,Fikumacz,30,0,0,1,
+Super Trofeo,S1,kyalami,,VonLobo,30,0,0,1,
+WL,S4,silverstone,R2,D. Krol,20,0,0,0,
+WL,S4,silverstone,R2,Chadeka90,30,0,0,1,
+WL,S4,silverstone,R1,Drzymalski#23,30,0,0,2,
+WL,S4,silverstone,R2,DrLaktoza,60,0,0,5,
+WL,S4,monza,R2,Cristians,60,0,0,5,
+WL,S4,monza,R1,Sitek2453,30,0,0,1,
+WL,S4,monza,R2,D. Krol,30,0,0,1,
+WL,S4,monza,R1,Khasithe,30,0,0,1,
+WL,S4,monza,R2,D. Krol,10,0,0,1,
+Super Trofeo,S1,zandvoort,,VonLobo,15,0,0,2,
+Super Trofeo,S1,zandvoort,,DrLaktoza,60,0,0,5,
+WL,S4,brands_hatch,R2,Głaz,60,0,0,5,
+WL,S4,brands_hatch,R2,KubaC701,30,0,0,1,
+WL,S4,brands_hatch,R2,drLaktoza,30,0,0,1 ,
+WL,S4,brands_hatch,R2,Kielkozaur,60,0,0,5,
+WL,S4,brands_hatch,R2,Chapsior,60,0,0,5,
+WL,S4,brands_hatch,R2,Dziadygagoat,30,0,0,1,
+WL,S4,brands_hatch,R1,Dzonykirango,30,0,0,1,
+WL,S4,brands_hatch,R1,Drzymalski#23,30,0,0,1,
+WL,S4,brands_hatch,R2,KubaC701,60,0,0,5,
+WL,S4,brands_hatch,R2,Chapsior,10,0,0,4,
+WL,S4,brands_hatch,R2,ChampOfHell94 HRT,30,0,0,3,
+WL,S4,brands_hatch,R2,Sitek2453,30,0,0,1,
+WL,S4,brands_hatch,R2,Wyspa,15,0,0,1,
+GT4,S1,donington,,File77,30,0,0,3,
+WL,S4,nurburgring,R2,KapitanBronz,10,0,0,1,
+WL,S4,nurburgring,R1,KapitanBronz,30,0,0,3,
+WL,S4,nurburgring,R2,File77,30,0,0,3,
+WL,S4,nurburgring,R2,File77,30,0,0,3,
+WL,S4,nurburgring,R2,Vini,0,0,0,3,
+WL,S4,nurburgring,R1,Arenjnk,15,0,0,1,
+WL,S4,nurburgring,R1,Cristians,0,0,1,0,
+WL,S4,nurburgring,R2,Cristians,0,0,1,0,
+GT4,S1,,,Drzymalski#23,0,0,0,0,10

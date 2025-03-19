@@ -33,7 +33,7 @@ def apply_penalties():
                 continue
 
             # skipp if penalties already applied (when _beforePenalties file exists for given csv)
-            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv2")):
+            if os.path.exists(csv_file.replace(".csv", f"_beforePenalties.csv")):
                 continue
 
             # check if penalties apply to current race

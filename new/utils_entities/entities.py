@@ -7,7 +7,7 @@ class ProcessedFile:
         return f"{self.fileName} {self.processedDate}"
 
 class Penalty:
-    def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds, penaltyPosition, isDsq):
+    def __init__(self, raceType, season, track, raceNumber, driver, penaltySeconds=0, penaltyPosition=0, isDsq=0, gcPenaltyPoints=0):
         self.raceType = raceType
         self.season = season
         self.track = track
@@ -16,6 +16,7 @@ class Penalty:
         self.penaltySeconds = penaltySeconds
         self.penaltyPosition = penaltyPosition
         self.isDsq = isDsq        
+        self.gcPenaltyPoints = gcPenaltyPoints
 
     def __repr__(self):
         return f"{self.raceType} {self.season} {self.track} {self.raceNumber} {self.driver} {self.penaltySeconds} {self.penaltyPosition} {self.isDsq}"
