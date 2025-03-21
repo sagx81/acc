@@ -361,9 +361,7 @@ def get_race_results():
                     if not (r.points == 0):
                         r.points = maxPointsV2 - i    
 
-                # output_dir= os.path.join(constants.files_results, seriesDir,"csv")
-                # utilities.save_csv_results(output_csv_file+"2", output_dir, resultsV2)
-                utilities.save_csv_results(output_csv_file2, output_dir2, resultsV2)
+                # utilities.save_csv_results(output_csv_file2, output_dir2, resultsV2)
 
 
 
@@ -447,12 +445,12 @@ def get_race_results():
                 if os.path.exists(graphicFileBeforePenalties2):
                     os.remove(graphicFileBeforePenalties2)                
                 # delete general classification file to force reprocessing with new results
-                # GcCsvFile = utilities.generate_GC_file2_csv(output_dir2)
-                # if os.path.exists(GcCsvFile):
-                #     os.remove(GcCsvFile)
-                # GcPngFile = utilities.generate_GC_file2_png(output_dir2)
-                # if os.path.exists(GcPngFile):
-                #     os.remove(GcPngFile)        
+                GcCsvFile = utilities.generate_GC_file2_csv(output_dir2)
+                if os.path.exists(GcCsvFile):
+                    os.remove(GcCsvFile)
+                GcPngFile = utilities.generate_GC_file2_png(output_dir2)
+                if os.path.exists(GcPngFile):
+                    os.remove(GcPngFile)        
 
                 # save processed file
                 #processedFiles.append([os.path.basename(json_file), datetime.datetime.now()])
