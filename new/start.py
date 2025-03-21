@@ -5,6 +5,7 @@ from ftp import ftp
 from utils_entities import utilities
 
 from process_results_phase1 import process_file_from_ftp
+from process_results_phase1 import process_file_from_ftp_2
 from process_results_phase2_penalties_apply import penalties_apply
 from process_results_phase2_penalties_apply import penalties_apply2
 from process_results_phase3_general_classification import process_GC_phase1
@@ -41,6 +42,7 @@ utilities.update_drivers_list_from_web()
 ftp.get_ftp_files()
 
 process_file_from_ftp.get_race_results()
+process_file_from_ftp_2.get_race_results()
 
 penalties_apply.apply_penalties()
 penalties_apply2.apply_penalties()
