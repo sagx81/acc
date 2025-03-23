@@ -162,20 +162,46 @@ def generate_GC_file(inputDir):
     output_csv_file = os.path.join(inputDir, output_csv_file_name)
     return output_csv_file
 
+# def generate_GC_file2(inputDir):
+#     output_csv_file_name = f"{os.path.basename(os.path.dirname(inputDir))}_GC.csv"
+#     output_csv_file = os.path.join(inputDir, output_csv_file_name)
+#     return output_csv_file
+
 def generate_GC_file2_csv(inputDir):
-    output_csv_file_name = f"{os.path.basename(inputDir)}_GC.csv"
-    directoryPath = os.path.join(constants.files_results,inputDir, 'csv')
+    directoryPath = inputDir
+    if 'csv' in directoryPath:
+        directoryPath = os.path.dirname(inputDir)
+        # directoryPath = os.path.join(constants.files_results,inputDir, 'csv')
+    output_csv_file_name = os.path.basename(generate_GC_file(directoryPath))
+    
+    # output_csv_file_name = generate_GC_file(inputDir)
+    # output_csv_file_name = f"{os.path.basename(os.path.dirname(inputDir))}_GC.csv"
+    
+    # if '/csv' not in inputDir:
+    # directoryPath = os.path.join(constants.files_results,inputDir, 'csv')
+    directoryPath = os.path.join(directoryPath, 'csv')
+
     if not os.path.exists(directoryPath):
         os.makedirs(directoryPath)
     output_csv_file = os.path.join(directoryPath, output_csv_file_name)
     return output_csv_file
 
 def generate_GC_file2_png(inputDir):
-    output_file_name = f"{os.path.basename(inputDir)}_GC.png"
-    directoryPath = os.path.join(constants.files_results,os.path.basename(inputDir), 'png')
-    if not os.path.exists(directoryPath):
-        os.makedirs(directoryPath)
-    output_file = os.path.join(directoryPath, output_file_name)
+    csvFile = generate_GC_file2_csv(inputDir)
+    output_file_name = os.path.basename(csvFile).replace('.csv', '.png')
+    baseDir = os.path.dirname(os.path.dirname(csvFile))
+    pngDir = os.path.join(baseDir, 'png')
+    output_file = os.path.join(pngDir, output_file_name)
+    # output_file_name = generate_GC_file(inputDir).replace('.csv', '.png')
+    
+    #output_file_name = f"{os.path.basename(inputDir)}_GC.png"
+    # directoryPath = os.path.join(constants.files_results,os.path.basename(inputDir), 'png')
+    # directoryPath = os.path.join(constants.files_results,
+    #     os.path.basename(os.path.dirname(inputDir)),
+    #     'png')
+    # if not os.path.exists(directoryPath):
+    #     os.makedirs(directoryPath)
+    # output_file = os.path.join(directoryPath, output_file_name)
     return output_file
 
 def get_fastest_lap(results):

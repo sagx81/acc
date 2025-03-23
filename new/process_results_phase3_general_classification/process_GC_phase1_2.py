@@ -23,7 +23,8 @@ def generate_GC_phase1():
     dirs = utilities.get_series_directories()    
     for input_dir in dirs:
 
-        output_csv_file = utilities.generate_GC_file2_csv(os.path.basename(input_dir))
+        # output_csv_file = utilities.generate_GC_file2_csv(os.path.basename(input_dir))
+        output_csv_file = utilities.generate_GC_file2_csv(input_dir)
         
         # skipp if file exists
         if (os.path.exists(output_csv_file)):

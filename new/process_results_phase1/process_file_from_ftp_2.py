@@ -429,7 +429,7 @@ def get_race_results():
                     os.remove(beforePenaltiesFile2)
 
                 # delete related graphic files
-                graphicResultFolder = os.path.dirname(os.path.dirname(output_csv_file2))
+                graphicResultFolder = os.path.join(os.path.dirname(os.path.dirname(output_csv_file2)), 'png')
                 graphicFileName2 = os.path.basename(output_csv_file2).replace(".csv", f".png")                
                 graphicFile2 = os.path.join(graphicResultFolder, graphicFileName2)
                 if os.path.exists(graphicFile2):

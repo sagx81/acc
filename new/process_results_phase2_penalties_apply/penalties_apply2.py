@@ -107,6 +107,11 @@ def apply_penalties():
                 
                 # sortedResult - original array - contains now only drivers withing same lap as winner
                 # adding +lap drivers, DSQs and DNFs
+                
+                # sort dnfs / dsqs by laps count 
+                dsqs = sorted(dsqs, key=lambda x: (-x.laps, x.totalTimeMs))
+                dnfs = sorted(dnfs, key=lambda x: (-x.laps, x.totalTimeMs))
+                
                 sortedResults.extend(sortedReorderPositions)
                 sortedResults.extend(dsqs)
                 sortedResults.extend(dnfs)
