@@ -62,6 +62,9 @@ cars_logos = "https://www.carlogos.org/car-brands/"
 # sets minimal file name, before defined date files will not be taken by the process - season start might be set here
 processFilesFilter = "250209_000000_0.json"
 
+# percenetage of laps to be classified
+driver_min_laps_to_be_classified_mult = 0.8
+
 current_dir = os.getcwd()
 utilsFolder = os.path.join(current_dir, "utils_entities")
 files_from_ftp = os.path.join(current_dir, "files_from_ftp")
