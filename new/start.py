@@ -14,15 +14,6 @@ from process_results_phase4_graphics import generate_graphic
 from process_results_phase4_graphics import generate_graphic2
  
 
-# from process_graphic_individual import generate_graphic
-# import process_graphic_individual.generate_graphic
-# from process_general_classification import process_GC_phase1
-
-# current_dir = os.getcwd()
-#input_dir = os.path.join(current_dir, "fromFTP")
-# process_results_phase1 = "process_results_phase1"
-# processedFilesCSV = os.path.join(current_dir, process_results_phase1, "processed_files.csv")
-
 # optional delete downloaded ftp files
 # shutil.rmtree(constants.ftp_input_dir, ignore_errors=True)
 
@@ -36,9 +27,11 @@ from process_results_phase4_graphics import generate_graphic2
 # DRIVERS web update
 # # Updates drivers list from web URL. Retrievs .json file with drivers list and updates local file which is used by other functionalities. 
 # If request fails then previous drivers file is used.
+
 utilities.update_drivers_list_from_web()
 
 # 1. FTP
+
 ftp.get_ftp_files()
 
 process_file_from_ftp.get_race_results()

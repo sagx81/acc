@@ -112,3 +112,19 @@ class Car:
 
     def __repr__(self):
         return f"Id: {self.id}, Name: {self.name}, Year: {self.year}\n"
+
+
+
+class MinLapsClassificationMuliplier:
+    def __new__(cls, *args, **kwargs):
+        return super().__new__(cls)
+
+    def __init__(self, raceType, season, track, raceNumber, multiplier):
+        self.raceType = raceType
+        self.season = season
+        self.track = track
+        self.raceNumber = raceNumber
+        self.multiplier = multiplier
+
+    def __repr__(self):
+        return f"RaceType: {self.raceType}, Season: {self.season}, Track: {self.track}, RaceNumber: {self.raceNumber}, Multiplier: {self.multiplier}\n"

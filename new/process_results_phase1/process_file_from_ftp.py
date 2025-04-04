@@ -250,7 +250,8 @@ def get_race_results():
                     # print("for loop \n")
 
                     # skipp spectators
-                    if (lap_count == 0):
+                    # if (lap_count == 0):
+                    if (driverResult.isSpectator):
                         continue
                     elif not isQuali and lap_count < min_laps_required:
                         total_time_str = constants.dnf_text

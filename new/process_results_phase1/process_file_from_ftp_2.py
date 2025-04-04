@@ -10,30 +10,18 @@ from utils_entities import constants
 from utils_entities import utilities
 from utils_entities import entities
 
-#processed files
-#from utils_entities.processed_files import ProcessedFile
-
-current_dir = os.getcwd()
+# current_dir = os.getcwd()
 input_dir = constants.files_from_ftp
-output_phase1 = constants.files_result_phase_1
-# results_phase1 = "process_results_phase1"
+# output_phase1 = constants.files_result_phase_1
 processedFiles = []
-# processedFilesCSV = os.path.join(current_dir, results_phase1, "processed_files.csv") 
 
 def get_race_results():
 
     print("\n*** Processing FTP files phase - 1 \n")
 
-    # processedFileHasValue = False
-    # filesSorted = sorted(glob.glob(os.path.join(input_dir, "*.json")), key=os.path.getmtime, reverse=False)
-    # path_object = Path(input_dir)
-    # filesSorted = sorted(path_object.glob("*.json"), key=lambda item: item.name, reverse=True)
-    # items = os.listdir(input_dir)
-
     items = glob.glob(os.path.join(input_dir, "*.json"))
     filesSorted = sorted(items, reverse=True)
-
-    # previousRaceDay = ""   
+    
     sameDayRace = ""
     sameDayQuali = ""
 
@@ -54,39 +42,19 @@ def get_race_results():
                 postfix = '_Q'
 
             # process files only after 2025
-            # filesFilter = os.path.join(input_dir,"250200_000000_0.json")
             filesFilter = os.path.join(input_dir,constants.processFilesFilter)
 
             if (json_file < filesFilter):
                 continue
 
-
             # skipp Quali files from same day but earlier hour
             if isQuali and (date_part == sameDayQuali):
                 continue
-                        
-            # skipp if processed
-            # if (os.path.exists(processedFilesCSV) ):
-            #     processedFileHasValue = True
-            #     with open(processedFilesCSV, 'r', encoding='utf-8') as file:         
-            #         reader = csv.DictReader(file)           
-            #         # print(f"Reading processed files: {processedFilesCSV}")
-            #         fileFound = False
-            #         for row in reader:
-            #             fileToFind = os.path.basename(json_file)
-                        
-            #             if (fileToFind in row['File']):
-            #                 # print(f"\n SKIPPING file: {json_file}\n")
-            #                 fileFound = True
-            #                 break
-            #         if (fileFound):
-            #             continue
             
             #try different json encodings (might change after FTP json file update)
             data = None
             try:
                 with open(json_file, 'r', encoding='utf-16-le') as file:
-                # with open(json_file, 'r', encoding='utf-8-sig') as file:
                     data = json.load(file)
             except Exception as e:
                 warning = 1
@@ -104,8 +72,7 @@ def get_race_results():
                 print(f"!! Could not read FILE: {json_file}")
                 continue
 
-            if data:
-                
+            if data:                
                 # skipp not valid files (session held but no valid best laps recorded)
                 if data['sessionResult']['bestlap'] == 0:
                     continue
@@ -120,15 +87,10 @@ def get_race_results():
                     seriesDir = serverName.split('|')[1].strip()
                 else:
                     seriesDir = "unknown"                
-
-                # base_name = os.path.basename(json_file)
-                # date_part = base_name.split('_')[0]
-                # time_part = base_name.split('_')[1]
                 
                 # double space series naming exceptions
                 if "  " in seriesDir.lower():
                     seriesDir = seriesDir.replace("  ", " ")
-
 
                 # Week League
                 # determine race number by time the race was held
@@ -148,36 +110,23 @@ def get_race_results():
                         else:
                             raceIndex = 2
                         sameDayRace = date_part
-                    # elif isWeekLeague and isQuali:
-                    #     sameDayQuali = date_part
                     
                     if isWeekLeague and not isQuali:
                         raceNumber = f" R{int(raceIndex)}"
-
                 # Week League end
 
                 #skipp multiple Qualis from the same day
                 if isQuali:
                     sameDayQuali = date_part
 
-
                 seriesDir = seriesDir.upper()    
-                output_dir = os.path.join(current_dir, output_phase1, seriesDir)
+                # output_dir = os.path.join(current_dir, output_phase1, seriesDir)
                 output_dir2 = os.path.join(constants.files_results, seriesDir, 'csv')
 
                 #print(f"\n Output dir: {output_dir}")
 
                 short_name = data.get('trackName', 'unknown_track')
-
-                # base_name = os.path.basename(json_file)
-                # date_part = base_name.split('_')[0]
-                # time_part = base_name.split('_')[1]
-
-                # base_output_name = f"{short_name}-{seriesDir}{raceNumber}-{date_part}-{time_part}{postfix}"
                 base_output_name = f"{date_part}-{time_part}-{short_name}-{seriesDir}{raceNumber}{postfix}"
-
-                # output_image_file = generate_unique_filename(output_dir, base_output_name, extension="png")
-                # output_csv_file = utilities.generate_unique_filename(output_dir, base_output_name, extension="csv")
                 output_csv_file2 = utilities.generate_unique_filename(output_dir2, base_output_name, extension="csv")       
                 
                 # skipp if file already exists (delete file manually if requires reporocess)
@@ -188,15 +137,15 @@ def get_race_results():
                 lap_counts = [line['timing'].get('lapCount', 0) for line in data['sessionResult']['leaderBoardLines']]
                 if lap_counts:
                     max_lap_count = max(lap_counts)
-                    min_laps_required = max_lap_count * 0.8
+                    min_laps_required = max_lap_count * constants.driver_min_laps_to_be_classified_mult
                 else:
                     min_laps_required = 0
 
-                results = []
-                results2 = []
+                # results = []
+                # results2 = []
                 resultsV2 = []
-                resultsV2csv = []
-                best_lap_times = []
+                # resultsV2csv = []
+                # best_lap_times = []
                 first_driver_time = None
                 first_driver_laps = max_lap_count
                 first_driver_best_time_ms = 0
@@ -234,12 +183,6 @@ def get_race_results():
                     else:
                         driver_name = driver_names_str
 
-                    # drivers = line['car']['drivers']
-                    # driverNumber = line['car']['raceNumber']
-                    # driverCar = line['car']['carModel']
-                    # driver_names = [driver['lastName'] for driver in drivers]
-                    # driver_names_str = ", ".join(driver_names)
-
                     total_time_ms = line['timing']['totalTime']
                     best_lap_ms = line['timing'].get('bestLap', 0)
                     lap_count = line['timing'].get('lapCount', 0)
@@ -250,13 +193,13 @@ def get_race_results():
                     # print("for loop \n")
 
                     # skipp spectators
-                    if (lap_count == 0):
+                    # if (lap_count == 0):
+                    if driverResult.isSpectator == 1:
                         continue
                     elif not isQuali and lap_count < min_laps_required:
                         total_time_str = constants.dnf_text
                         best_lap_str = constants.dnf_text
                         points_awarded = 0
-                    # elif isQuali: ?????
                     else:
                         if i == 0 and not isQuali:
                             first_driver_time = total_time_ms
@@ -268,7 +211,6 @@ def get_race_results():
                             total_time_str = utilities.convert_time(best_lap_ms)
                             total_time_ms = best_lap_ms
                         else:
-                            #TODO crash here : first_driver_time is none , 1st driver DNF - noo, it is about Quali
                             if isQuali:
                                 time_difference = best_lap_ms - first_driver_best_time_ms
                             else:
@@ -310,119 +252,27 @@ def get_race_results():
                     driverResult.laps = lap_count
                     driverResult.points = points_awarded
                     resultsV2.append(driverResult)
-                    
-                    
-                    
-                    # print("append results")
-                    # print(f"{i}\n")
-                    # results2.append(entities.ResultRow(i + 1, driver_name, 0, total_time_ms, total_time_str, best_lap_str, lap_count, points_awarded))
-                    
 
-                    best_lap_times.append(best_lap_ms)
-                
-                # points calculation : maxPoints = drivers count + 1
-                # maxPoints = results2.__len__()
-                # for i, r in enumerate(results2):
-                #     if not (r.driverPoints == 0):
-                #         r.driverPoints = maxPoints - i                        
+                    # best_lap_times.append(best_lap_ms)
 
+                    # looping drivers END
 
-                # build csv output file
-                # for i,r in enumerate(results2):
-                #     results.append([
-                #         r.position,
-                #         r.driver,
-                #         r.totalTimeString,
-                #         r.totalTimeMs,
-                #         r.bestLap,
-                #         r.laps,
-                #         r.driverPoints
-                #     ])                    
-                # results.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points'])
-
-
-                # recalculate total time                
+                # recalculate total time for all drivers                
                 if not isQuali:
-                    # results2 = utilities.recalculate_total_time(results2)
                     resultsV2 = utilities.recalculate_total_time(resultsV2)
 
-                # V2 points calculation : maxPoints = drivers count + 1
+                # points calculation : maxPoints = drivers count + 1
                 maxPointsV2 = resultsV2.__len__()
                 for i, r in enumerate(resultsV2):
                     if not (r.points == 0):
                         r.points = maxPointsV2 - i    
 
-                # output_dir= os.path.join(constants.files_results, seriesDir,"csv")
-                # utilities.save_csv_results(output_csv_file+"2", output_dir, resultsV2)
+                # save results csv file
                 utilities.save_csv_results(output_csv_file2, output_dir2, resultsV2)
-
-
-
-                # # build csv output file
-                # for i,r in enumerate(resultsV2):
-                #     resultsV2csv.append([
-                #         r.position,
-                #         r.driver,
-                #         r.totalTimeString,
-                #         r.totalTimeMs,
-                #         r.bestLap,
-                #         r.laps,
-                #         r.points,                        
-                #         r.carId,
-                #         r.raceNumber,
-                #         r.carModel,
-                #         r.carGroup,
-                #         r.cupCategory,
-                #         r.ballastKg,
-                #         r.playerId,
-                #         r.isWetSession,
-                #         r.isSpectator,
-                #         r.missingMandatoryPitstopass
-
-                #     ])                    
-                # resultsV2.insert(0, ['Position', 'Driver', 'Total time', 'Total time ms', 'Best lap', 'Laps', 'Points', 'Car ID', 'Race Number', 'Car Model', 'Car Group', 'Cup Category', 'Ballast Kg', 'Player ID', 'Is Wet Session', 'Is Spectator', 'Missing Mandatory Pitstop'])
-                
-                # utilities.save_csv_file(output_csv_file, output_dir, resultsV2)
-
-                # print("best lap")
-                
-                # if best_lap_times:
-                #     fastest_lap_time = min(best_lap_times)
-                #     fastest_lap_time_converted = utilities.convert_time(fastest_lap_time)
-                # else:
-                #     fastest_lap_time_converted = None
 
                 print(f"output_csv_file: {output_csv_file2}")
 
-                # if not os.path.exists(output_dir):
-                #     os.makedirs(output_dir)
-
-                # with open(output_csv_file, mode='w+', newline='', encoding='utf-8') as csv_file:
-                #     writer = csv.writer(csv_file)
-                #     writer.writerows(results)
-                #     csv_file.close()
-                    # csv_file.writerows(results)
-
-                # clear related V1 files if found something to be processed
-                # delete related graphic files
-                # csvFile = os.path.basename(output_csv_file)                                
-                # graphicFile = os.path.join(constants.files_individual_graphic, os.path.basename(output_dir),csvFile.replace(".csv", f".png"))
-                # if os.path.exists(graphicFile):
-                #     os.remove(graphicFile)
-                # graphicFileBeforePenalties = graphicFile.replace(".png", f"_beforePenalties.png")
-                # if os.path.exists(graphicFileBeforePenalties):
-                #     os.remove(graphicFileBeforePenalties)                
-                # beforePenaltiesFile = output_csv_file.replace(".csv", f"_beforePenalties.csv")                
-                # if os.path.exists(beforePenaltiesFile):
-                #     os.remove(beforePenaltiesFile)
-                # # delete general classification file to force reprocessing with new results
-                # GcFile = utilities.generate_GC_file(output_dir)
-                # if os.path.exists(GcFile):
-                #     os.remove(GcFile)
-
-
-                # clear related V2 files if found something to be processed
-                # output_csv_file2
+                # clear related V2 files if found something to be processed - this allows to execute steps to process files
                 #delete _beforePenalties - to force applyPenalties again
                 beforePenaltiesFile2 = output_csv_file2.replace(".csv", f"_beforePenalties.csv")                
                 if os.path.exists(beforePenaltiesFile2):
@@ -437,6 +287,7 @@ def get_race_results():
                 graphicFileBeforePenalties2 = graphicFile2.replace(".png", f"_beforePenalties.png")
                 if os.path.exists(graphicFileBeforePenalties2):
                     os.remove(graphicFileBeforePenalties2)                
+                
                 # delete general classification file to force reprocessing with new results
                 GcCsvFile = utilities.generate_GC_file2_csv(output_dir2)
                 if os.path.exists(GcCsvFile):
@@ -445,37 +296,10 @@ def get_race_results():
                 if os.path.exists(GcPngFile):
                     os.remove(GcPngFile)        
 
-                # save processed file
-                #processedFiles.append([os.path.basename(json_file), datetime.datetime.now()])
-                
-
-                # not used:
-                # processedFiles.append({os.path.basename(json_file), datetime.datetime.now()})
-                # processedFiles.append(ProcessedFile(os.path.basename(json_file), datetime.datetime.now()) )
-
-
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON from file {json_file}: {e}")
         except KeyError as e:
             print(f"Missing key in JSON file {json_file}: {e}")
-        # with open(json_file, 'r', encoding='utf-16-le') as file:
-        #         print(json.load(file))
         except Exception as e:
             print(f"Process Results Phase1 - An error occurred processing file {json_file}: {e}")
-            # return
-
-    
-    # save processed files
-    # try: 
-    #     # for a in processedFiles:
-    #     #     print(a)
-
-    #     if (not processedFileHasValue):
-    #         processedFiles.insert(0, ['File', 'Date'])
-
-    #     with open(processedFilesCSV, mode='a', newline='', encoding='utf-8') as csv_file:
-    #         writer = csv.writer(csv_file)
-    #         writer.writerows(processedFiles)
-    # except Exception as e:
-    #     print(f"Process Results Phase 1 Save Processed File - An error occurred processing file {processedFilesCSV}: {e}")
-
+            
